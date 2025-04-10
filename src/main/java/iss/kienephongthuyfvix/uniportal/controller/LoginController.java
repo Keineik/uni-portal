@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Objects;
 
 public class LoginController {
     @FXML
@@ -35,15 +36,18 @@ public class LoginController {
         }
 
         try {
-            // Attempt database connection with provided credentials
-            Connection conn = Database.getConnection(username, password);
-
-            if (conn != null) {
-                // Login successful
-                loadMainApplication(username);
-            } else {
-                showError("Invalid username or password");
+            if (isValidCredentials(username, password)) {
+                loadDashboard("DBA");
             }
+            // Attempt database connection with provided credentials
+//            Connection conn = Database.getConnection(username, password);
+//
+//            if (conn != null) {
+//                // Login successful
+//                loadMainApplication(username);
+//            } else {
+//                showError("Invalid username or password");
+//            }
         } catch (Exception e) {
             showError("Database connection error: " + e.getMessage());
         }
@@ -59,6 +63,29 @@ public class LoginController {
     private void showError(String message) {
         errorMessageLabel.setText(message);
         errorMessageLabel.setVisible(true);
+    }
+
+    private boolean isValidCredentials(String username, String password) {
+        // Replace with actual authentication logic
+        return ("admin".equals(username) && "password".equals(password)) || ("1".equals(username) && "1".equals(password));
+    }
+
+    private void loadDashboard(String role) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/dashboard.fxml"));
+            Parent root = loader.load();
+
+            DashboardController dashboardController = loader.getController();
+            dashboardController.initializeRole(role);
+
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/style.css")).toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadMainApplication(String username) {
