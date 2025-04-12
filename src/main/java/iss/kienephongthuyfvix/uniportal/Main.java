@@ -22,7 +22,6 @@ public class Main extends Application {
 
     @Override
     public void stop() {
-        // Close any open database connections or perform cleanup
         System.out.println("Application closing - performing cleanup");
     }
 }

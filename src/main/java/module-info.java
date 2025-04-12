@@ -7,7 +7,9 @@ module iss.kienephongthuyfvix.hcmums {
     requires static lombok;
     requires org.slf4j;
     requires com.jfoenix;
+    requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.fontawesome5;
 
     opens iss.kienephongthuyfvix.uniportal.controller to javafx.fxml;
     exports iss.kienephongthuyfvix.uniportal;
