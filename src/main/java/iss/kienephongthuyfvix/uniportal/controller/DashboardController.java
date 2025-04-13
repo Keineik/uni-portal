@@ -37,7 +37,7 @@ public class DashboardController {
         switch (employeeType) {
             case "DBA":
                 sidebarButtons.add(createButton("Quản lý user", "#QLUser"));
-                sidebarButtons.add(createButton("Quản lý role", "#SystemAdmin"));
+                sidebarButtons.add(createButton("Quản lý role", "#QLRole"));
                 sidebarButtons.add(createButton("Quyền", "#SystemAdmin"));
                 sidebarButtons.add(createButton("Phát thông báo", "#SystemAdmin"));
                 break;
@@ -110,8 +110,8 @@ public class DashboardController {
             case "#QLUser":
                 QuanLyUser(new ActionEvent());
                 break;
-            case "#Important":
-                Important(new ActionEvent());
+            case "#QLRole":
+                QuanLyRole(new ActionEvent());
                 break;
             case "#Inbox":
                 Inbox(new ActionEvent());
@@ -151,8 +151,9 @@ public class DashboardController {
         contentArea.getChildren().add(fxml);
     }
 
-    void ThanhToan(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/hcmus/exammanagement/thanhtoan.fxml"));
+    @FXML
+    void QuanLyRole(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/quan-ly-role.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }

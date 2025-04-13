@@ -3,6 +3,7 @@ package iss.kienephongthuyfvix.uniportal.controller;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -42,12 +43,31 @@ public class QuanLyUser {
     @FXML private ListView<String> multiRoleListView;
     @FXML private Button createButton;
     @FXML private Button cancelButton;
+    @FXML private TextField searchField;
+
+    private ObservableList<User> masterUserList = FXCollections.observableArrayList();
+    private FilteredList<User> filteredUsers;
 
     @FXML
     public void initialize() {
         initUserTableIfAvailable();
         setupCreateUserButton();
         setupCreateUserForm();
+        if (searchField != null) {
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                filteredUsers.setPredicate(user -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    return user.getUserId().toLowerCase().contains(lowerCaseFilter)
+                            || user.getUsername().toLowerCase().contains(lowerCaseFilter)
+                            || user.getRoles().stream().anyMatch(role -> role.toLowerCase().contains(lowerCaseFilter));
+                });
+            });
+        }
     }
 
     private void initUserTableIfAvailable() {
@@ -66,7 +86,10 @@ public class QuanLyUser {
                     new User("2", "test", String.valueOf(FXCollections.observableArrayList("GV"))),
                     new User("3", "hi", String.valueOf(FXCollections.observableArrayList("SV")))
             );
-            userListView.setItems(users);
+
+            masterUserList.setAll(users);
+            filteredUsers = new FilteredList<>(masterUserList, p -> true);
+            userListView.setItems(filteredUsers);
         }
     }
 
@@ -301,7 +324,23 @@ public class QuanLyUser {
 
 
     private void deleteUser(User user) {
-        System.out.println("Xóa user: " + user.getUsername());
-        userListView.getItems().remove(user);
+        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationDialog.setTitle("Xác nhận xóa");
+        confirmationDialog.setHeaderText("Bạn có chắc muốn xóa người dùng này?");
+        confirmationDialog.setContentText("Username: " + user.getUsername());
+
+        ButtonType yesButton = new ButtonType("Có", ButtonBar.ButtonData.YES);
+        ButtonType noButton = new ButtonType("Không", ButtonBar.ButtonData.NO);
+
+        confirmationDialog.getButtonTypes().setAll(yesButton, noButton);
+
+        confirmationDialog.showAndWait().ifPresent(response -> {
+            if (response == yesButton) {
+                masterUserList.remove(user);  // CHỈNH Ở ĐÂY
+                System.out.println("Đã xóa user: " + user.getUsername());
+            } else {
+                System.out.println("Hủy xóa user: " + user.getUsername());
+            }
+        });
     }
 }
