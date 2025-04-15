@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.DBA.PhatThongBao">
+   <AnchorPane layoutX="29.0" layoutY="50.0" prefHeight="591.0" prefWidth="953.0" styleClass="light-white-box" stylesheets="@../style.css">
+      <children>
+      
+                  <Label layoutX="8.0" layoutY="5.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Danh Sách Thông Báo" />
+      
+                <ScrollPane fitToWidth="true" layoutX="42.0" layoutY="97.0" prefHeight="536.0" prefWidth="889.0" style="-fx-background-color: transparent;">
+              <content>
+                  <VBox prefHeight="963.0" prefWidth="852.0" spacing="10.0">
+                      <!-- THÔNG BÁO 1 -->
+                      <VBox prefHeight="76.0" prefWidth="852.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #dee2e6; -fx-border-radius: 8;">
+                          <HBox>
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Thông báo họp Khoa Hóa – Cơ sở 2" HBox.hgrow="ALWAYS" />
+                              <Label style="-fx-text-fill: gray;" text="                                                                                                                                                                        14/01/2025" />
+                          </HBox>
+                          <Label text="Gửi đến: Trưởng đơn vị, Nhân viên Khoa Hóa" />
+                          <Label text="Nội dung thông báo về cuộc họp khoa Hóa..." />
+                      </VBox>
+      
+                            <!-- THÔNG BÁO 2 -->
+                      <VBox prefHeight="76.0" prefWidth="640.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #dee2e6; -fx-border-radius: 8;">
+                          <HBox>
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Thông báo lịch thi học kỳ 1" HBox.hgrow="ALWAYS" />
+                        <Label style="-fx-text-fill: gray;" text="                                                                                                                                                                                        13/01/2025" />
+                          </HBox>
+                          <Label text="Gửi đến: Tất cả sinh viên" />
+                          <Label text="Thông báo về lịch thi học kỳ 1..." />
+                      </VBox>
+      
+                            <!-- THÔNG BÁO 3 -->
+                      <VBox prefHeight="76.0" prefWidth="640.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #dee2e6; -fx-border-radius: 8;">
+                          <HBox>
+                              <Label prefHeight="20.0" prefWidth="164.0" style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Thông báo hành chính" HBox.hgrow="ALWAYS" />
+                              <Label style="-fx-text-fill: gray;" text="                                                                                                                                                                                             13/01/2025" />
+                          </HBox>
+                          <Label text="Gửi đến: Tất cả nhân viên" />
+                          <Label text="Thông báo về các vấn đề hành chính..." />
+                      </VBox>
+                  <VBox prefHeight="76.0" prefWidth="640.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #dee2e6; -fx-border-radius: 8;">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Thông báo lịch thi học kỳ 1" HBox.hgrow="ALWAYS" />
+                              <Label style="-fx-text-fill: gray;" text="                                                                                                                                                                                         14/01/2025" />
+                           </children>
+                        </HBox>
+                        <Label text="Gửi đến: Tất cả sinh viên" />
+                        <Label text="Thông báo về lịch thi học kỳ 1..." />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="76.0" prefWidth="640.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #dee2e6; -fx-border-radius: 8;">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Thông báo lịch thi học kỳ 1" HBox.hgrow="ALWAYS" />
+                              <Label style="-fx-text-fill: gray;" text="                                                                                                                                                                                         14/01/2025" />
+                           </children>
+                        </HBox>
+                        <Label text="Gửi đến: Tất cả sinh viên" />
+                        <Label text="Thông báo về lịch thi học kỳ 1..." />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="76.0" prefWidth="640.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #dee2e6; -fx-border-radius: 8;">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Thông báo lịch thi học kỳ 1" HBox.hgrow="ALWAYS" />
+                              <Label style="-fx-text-fill: gray;" text="                                                                                                                                                                                         14/01/2025" />
+                           </children>
+                        </HBox>
+                        <Label text="Gửi đến: Tất cả sinh viên" />
+                        <Label text="Thông báo về lịch thi học kỳ 1..." />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="76.0" prefWidth="640.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #dee2e6; -fx-border-radius: 8;">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Thông báo lịch thi học kỳ 1" HBox.hgrow="ALWAYS" />
+                              <Label style="-fx-text-fill: gray;" text="                                                                                                                                                                                         14/01/2025" />
+                           </children>
+                        </HBox>
+                        <Label text="Gửi đến: Tất cả sinh viên" />
+                        <Label text="Thông báo về lịch thi học kỳ 1..." />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="76.0" prefWidth="640.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #dee2e6; -fx-border-radius: 8;">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Thông báo lịch thi học kỳ 1" HBox.hgrow="ALWAYS" />
+                              <Label style="-fx-text-fill: gray;" text="                                                                                                                                                                                         14/01/2025" />
+                           </children>
+                        </HBox>
+                        <Label text="Gửi đến: Tất cả sinh viên" />
+                        <Label text="Thông báo về lịch thi học kỳ 1..." />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="76.0" prefWidth="640.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #dee2e6; -fx-border-radius: 8;">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Thông báo lịch thi học kỳ 1" HBox.hgrow="ALWAYS" />
+                              <Label style="-fx-text-fill: gray;" text="                                                                                                                                                                                         14/01/2025" />
+                           </children>
+                        </HBox>
+                        <Label text="Gửi đến: Tất cả sinh viên" />
+                        <Label text="Thông báo về lịch thi học kỳ 1..." />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="76.0" prefWidth="640.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #dee2e6; -fx-border-radius: 8;">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Thông báo lịch thi học kỳ 1" HBox.hgrow="ALWAYS" />
+                              <Label style="-fx-text-fill: gray;" text="                                                                                                                                                                                         14/01/2025" />
+                           </children>
+                        </HBox>
+                        <Label text="Gửi đến: Tất cả sinh viên" />
+                        <Label text="Thông báo về lịch thi học kỳ 1..." />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="76.0" prefWidth="640.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #dee2e6; -fx-border-radius: 8;">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Thông báo lịch thi học kỳ 1" HBox.hgrow="ALWAYS" />
+                              <Label style="-fx-text-fill: gray;" text="                                                                                                                                                                                         14/01/2025" />
+                           </children>
+                        </HBox>
+                        <Label text="Gửi đến: Tất cả sinh viên" />
+                        <Label text="Thông báo về lịch thi học kỳ 1..." />
+                     </children>
+                  </VBox>
+                  </VBox>
+              </content>
+          </ScrollPane>
+      
+                        <Label layoutX="428.0" layoutY="29.0" text="Cơ Sở" />
+            <ComboBox fx:id="cbCoSo" layoutX="428.0" layoutY="50.0" prefHeight="25.0" prefWidth="153.0" promptText="Tất Cả" />
+      
+                                       <Label layoutX="599.0" layoutY="31.0" text="Cấp bậc" />
+            <ComboBox fx:id="cbDoiTuong" layoutX="599.0" layoutY="50.0" prefHeight="25.0" prefWidth="153.0" promptText="Tất Cả" />
+      
+                        <Label layoutX="771.0" layoutY="33.0" text="Lĩnh vực" />
+            <ComboBox fx:id="cbKhoaDonVi" layoutX="771.0" layoutY="50.0" prefHeight="25.0" prefWidth="153.0" promptText="Tất Cả" />
+      </children>
+   </AnchorPane>
+       <Button fx:id="createAnnouncementButton" layoutX="901.0" layoutY="7.0" prefHeight="34.0" prefWidth="128.0" styleClass="white-green-button" stylesheets="@../style.css" text="➕ Tạo Thông Báo">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font>
+   </Button>
+
+
+</AnchorPane>

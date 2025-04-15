@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.DBA.CapQuyen">
+
+    <Label layoutX="35.0" layoutY="10.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Cấp quyền truy cập">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+
+    <AnchorPane layoutX="35.0" layoutY="50.0" prefHeight="154.0" prefWidth="1009.0" styleClass="light-gray-box" stylesheets="@../style.css">
+        <children>
+            <Label layoutX="14.0" layoutY="19.0" text="Loại đối tượng" textFill="#0000008c">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Label>
+            <RadioButton fx:id="userRadio" layoutX="15.0" layoutY="43.0" text="User">
+                <toggleGroup>
+                    <ToggleGroup fx:id="granteeTypeGroup" />
+                </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="roleRadio" layoutX="85.0" layoutY="43.0" text="Role" />
+
+            <Label layoutX="458.0" layoutY="19.0" text="Đối tượng " textFill="#0000008c">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Label>
+            <ChoiceBox fx:id="granteeChoiceBox" layoutX="453.0" layoutY="39.0" prefHeight="25.0" prefWidth="472.0" />
+
+            <Label layoutX="14.0" layoutY="81.0" text="Loại đối tượng dữ liệu" textFill="#0000008c">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Label>
+            <ChoiceBox fx:id="objectTypeChoiceBox" layoutX="14.0" layoutY="105.0" prefHeight="25.0" prefWidth="389.0" />
+
+            <Label layoutX="454.0" layoutY="84.0" text="Tên đối tượng dữ liệu" textFill="#0000008c">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Label>
+            <ChoiceBox fx:id="objectNameChoiceBox" layoutX="452.0" layoutY="105.0" prefHeight="25.0" prefWidth="472.0" />
+        </children>
+    </AnchorPane>
+
+    <AnchorPane layoutX="34.0" layoutY="225.0" prefHeight="67.0" prefWidth="1009.0" styleClass="light-gray-box" stylesheets="@../style.css">
+        <children>
+            <Label layoutX="9.0" text="Quyền truy cập" textFill="#0000008c">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Label>
+            <CheckBox fx:id="selectCheckBox" layoutX="13.0" layoutY="28.0" text="SELECT" />
+            <CheckBox fx:id="insertCheckBox" layoutX="93.0" layoutY="28.0" text="INSERT" />
+            <CheckBox fx:id="updateCheckBox" layoutX="173.0" layoutY="28.0" text="UPDATE" />
+            <CheckBox fx:id="deleteCheckBox" layoutX="263.0" layoutY="28.0" text="DELETE" />
+            <CheckBox fx:id="executeCheckBox" layoutX="353.0" layoutY="28.0" text="EXECUTE" />
+        </children>
+    </AnchorPane>
+
+    <AnchorPane fx:id="selectColumnPermissionPane" layoutX="33.0" layoutY="394.0" prefHeight="214.0" prefWidth="472.0" styleClass="light-gray-box" stylesheets="@../style.css">
+        <children>
+            <Label layoutX="10.0" layoutY="9.0" text="Phân quyền SELECT theo cột" textFill="#0000008c">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Label>
+            <CheckBox fx:id="selectColumnId" layoutX="16.0" layoutY="33.0" text="ID" />
+            <CheckBox fx:id="selectColumnName" layoutX="16.0" layoutY="62.0" text="Họ tên" />
+            <CheckBox fx:id="selectColumnSalary" layoutX="16.0" layoutY="91.0" text="Lương" />
+        </children>
+    </AnchorPane>
+
+    <AnchorPane fx:id="updateColumnPermissionPane" layoutX="522.0" layoutY="393.0" prefHeight="214.0" prefWidth="519.0" styleClass="light-gray-box" stylesheets="@../style.css">
+        <children>
+            <Label layoutX="10.0" layoutY="9.0" text="Phân quyền UPDATE theo cột" textFill="#0000008c">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Label>
+            <CheckBox fx:id="updateColumnId" layoutX="16.0" layoutY="33.0" text="ID" />
+            <CheckBox fx:id="updateColumnName" layoutX="16.0" layoutY="62.0" text="Họ tên" />
+            <CheckBox fx:id="updateColumnSalary" layoutX="16.0" layoutY="91.0" text="Lương" />
+        </children>
+    </AnchorPane>
+
+
+    <AnchorPane layoutX="33.0" layoutY="300.0" prefHeight="80.0" prefWidth="1009.0" styleClass="light-gray-box" stylesheets="@../style.css">
+        <children>
+            <Label layoutX="12.0" layoutY="8.0" text="Tùy chọn mở rộng" textFill="#0000008c">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Label>
+            <CheckBox fx:id="selectGrantOption" layoutX="14.0" layoutY="41.0" text="SELECT with GRANT OPTION" />
+            <CheckBox fx:id="insertGrantOption" layoutX="208.0" layoutY="41.0" text="INSERT with GRANT OPTION" />
+            <CheckBox fx:id="updateGrantOption" layoutX="399.0" layoutY="41.0" text="UPDATE with GRANT OPTION" />
+            <CheckBox fx:id="deleteGrantOption" layoutX="596.0" layoutY="41.0" text="DELETE with GRANT OPTION" />
+            <CheckBox fx:id="executeGrantOption" layoutX="794.0" layoutY="41.0" text="EXECUTE with GRANT OPTION" />
+        </children>
+    </AnchorPane>
+
+    <Group layoutX="11.0" layoutY="541.0" />
+
+    <Button fx:id="cancelButton" layoutX="788.0" layoutY="660.0" prefHeight="34.0" prefWidth="69.0" style="-fx-background-color: white;" styleClass="white-button" stylesheets="@../style.css" text="Hủy bỏ">
+        <font>
+            <Font name="System Bold" size="12.0" />
+        </font>
+    </Button>
+
+    <Button fx:id="grantButton" layoutX="869.0" layoutY="660.0" prefHeight="34.0" prefWidth="137.0" styleClass="white-green-button" stylesheets="@../style.css" text="Xác nhận cấp quyền">
+        <font>
+            <Font name="System Bold" size="12.0" />
+        </font>
+    </Button>
+
+</AnchorPane>

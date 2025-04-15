@@ -38,8 +38,8 @@ public class DashboardController {
             case "DBA":
                 sidebarButtons.add(createButton("Quản lý user", "#QLUser"));
                 sidebarButtons.add(createButton("Quản lý role", "#QLRole"));
-                sidebarButtons.add(createButton("Quyền", "#SystemAdmin"));
-                sidebarButtons.add(createButton("Phát thông báo", "#SystemAdmin"));
+                sidebarButtons.add(createButton("Cấp quyền", "#CapQuyen"));
+                sidebarButtons.add(createButton("Phát thông báo", "#PhatTB"));
                 break;
 
             case "Nhân viên cơ bản":
@@ -113,11 +113,11 @@ public class DashboardController {
             case "#QLRole":
                 QuanLyRole(new ActionEvent());
                 break;
-            case "#Inbox":
-                Inbox(new ActionEvent());
+            case "#PhatTB":
+                PhatThongBao(new ActionEvent());
                 break;
-            case "#Someday":
-                Someday(new ActionEvent());
+            case "#CapQuyen":
+                CapQuyen(new ActionEvent());
                 break;
             // Add more cases for other actions
         }
@@ -154,6 +154,20 @@ public class DashboardController {
     @FXML
     void QuanLyRole(ActionEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/quan-ly-role.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void CapQuyen(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/cap-quyen.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void PhatThongBao(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/phat-thong-bao.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
