@@ -3,7 +3,7 @@ ALTER SESSION SET "_ORACLE_SCRIPT"=true;
 -- Xóa các cấu trúc dữ liệu nếu tồn tại
 BEGIN 
     -- Xóa các user và schema
-    FOR usr IN (SELECT * FROM DBA_USERS WHERE USERNAME IN ('QLDaiHoc')) LOOP
+    FOR usr IN (SELECT * FROM ALL_USERS WHERE USERNAME IN ('QLDaiHoc', 'QLDAIHOC')) LOOP
         -- Ngắt kết nối của user
         FOR ses IN (SELECT SID, SERIAL# FROM V$SESSION WHERE USERNAME = usr.USERNAME) LOOP
             EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION ''' || ses.SID || ',' || ses.SERIAL# || ''' IMMEDIATE';
@@ -11,13 +11,18 @@ BEGIN
         -- Xóa user
         EXECUTE IMMEDIATE 'DROP USER "' || usr.USERNAME || '" CASCADE';
     END LOOP;
+
+    -- Xóa các role
+    FOR rle IN (SELECT * FROM DBA_ROLES WHERE ROLE LIKE 'RL_%') LOOP
+        EXECUTE IMMEDIATE 'DROP ROLE "' || rle.ROLE || '"';
+    END LOOP;
 END;
 /
 
 -- Tạo quan hệ và các bảng
-CREATE USER "QLDaiHoc" IDENTIFIED BY "Nhom01";
-GRANT ALL PRIVILEGES TO "QLDaiHoc";
-ALTER SESSION SET CURRENT_SCHEMA = "QLDaiHoc";
+CREATE USER "QLDAIHOC" IDENTIFIED BY "Nhom01";
+GRANT ALL PRIVILEGES TO "QLDAIHOC";
+ALTER SESSION SET CURRENT_SCHEMA = "QLDAIHOC";
 
 CREATE TABLE DONVI (
     MADV NVARCHAR2(15) PRIMARY KEY,
@@ -60,6 +65,7 @@ CREATE TABLE SINHVIEN (
     HOTEN NVARCHAR2(127) NOT NULL,
     PHAI NVARCHAR2(5) CHECK (PHAI IN ('Nam', 'Nữ')),
     NGSINH DATE,
+    DCHI NVARCHAR2(255),
     DT NVARCHAR2(15) UNIQUE,
     KHOA NVARCHAR2(15),
     TINHTRANG NVARCHAR2(15) CHECK (TINHTRANG IN ('Đang học', 'Nghỉ học', 'Bảo lưu', 'Đã tốt nghiệp')),
@@ -149,14 +155,14 @@ BEGIN
     COMMIT;
 
     -- Insert dữ liệu vào bảng SINHVIEN
-    INSERT INTO SINHVIEN VALUES (NULL, 'Nguyễn Văn G', 'Nam', TO_DATE('2000-01-01', 'YYYY-MM-DD'), '0123456789', 'TOAN', 'Đang học');
-    INSERT INTO SINHVIEN VALUES (NULL, 'Trần Văn H', 'Nam', TO_DATE('2001-02-02', 'YYYY-MM-DD'), '0987654322', 'HOA', 'Đang học');
-    INSERT INTO SINHVIEN VALUES (NULL, 'Nguyễn Thị I', 'Nữ', TO_DATE('2002-03-03', 'YYYY-MM-DD'), '0123456712', 'LY', 'Đang học');
-    INSERT INTO SINHVIEN VALUES (NULL, 'Nguyễn Văn K', 'Nam', TO_DATE('2003-04-04', 'YYYY-MM-DD'), '0987654323', 'TOAN', 'Đang học');
-    INSERT INTO SINHVIEN VALUES (NULL, 'Đinh Văn L', 'Nam', TO_DATE('2004-05-05', 'YYYY-MM-DD'), '0123456784', 'HOA', 'Đang học');
-    INSERT INTO SINHVIEN VALUES (NULL, 'Nguyễn Văn J', 'Nam', TO_DATE('2003-04-04', 'YYYY-MM-DD'), '0987654321', 'TOAN', 'Nghỉ học');
-    INSERT INTO SINHVIEN VALUES (NULL, 'Đinh Văn K', 'Nam', TO_DATE('2004-05-05', 'YYYY-MM-DD'), '0123456783', 'HOA', 'Bảo lưu');
-    INSERT INTO SINHVIEN VALUES (NULL, 'Lê Thị L', 'Nữ', TO_DATE('2005-06-06', 'YYYY-MM-DD'), '0123456785', 'LY', 'Đã tốt nghiệp');
+    INSERT INTO SINHVIEN VALUES (NULL, 'Nguyễn Văn G', 'Nam', TO_DATE('2000-01-01', 'YYYY-MM-DD'), 'TP HCM', '0123456789', 'TOAN', 'Đang học');
+    INSERT INTO SINHVIEN VALUES (NULL, 'Trần Văn H', 'Nam', TO_DATE('2001-02-02', 'YYYY-MM-DD'), 'TP HCM', '0987654322', 'HOA', 'Đang học');
+    INSERT INTO SINHVIEN VALUES (NULL, 'Nguyễn Thị I', 'Nữ', TO_DATE('2002-03-03', 'YYYY-MM-DD'), 'TP HCM', '0123456712', 'LY', 'Đang học');
+    INSERT INTO SINHVIEN VALUES (NULL, 'Nguyễn Văn K', 'Nam', TO_DATE('2003-04-04', 'YYYY-MM-DD'), 'TP HCM', '0987654323', 'TOAN', 'Đang học');
+    INSERT INTO SINHVIEN VALUES (NULL, 'Đinh Văn L', 'Nam', TO_DATE('2004-05-05', 'YYYY-MM-DD'), 'TP HCM', '0123456784', 'HOA', 'Đang học');
+    INSERT INTO SINHVIEN VALUES (NULL, 'Nguyễn Văn J', 'Nam', TO_DATE('2003-04-04', 'YYYY-MM-DD'), 'TP HCM', '0987654321', 'TOAN', 'Nghỉ học');
+    INSERT INTO SINHVIEN VALUES (NULL, 'Đinh Văn K', 'Nam', TO_DATE('2004-05-05', 'YYYY-MM-DD'), 'TP HCM', '0123456783', 'HOA', 'Bảo lưu');
+    INSERT INTO SINHVIEN VALUES (NULL, 'Lê Thị L', 'Nữ', TO_DATE('2005-06-06', 'YYYY-MM-DD'), 'TP HCM', '0123456785', 'LY', 'Đã tốt nghiệp');
     COMMIT;
 
     -- Insert dữ liệu vào bảng HOCPHAN
@@ -176,6 +182,7 @@ BEGIN
             INSERT INTO MOMON (MAHP, MAGV, HK, NAM) VALUES (hp.MAHP, gv.MANV, TO_NUMBER(SUBSTR(hp.MAHP, -1)), 2024);
         END LOOP;
     END LOOP;
+    COMMIT;
 
     -- Insert dữ liệu vào bảng DANGKY
     FOR sv IN (SELECT * FROM SINHVIEN) LOOP
@@ -194,6 +201,7 @@ BEGIN
             END IF;
         END LOOP;
     END LOOP;
+    COMMIT;
 END;
 /
 
