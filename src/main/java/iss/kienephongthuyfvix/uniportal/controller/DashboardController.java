@@ -146,14 +146,14 @@ public class DashboardController {
 
     @FXML
     void QuanLyUser(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/quan-ly-user.fxml"));
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/quan-ly-user.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void QuanLyRole(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/quan-ly-role.fxml"));
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/quan-ly-role.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }

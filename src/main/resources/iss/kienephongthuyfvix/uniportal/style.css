@@ -39,10 +39,9 @@
 }
 
 .white-green-button {
-    -fx-background-color: white;
-    -fx-border-color: #71D9B6;
-    -fx-text-fill: #71D9B6;
-    -fx-border-radius: 3px;
+    -fx-background-color: #71D9B6;
+    -fx-text-fill: white;
+    -fx-border-radius: 10px;
 }
 
 .custom-combobox {
@@ -78,7 +77,7 @@
     -fx-text-fill: -fx-text-base-color !important;
     -fx-border-color: transparent !important;
     -fx-effect: none !important;
-}1
+}
 
 .button
 {

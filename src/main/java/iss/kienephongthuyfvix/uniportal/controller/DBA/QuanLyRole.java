@@ -1,4 +1,4 @@
-package iss.kienephongthuyfvix.uniportal.controller;
+package iss.kienephongthuyfvix.uniportal.controller.DBA;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

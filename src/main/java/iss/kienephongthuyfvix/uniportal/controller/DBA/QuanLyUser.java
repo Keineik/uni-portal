@@ -1,4 +1,4 @@
-package iss.kienephongthuyfvix.uniportal.controller;
+package iss.kienephongthuyfvix.uniportal.controller.DBA;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -166,7 +166,7 @@ public class QuanLyUser {
 
     private void openCreateUserDialog() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/create-user.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/create-user.fxml"));
             Parent root = loader.load();
 
             TextField userIdField = (TextField) root.lookup("#userIdField");
@@ -229,7 +229,7 @@ public class QuanLyUser {
 
     private void openEditUserDialog(User user) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/edit-user.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/edit-user.fxml"));
             Parent root = loader.load();
 
             TextField userIdField = (TextField) root.lookup("#userIdField");
