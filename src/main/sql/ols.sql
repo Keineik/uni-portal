@@ -51,6 +51,7 @@ BEGIN
     );
 END;
 /
+EXEC SA_SYSDBA.ENABLE_POLICY ('OLS_THONGBAO');
 
 -- a) Tạo Levels cho các cấp bậc
 BEGIN
@@ -138,7 +139,6 @@ END;
 
 -- Áp dụng chính sách OLS vào bảng THONGBAO
 BEGIN
-    -- Apply policy to the THONGBAO table
     SA_POLICY_ADMIN.APPLY_TABLE_POLICY(
         policy_name => 'OLS_THONGBAO',
         schema_name => 'QLDAIHOC',
@@ -157,8 +157,8 @@ AS
 BEGIN
     -- Gán nhãn cho trưởng các đơn vị
     FOR trgdv_rec IN (SELECT nv.MANV, dv.MADV, nv.COSO
-                     FROM NHANVIEN nv 
-                     JOIN DONVI dv ON nv.MANV = dv.TRGDV) LOOP
+                     FROM QLDAIHOC.NHANVIEN nv 
+                     JOIN QLDAIHOC.DONVI dv ON nv.MANV = dv.TRGDV) LOOP
         DECLARE
             v_linhvuc VARCHAR2(10);
         BEGIN
@@ -194,8 +194,8 @@ BEGIN
     
     -- Gán nhãn cho nhân viên thường
     FOR nv_rec IN (SELECT MANV, MADV, COSO, VAITRO 
-                  FROM NHANVIEN 
-                  WHERE MANV NOT IN (SELECT TRGDV FROM DONVI WHERE TRGDV IS NOT NULL)) LOOP
+                  FROM QLDAIHOC.NHANVIEN 
+                  WHERE MANV NOT IN (SELECT TRGDV FROM QLDAIHOC.DONVI WHERE TRGDV IS NOT NULL)) LOOP
         DECLARE
             v_linhvuc VARCHAR2(10);
             v_read_label VARCHAR2(100);
@@ -243,7 +243,7 @@ BEGIN
     END LOOP;
     
     -- Gán nhãn cho sinh viên
-    FOR sv_rec IN (SELECT MASV, KHOA, COSO FROM SINHVIEN) LOOP
+    FOR sv_rec IN (SELECT MASV, KHOA, COSO FROM QLDAIHOC.SINHVIEN) LOOP
         DECLARE
             v_linhvuc VARCHAR2(10);
             v_read_label VARCHAR2(100);
@@ -338,18 +338,17 @@ BEGIN
     
     -- Chuyển đổi tên dài của lĩnh vực thành tên ngắn
     -- Chuyển hết xuống viết thường
-    p_linhvuc_name := LOWER(p_linhvuc_name);
     v_linhvuc := '';
-    IF INSTR(p_linhvuc_name, 'toán') > 0 THEN
+    IF INSTR(LOWER(p_linhvuc_name), 'toán') > 0 THEN
         v_linhvuc := v_linhvuc || 'TOAN,'; 
     END IF;
-    IF INSTR(p_linhvuc_name, 'lý') > 0 THEN
+    IF INSTR(LOWER(p_linhvuc_name), 'lý') > 0 THEN
         v_linhvuc := v_linhvuc || 'LY,';
     END IF;
-    IF INSTR(p_linhvuc_name, 'hóa') > 0 THEN
+    IF INSTR(LOWER(p_linhvuc_name), 'hóa') > 0 THEN
         v_linhvuc := v_linhvuc || 'HOA,';
     END IF;
-    IF INSTR(p_linhvuc_name, 'hành chính') > 0 THEN
+    IF INSTR(LOWER(p_linhvuc_name), 'hành chính') > 0 THEN
         v_linhvuc := v_linhvuc || 'HC,';
     END IF;
     -- Bỏ dấu phẩy cuối nếu có
