@@ -9,7 +9,7 @@ import java.util.List;
 public class DangKyDAO {
     public List<DangKy> getAllDangKyWithHocPhanDetails() throws SQLException {
         List<DangKy> dangKyList = new ArrayList<>();
-        String query = "SELECT DANGKY.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
+        String query = "SELECT DANGKY.*, MOMON.HK, MOMON.NAM, HOCPHAN.* " +
                 "FROM DANGKY JOIN MOMON ON DANGKY.MAMM = MOMON.MAMM" +
                 " JOIN HOCPHAN ON MOMON.MAHP = HOCPHAN.MAHP";
 
@@ -61,5 +61,25 @@ public class DangKyDAO {
             pstmt.setInt(2, maMM);
             pstmt.executeUpdate();
         }
+    }
+
+    public List<DangKy> getKetQua(String maSV) throws SQLException {
+        List<DangKy> dangKyList = new ArrayList<>();
+        String query = "SELECT DANGKY.*, MOMON.HK, MOMON.NAM, HOCPHAN.* " +
+                "FROM DANGKY JOIN MOMON ON DANGKY.MAMM = MOMON.MAMM " +
+                "JOIN HOCPHAN ON MOMON.MAHP = HOCPHAN.MAHP " +
+                "WHERE DANGKY.DIEMTK IS NOT NULL AND DANGKY.MASV = ?";
+
+        try (Connection conn = Database.getConnection()) {
+
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, maSV);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                dangKyList.add(DangKy.fromResultSet(rs));
+            }
+        }
+        return dangKyList;
     }
 }

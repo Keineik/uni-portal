@@ -1,14 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="iss.kienephongthuyfvix.uniportal.controller.SV.KetQuaHT"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #f9fafb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.SV.KetQuaHT">
+    <top>
+        <AnchorPane prefHeight="87.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label layoutX="19.0" layoutY="11.0" text="Kết quả học tập">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+    </top>
+    <right>
+        <AnchorPane prefHeight="633.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+            <children>
+                <AnchorPane layoutX="22.0" layoutY="6.0" prefHeight="610.0" prefWidth="1034.0" style="-fx-background-color: WHITE; -fx-background-radius: 10px; -fx-border-color: transparent;" styleClass="custom-table-view" stylesheets="@../style.css">
+                    <children>
+                        <TableView fx:id="ketquaListView" layoutX="10.0" layoutY="61.0" prefHeight="540.0" prefWidth="1014.0">
+                            <columns>
+                        <TableColumn fx:id="hkColumn" prefWidth="145.60000228881836" text="Học kì" />
+                                <TableColumn fx:id="mahpColumn" editable="false" prefWidth="140.8000030517578" text="Mã học phần" />
+                                <TableColumn fx:id="tenhpColumn" editable="false" minWidth="0.0" prefWidth="194.39996337890625" text="Tên học phần" />
+                                <TableColumn fx:id="sotcColumn" editable="false" minWidth="0.0" prefWidth="72.800048828125" text="Số TC" />
+                                <TableColumn fx:id="diemthColumn" editable="false" prefWidth="116.79998779296875" text="Điểm thực hành" />
+                                <TableColumn fx:id="diemqtColumn" editable="false" prefWidth="119.99993896484375" sortable="false" text="Điểm quá trình" />
+                                <TableColumn fx:id="diemckColumn" prefWidth="99.2000732421875" text="Điểm cuối kì" />
+                        <TableColumn fx:id="diemtkColumn" prefWidth="103.199951171875" text="Điểm tống kết" />
+                            </columns>
+                        </TableView>
+                  <ComboBox fx:id="hkCombo" layoutX="10.0" layoutY="16.0" prefWidth="150.0" style="-fx-background-color: #DADADA;" />
+                  <TextField fx:id="diemtbField" editable="false" layoutX="899.0" layoutY="16.0" prefHeight="30.0" prefWidth="126.0" styleClass="diem">
+                     <cursor>
+                        <Cursor fx:constant="TEXT" />
+                     </cursor>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </right>
+</BorderPane>

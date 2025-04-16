@@ -84,11 +84,11 @@ public class MoMonDAO {
     }
 
     public List<MoMon> getAllDaDangKy(String maSV) throws SQLException {
-        String query = "SELECT DANGKY.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
+        String query = "SELECT MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
                 "FROM DANGKY JOIN MOMON ON DANGKY.MAMM = MOMON.MAMM" +
                 " JOIN HOCPHAN ON MOMON.MAHP = HOCPHAN.MAHP" +
                 " WHERE DANGKY.MASV = ?";
-        List<MoMon> dangKyList = new ArrayList<>();
+        List<MoMon> monDDKList = new ArrayList<>();
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -97,18 +97,21 @@ public class MoMonDAO {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                dangKyList.add(MoMon.fromResultSet(rs));
+                monDDKList.add(MoMon.fromResultSet(rs));
             }
         }
-        return dangKyList;
+        return monDDKList;
     }
 
     public List<MoMon> getAllChuaDangKy(String maSV) throws SQLException {
-        String query = "SELECT DANGKY.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
-                "FROM DANGKY JOIN MOMON ON DANGKY.MAMM = MOMON.MAMM" +
-                " JOIN HOCPHAN ON MOMON.MAHP = HOCPHAN.MAHP" +
-                " WHERE DANGKY.MASV = ?";
-        List<MoMon> dangKyList = new ArrayList<>();
+        String query = "SELECT MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
+                        "FROM HOCPHAN JOIN MOMON ON MOMON.MAHP = HOCPHAN.MAHP " +
+                        "MINUS " +
+                        "SELECT MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
+                        "FROM DANGKY JOIN MOMON ON DANGKY.MAMM = MOMON.MAMM " +
+                        "JOIN HOCPHAN ON MOMON.MAHP = HOCPHAN.MAHP " +
+                        "WHERE DANGKY.MASV = ?";
+        List<MoMon> monCDKList = new ArrayList<>();
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -117,9 +120,9 @@ public class MoMonDAO {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                dangKyList.add(MoMon.fromResultSet(rs));
+                monCDKList.add(MoMon.fromResultSet(rs));
             }
         }
-        return dangKyList;
+        return monCDKList;
     }
 }

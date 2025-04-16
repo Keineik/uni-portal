@@ -23,6 +23,23 @@ public class SinhVienDAO {
         return sinhVienList;
     }
 
+    public SinhVien getSinhVienByMaSV(String maSV) throws SQLException {
+        String query = "SELECT * FROM SINHVIEN WHERE MASV = ?";
+        SinhVien sinhVien = null;
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, maSV);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                sinhVien = SinhVien.fromResultSet(rs);
+            }
+        }
+        return sinhVien;
+    }
+
     public void insertSinhVien(SinhVien sinhVien) throws SQLException {
         String query = "INSERT INTO SINHVIEN VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -77,6 +94,19 @@ public class SinhVienDAO {
 
             pstmt.setString(1, tinhTrang);
             pstmt.setString(2, maSV);
+            pstmt.executeUpdate();
+        }
+    }
+
+    public void updateDiaChiSdt(String maSV, String diaChi, String sdt) throws SQLException {
+        String query = "UPDATE SINHVIEN SET DCHI = ?, DT = ? WHERE MASV = ?";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, diaChi);
+            pstmt.setString(2, sdt);
+            pstmt.setString(3, maSV);
             pstmt.executeUpdate();
         }
     }

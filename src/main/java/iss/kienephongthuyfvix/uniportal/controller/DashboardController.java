@@ -1,6 +1,8 @@
 package iss.kienephongthuyfvix.uniportal.controller;
 
 import com.jfoenix.controls.JFXButton;
+import iss.kienephongthuyfvix.uniportal.controller.SV.DangKyHP;
+import iss.kienephongthuyfvix.uniportal.controller.SV.KetQuaHT;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,8 +29,16 @@ public class DashboardController {
         // Initialization code if needed
     }
 
-    public void initializeRole(String role) {
+    public void initializeRole(String role) throws IOException {
         addSidebarButtons(role);
+        if (role == "Sinh viên") {
+            handleButtonAction("#ThongTinSinhVien", sidebarButtons.getFirst());
+        }
+        else if (role == "DBA") {
+        }
+        else {
+            handleButtonAction("#ThongTinNhanVien", sidebarButtons.getFirst());
+        }
     }
 
     private void addSidebarButtons(String employeeType) {
@@ -128,10 +138,10 @@ public class DashboardController {
                 ThongTinSinhVien(new ActionEvent());
                 break;
             case "#DangKyHP":
-                // Handle DangKyHP action
+                DangKyHP(new ActionEvent());
                 break;
             case "#KetQuaHT":
-                // Handle KetQuaHT action
+                KetQuaHT(new ActionEvent());
                 break;
             // Add more cases for other actions
         }
@@ -203,6 +213,20 @@ public class DashboardController {
     @FXML
     void ThongTinSinhVien(ActionEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/thong-tin.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void DangKyHP(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/dang-ky-hp.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void KetQuaHT(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/ket-qua-ht.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }

@@ -1,8 +1,6 @@
 package iss.kienephongthuyfvix.uniportal.model;
 
 import javafx.beans.property.*;
-
-import javax.lang.model.type.NullType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -14,13 +12,17 @@ public class DangKy {
     private final DoubleProperty diemThi;
     private final DoubleProperty diemTK;
 
+    private final IntegerProperty hk;
+    private final IntegerProperty nam;
+
+    private final StringProperty maHP;
     private final StringProperty tenHP;
     private final IntegerProperty soTC;
     private final IntegerProperty stLT;
     private final IntegerProperty stTH;
 
     public DangKy(String maSV, int maMM, Double diemTH, Double diemQT, Double diemThi, Double diemTK,
-                  String tenHP, int soTC, int stLT, int stTH) {
+                  int hk, int nam, String maHP, String tenHP, int soTC, int stLT, int stTH) {
         this.maSV = new SimpleStringProperty(maSV);
         this.maMM = new SimpleIntegerProperty(maMM);
         this.diemTH = new SimpleDoubleProperty(diemTH != null ? diemTH : 0);
@@ -28,7 +30,10 @@ public class DangKy {
         this.diemThi = new SimpleDoubleProperty(diemThi != null ? diemThi : 0);
         this.diemTK = new SimpleDoubleProperty(diemTK != null ? diemTK : 0);
 
-        // Initialize new fields
+        this.hk = new SimpleIntegerProperty(hk);
+        this.nam = new SimpleIntegerProperty(nam);
+        this.maHP = new SimpleStringProperty(maHP);
+
         this.tenHP = new SimpleStringProperty(tenHP);
         this.soTC = new SimpleIntegerProperty(soTC);
         this.stLT = new SimpleIntegerProperty(stLT);
@@ -43,6 +48,9 @@ public class DangKy {
                 rs.getObject("DIEMQT", Double.class),
                 rs.getObject("DIEMTHI", Double.class),
                 rs.getObject("DIEMTK", Double.class),
+                rs.getInt("HK"),
+                rs.getInt("NAM"),
+                rs.getString("MAHP"),
                 rs.getString("TENHP"),
                 rs.getInt("SOTC"),
                 rs.getInt("STLT"),
@@ -56,6 +64,9 @@ public class DangKy {
     public DoubleProperty diemQTProperty() { return diemQT; }
     public DoubleProperty diemThiProperty() { return diemThi; }
     public DoubleProperty diemTKProperty() { return diemTK; }
+    public IntegerProperty hkProperty() { return hk; }
+    public IntegerProperty namProperty() { return nam; }
+    public StringProperty maHPProperty() { return maHP; }
     public StringProperty tenHPProperty() { return tenHP; }
     public IntegerProperty soTCProperty() { return soTC; }
     public IntegerProperty stLTProperty() { return stLT; }
@@ -67,6 +78,9 @@ public class DangKy {
     public double getDiemQT() { return diemQT.get(); }
     public double getDiemThi() { return diemThi.get(); }
     public double getDiemTK() { return diemTK.get(); }
+    public int getHk() { return hk.get(); }
+    public int getNam() { return nam.get(); }
+    public String getMaHP() { return maHP.get(); }
     public String getTenHP() { return tenHP.get(); }
     public int getSoTC() { return soTC.get(); }
     public int getStLT() { return stLT.get(); }

@@ -21,7 +21,7 @@
             </children>
         </AnchorPane>
     </top>
-    <bottom>
+   <right>
         <AnchorPane prefHeight="633.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
             <children>
                 <AnchorPane layoutX="22.0" layoutY="6.0" prefHeight="619.0" prefWidth="1034.0" style="-fx-background-color: WHITE; -fx-background-radius: 10px; -fx-border-color: transparent;" styleClass="custom-table-view" stylesheets="@../style.css">
@@ -34,18 +34,18 @@
                                 <TableColumn fx:id="sotcColumn" editable="false" minWidth="0.0" prefWidth="130.39999389648438" text="Số tín chỉ" />
                                 <TableColumn fx:id="stltColumn" editable="false" prefWidth="129.60003662109375" text="Số tiết lý thuyết" />
                                 <TableColumn fx:id="stthColumn" editable="false" prefWidth="136.00006103515625" sortable="false" text="Số tiết thực hành" />
-                                <TableColumn fx:id="actionsColumn" prefWidth="149.5999755859375" text="Thao tác" />
+                                <TableColumn fx:id="actionsColumn" prefWidth="124.800048828125" text="Thao tác" />
                             </columns>
                         </TableView>
                   <TableView fx:id="momonDKListView" layoutX="10.0" layoutY="24.0" prefHeight="194.0" prefWidth="1014.0">
                      <columns>
-                        <TableColumn fx:id="masvDKColumn" editable="false" prefWidth="147.99999618530273" text="Mã mở môn" />
+                        <TableColumn fx:id="mammDKColumn" editable="false" prefWidth="147.99999618530273" text="Mã mở môn" />
                         <TableColumn fx:id="mahpDKColumn" editable="false" prefWidth="140.80003356933594" text="Mã học phần" />
                         <TableColumn fx:id="tenhpDKColumn" editable="false" minWidth="0.0" prefWidth="184.0" text="Tên học phần" />
                         <TableColumn fx:id="sotcDKColumn" editable="false" minWidth="0.0" prefWidth="130.39999389648438" text="Số tín chỉ" />
                         <TableColumn fx:id="stltDKColumn" editable="false" prefWidth="129.60003662109375" text="Số tiết lý thuyết" />
                         <TableColumn fx:id="stthDKColumn" editable="false" prefWidth="136.00006103515625" sortable="false" text="Số tiết thực hành" />
-                        <TableColumn fx:id="actionsDKColumn" prefWidth="149.5999755859375" text="Thao tác" />
+                        <TableColumn fx:id="actionsDKColumn" prefWidth="124.7999267578125" text="Thao tác" />
                      </columns>
                   </TableView>
                   <Label layoutX="14.0" layoutY="4.0" text="Học phần đã đăng ký" />
@@ -54,5 +54,5 @@
                 </AnchorPane>
             </children>
         </AnchorPane>
-    </bottom>
+   </right>
 </BorderPane>

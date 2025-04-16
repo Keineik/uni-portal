@@ -1,57 +1,164 @@
 package iss.kienephongthuyfvix.uniportal.controller.SV;
 
+import iss.kienephongthuyfvix.uniportal.dao.DangKyDAO;
+import iss.kienephongthuyfvix.uniportal.dao.MoMonDAO;
+import iss.kienephongthuyfvix.uniportal.model.MoMon;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.paint.Color;
+import org.kordamp.ikonli.javafx.FontIcon;
+
+import java.sql.SQLException;
 
 public class DangKyHP {
 
     @FXML
-    private TableColumn<?, ?> actionsColumn;
+    private TableView<MoMon> momonDKListView;
 
     @FXML
-    private TableColumn<?, ?> actionsDKColumn;
+    private TableView<MoMon> momonListView;
 
     @FXML
-    private TableColumn<?, ?> mahpColumn;
+    private TableColumn<MoMon, String> mahpDKColumn, tenhpDKColumn;
 
     @FXML
-    private TableColumn<?, ?> mahpDKColumn;
+    private TableColumn<MoMon, Integer> mammDKColumn, mammColumn;
 
     @FXML
-    private TableColumn<?, ?> mammColumn;
+    private TableColumn<MoMon, String> mahpColumn, tenhpColumn;
 
     @FXML
-    private TableColumn<?, ?> masvDKColumn;
+    private TableColumn<MoMon, Integer> stltColumn, stthColumn, sotcColumn;
 
     @FXML
-    private TableView<?> momonDKListView;
+    private TableColumn<MoMon, Integer> stltDKColumn, stthDKColumn, sotcDKColumn;
 
     @FXML
-    private TableView<?> momonListView;
+    private TableColumn<MoMon, Void> actionsDKColumn, actionsColumn;
+
+    private final ObservableList<MoMon> daDangKyData = FXCollections.observableArrayList();
+    private final ObservableList<MoMon> chuaDangKyData = FXCollections.observableArrayList();
+    private final MoMonDAO moMonDAO = new MoMonDAO();
+    private final DangKyDAO dangKyDAO = new DangKyDAO();
+    private final String maSV = "SV00000001"; // TODO: Please change this
 
     @FXML
-    private TableColumn<?, ?> sotcColumn;
+    public void initialize() {
+        // Initialize columns for DaDangKy
+        mammDKColumn.setCellValueFactory(data -> data.getValue().mammProperty().asObject());
+        mahpDKColumn.setCellValueFactory(data -> data.getValue().mahpProperty());
+        tenhpDKColumn.setCellValueFactory(data -> data.getValue().tenHPProperty());
+        sotcDKColumn.setCellValueFactory(data -> data.getValue().soTCProperty().asObject());
+        stltDKColumn.setCellValueFactory(data -> data.getValue().stLTProperty().asObject());
+        stthDKColumn.setCellValueFactory(data -> data.getValue().stTHProperty().asObject());
 
-    @FXML
-    private TableColumn<?, ?> sotcDKColumn;
+        // Initialize columns for ChuaDangKy
+        mammColumn.setCellValueFactory(data -> data.getValue().mammProperty().asObject());
+        mahpColumn.setCellValueFactory(data -> data.getValue().mahpProperty());
+        tenhpColumn.setCellValueFactory(data -> data.getValue().tenHPProperty());
+        sotcColumn.setCellValueFactory(data -> data.getValue().soTCProperty().asObject());
+        stltColumn.setCellValueFactory(data -> data.getValue().stLTProperty().asObject());
+        stthColumn.setCellValueFactory(data -> data.getValue().stTHProperty().asObject());
 
-    @FXML
-    private TableColumn<?, ?> stltColumn;
+        loadData();
 
-    @FXML
-    private TableColumn<?, ?> stltDKColumn;
+        addActionButtons();
+    }
 
-    @FXML
-    private TableColumn<?, ?> stthColumn;
+    private void loadData() {
+        try {
+            daDangKyData.setAll(moMonDAO.getAllDaDangKy(maSV));
+            chuaDangKyData.setAll(moMonDAO.getAllChuaDangKy(maSV));
 
-    @FXML
-    private TableColumn<?, ?> stthDKColumn;
+            momonDKListView.setItems(daDangKyData);
+            momonListView.setItems(chuaDangKyData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Database Error", "Unable to load data: " + e.getMessage());
+        }
+    }
 
-    @FXML
-    private TableColumn<?, ?> tenhpColumn;
+    private void addActionButtons() {
+        actionsDKColumn.setCellFactory(col -> new TableCell<>() {
+            private final Button removeButton = new Button();
 
-    @FXML
-    private TableColumn<?, ?> tenhpDKColumn;
+            {
+                FontIcon removeIcon = new FontIcon("fas-trash");
+                removeIcon.setIconColor(Color.RED);
+                removeIcon.setIconSize(14);
+                removeButton.setGraphic(removeIcon);
+                removeButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+                removeButton.setOnAction(event -> {
+                    MoMon moMon = getTableView().getItems().get(getIndex());
+                    removeDangKy(moMon);
+                });
+            }
 
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(removeButton);
+                }
+            }
+        });
+
+        actionsColumn.setCellFactory(col -> new TableCell<>() {
+            private final Button addButton = new Button();
+
+            {
+                FontIcon addIcon = new FontIcon("fas-plus");
+                addIcon.setIconColor(Color.GREEN);
+                addIcon.setIconSize(14);
+                addButton.setGraphic(addIcon);
+                addButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+                addButton.setOnAction(event -> {
+                    MoMon moMon = getTableView().getItems().get(getIndex());
+                    addDangKy(moMon);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(addButton);
+                }
+            }
+        });
+    }
+
+    private void removeDangKy(MoMon moMon) {
+        try {
+            dangKyDAO.deleteDangKy(maSV, moMon.getMamm());
+            loadData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Database Error", "Unable to remove registration: " + e.getMessage());
+        }
+    }
+
+    private void addDangKy(MoMon moMon) {
+        try {
+            dangKyDAO.insertDangKy(maSV, moMon.getMamm());
+            loadData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Database Error", "Unable to add registration: " + e.getMessage());
+        }
+    }
+
+    private void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

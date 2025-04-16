@@ -122,3 +122,10 @@
     -fx-border-radius: 5px;
     -fx-padding: 10px;
 }
+
+.diem {
+    -fx-background-color: #18c27b;
+    -fx-text-fill: white;
+    -fx-border-radius: 5px;
+    -fx-font-weight: 100;
+}
