@@ -35,13 +35,13 @@
                         </FontIcon>
                         <TableView fx:id="tableView" layoutX="10.0" layoutY="74.0" prefHeight="515.0" prefWidth="1014.0">
                             <columns>
-                                <TableColumn fx:id="maSVColumn" editable="false" prefWidth="96.79998779296875" text="Mã sinh viên" />
-                                <TableColumn fx:id="hoTenColumn" editable="false" prefWidth="144.79995727539062" text="Họ tên" />
-                                <TableColumn fx:id="phaiColumn" editable="false" minWidth="0.0" prefWidth="47.199951171875" text="Phái" />
-                                <TableColumn fx:id="ngaySinhColumn" editable="false" minWidth="0.0" prefWidth="122.39996337890625" text="Ngày sinh" />
-                                <TableColumn fx:id="diaChiColumn" editable="false" prefWidth="192.79998779296875" text="Địa chỉ" />
-                                <TableColumn fx:id="dienThoaiColumn" editable="false" prefWidth="144.800048828125" sortable="false" text="Điện thoại" />
-                        <TableColumn fx:id="khoaColumn" prefWidth="130.39996337890625" text="Khoa" />
+                                <TableColumn fx:id="maSVColumn" editable="false" prefWidth="113.60000610351562" text="Mã sinh viên" />
+                                <TableColumn fx:id="hoTenColumn" editable="false" prefWidth="143.99993896484375" text="Họ tên" />
+                                <TableColumn fx:id="phaiColumn" editable="false" minWidth="0.0" prefWidth="54.4000244140625" text="Phái" />
+                                <TableColumn fx:id="ngaySinhColumn" editable="false" minWidth="0.0" prefWidth="116.0" text="Ngày sinh" />
+                                <TableColumn fx:id="diaChiColumn" editable="false" prefWidth="148.79998779296875" text="Địa chỉ" />
+                                <TableColumn fx:id="dienThoaiColumn" editable="false" prefWidth="167.20001220703125" sortable="false" text="Điện thoại" />
+                        <TableColumn fx:id="khoaColumn" prefWidth="139.2000732421875" text="Khoa" />
                         <TableColumn fx:id="tinhTrangColumn" prefWidth="136.0" text="Tình trạng" />
                             </columns>
                         </TableView>

@@ -29,7 +29,7 @@ public class ThongTin {
         manvField.setText(nhanVien.getManv());
         hotenField.setText(nhanVien.getHoten());
         phaiField.setText(nhanVien.getPhai());
-        ngsinhField.setText(nhanVien.getNgsinh());
+        ngsinhField.setText(nhanVien.getNgsinh().toString());
         luongField.setText(String.valueOf(nhanVien.getLuong()));
         phucapField.setText(String.valueOf(nhanVien.getPhucap()));
         dtField.setText(nhanVien.getDt());
