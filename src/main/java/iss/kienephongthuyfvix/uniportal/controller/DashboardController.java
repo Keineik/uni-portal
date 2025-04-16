@@ -47,7 +47,9 @@ public class DashboardController {
                 break;
 
             case "Sinh viên":
-                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinSinhVien"));
+                sidebarButtons.add(createButton("Đăng ký học phần", "#DangKyHP"));
+                sidebarButtons.add(createButton("Kết quả học tập", "#KetQuaHT"));
                 break;
 
             case "Nhân viên Phòng Công tác Sinh viên":
@@ -122,6 +124,15 @@ public class DashboardController {
             case "#PDT_QLDK":
                 PDT_QLDK(new ActionEvent());
                 break;
+            case "#ThongTinSinhVien":
+                ThongTinSinhVien(new ActionEvent());
+                break;
+            case "#DangKyHP":
+                // Handle DangKyHP action
+                break;
+            case "#KetQuaHT":
+                // Handle KetQuaHT action
+                break;
             // Add more cases for other actions
         }
     }
@@ -185,6 +196,13 @@ public class DashboardController {
     @FXML
     void PDT_QLDK(ActionEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPDT/ql-dangky.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void ThongTinSinhVien(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/thong-tin.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }

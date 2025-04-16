@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #f9fafb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.SV.DangKyHP">
+    <top>
+        <AnchorPane prefHeight="87.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label layoutX="19.0" layoutY="11.0" text="Đăng ký học phần">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <TextField editable="false" layoutX="19.0" layoutY="44.0" promptText="Học kì 2 - Năm học 2025" style="-fx-background-color: transparent;" />
+            </children>
+        </AnchorPane>
+    </top>
+    <bottom>
+        <AnchorPane prefHeight="633.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+            <children>
+                <AnchorPane layoutX="22.0" layoutY="6.0" prefHeight="619.0" prefWidth="1034.0" style="-fx-background-color: WHITE; -fx-background-radius: 10px; -fx-border-color: transparent;" styleClass="custom-table-view" stylesheets="@../style.css">
+                    <children>
+                        <TableView fx:id="momonListView" layoutX="10.0" layoutY="253.0" prefHeight="358.0" prefWidth="1014.0">
+                            <columns>
+                                <TableColumn fx:id="mammColumn" editable="false" prefWidth="147.99999618530273" text="Mã mở môn" />
+                                <TableColumn fx:id="mahpColumn" editable="false" prefWidth="140.80003356933594" text="Mã học phần" />
+                                <TableColumn fx:id="tenhpColumn" editable="false" minWidth="0.0" prefWidth="184.0" text="Tên học phần" />
+                                <TableColumn fx:id="sotcColumn" editable="false" minWidth="0.0" prefWidth="130.39999389648438" text="Số tín chỉ" />
+                                <TableColumn fx:id="stltColumn" editable="false" prefWidth="129.60003662109375" text="Số tiết lý thuyết" />
+                                <TableColumn fx:id="stthColumn" editable="false" prefWidth="136.00006103515625" sortable="false" text="Số tiết thực hành" />
+                                <TableColumn fx:id="actionsColumn" prefWidth="149.5999755859375" text="Thao tác" />
+                            </columns>
+                        </TableView>
+                  <TableView fx:id="momonDKListView" layoutX="10.0" layoutY="24.0" prefHeight="194.0" prefWidth="1014.0">
+                     <columns>
+                        <TableColumn fx:id="masvDKColumn" editable="false" prefWidth="147.99999618530273" text="Mã mở môn" />
+                        <TableColumn fx:id="mahpDKColumn" editable="false" prefWidth="140.80003356933594" text="Mã học phần" />
+                        <TableColumn fx:id="tenhpDKColumn" editable="false" minWidth="0.0" prefWidth="184.0" text="Tên học phần" />
+                        <TableColumn fx:id="sotcDKColumn" editable="false" minWidth="0.0" prefWidth="130.39999389648438" text="Số tín chỉ" />
+                        <TableColumn fx:id="stltDKColumn" editable="false" prefWidth="129.60003662109375" text="Số tiết lý thuyết" />
+                        <TableColumn fx:id="stthDKColumn" editable="false" prefWidth="136.00006103515625" sortable="false" text="Số tiết thực hành" />
+                        <TableColumn fx:id="actionsDKColumn" prefWidth="149.5999755859375" text="Thao tác" />
+                     </columns>
+                  </TableView>
+                  <Label layoutX="14.0" layoutY="4.0" text="Học phần đã đăng ký" />
+                  <Label layoutX="10.0" layoutY="233.0" text="Danh sách học phần" />
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </bottom>
+</BorderPane>

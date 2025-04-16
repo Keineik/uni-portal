@@ -98,7 +98,11 @@ public class MoMonDialog {
                         hocphanCombo.getValue().getMaHP(),
                         magvField.getText(),
                         Integer.parseInt(hkField.getText()),
-                        Integer.parseInt(namField.getText())
+                        Integer.parseInt(namField.getText()),
+                        "",
+                        0,
+                        0,
+                        0
                 );
                 moMonDAO.insertMoMon(moMon);
                 showInfoAlert("Success", "Môn học đã được thêm thành công!");
