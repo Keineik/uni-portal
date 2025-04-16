@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVPDT.QlMonhoc"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #f9fafb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVPDT.QLMonhoc">
+   <top>
+      <AnchorPane prefHeight="87.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="19.0" layoutY="11.0" text="Quản lý môn học">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField editable="false" layoutX="19.0" layoutY="44.0" promptText="Học kì 2 - Năm học 2025" style="-fx-background-color: transparent;" />
+         </children>
+      </AnchorPane>
+   </top>
+   <bottom>
+      <AnchorPane prefHeight="633.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane layoutX="22.0" layoutY="6.0" prefHeight="598.0" prefWidth="1034.0" style="-fx-background-color: WHITE; -fx-background-radius: 10px; -fx-border-color: transparent;" styleClass="custom-table-view" stylesheets="@../style.css">
+               <children>
+                  <Button layoutX="10.0" layoutY="14.0" mnemonicParsing="false" onAction="#themMonHoc" stylesheets="@../style.css" text="Thêm môn học" textFill="WHITE">
+                     <graphic>
+                        <FontIcon iconColor="WHITE" iconLiteral="fas-plus" />
+                     </graphic>
+                  </Button>
+                  <TextField fx:id="searchBar" layoutX="814.0" layoutY="13.0" prefHeight="30.0" prefWidth="205.0" promptText="Tìm kiếm..." />
+                  <FontIcon iconLiteral="fas-search" layoutX="794.0" layoutY="33.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </FontIcon>
+                  <TableView fx:id="moMonListView" layoutX="10.0" layoutY="74.0" prefHeight="515.0" prefWidth="1014.0">
+                    <columns>
+                      <TableColumn fx:id="maMMColumn" editable="false" prefWidth="147.99999618530273" text="Mã mở môn" />
+                      <TableColumn fx:id="maHPColumn" editable="false" prefWidth="175.1999969482422" text="Mã học phần" />
+                        <TableColumn fx:id="maGVColumn" editable="false" minWidth="0.0" prefWidth="187.199951171875" text="Mã giáo viên" />
+                        <TableColumn fx:id="hkColumn" editable="false" minWidth="0.0" prefWidth="163.20001220703125" text="Học kì" />
+                        <TableColumn fx:id="namColumn" editable="false" prefWidth="174.39996337890625" text="Năm" />
+                        <TableColumn fx:id="actionColumn" editable="false" prefWidth="172.00006103515625" sortable="false" text="Thao tác" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>

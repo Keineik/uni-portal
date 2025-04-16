@@ -29,16 +29,17 @@ public class LoginController {
     protected void handleLogin(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
-
-        if (username.isEmpty() || password.isEmpty()) {
-            showError("Username and password cannot be empty");
-            return;
-        }
-
-        try {
-            if (isValidCredentials(username, password)) {
-                loadDashboard("DBA");
-            }
+        loadDashboard("DBA");
+        //Database.initialize("system", "sa");
+//        if (username.isEmpty() || password.isEmpty()) {
+//            showError("Username and password cannot be empty");
+//            return;
+//        }
+//
+//        try {
+//            if (isValidCredentials(username, password)) {
+//
+//            }
             // Attempt database connection with provided credentials
 //            Connection conn = Database.getConnection(username, password);
 //
@@ -48,9 +49,9 @@ public class LoginController {
 //            } else {
 //                showError("Invalid username or password");
 //            }
-        } catch (Exception e) {
-            showError("Database connection error: " + e.getMessage());
-        }
+//        } catch (Exception e) {
+//            showError("Database connection error: " + e.getMessage());
+//        }
     }
 
     @FXML

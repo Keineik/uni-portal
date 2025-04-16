@@ -2,14 +2,15 @@ module iss.kienephongthuyfvix.hcmums {
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
-    requires java.sql;
     requires com.oracle.database.jdbc;
     requires static lombok;
-    requires org.slf4j;
     requires com.jfoenix;
     requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.fontawesome5;
+    requires com.zaxxer.hikari;
+    requires java.sql;
+    requires org.slf4j;
 
     opens iss.kienephongthuyfvix.uniportal.controller to javafx.fxml;
     exports iss.kienephongthuyfvix.uniportal;
@@ -21,4 +22,5 @@ module iss.kienephongthuyfvix.hcmums {
     opens iss.kienephongthuyfvix.uniportal.controller.GV to javafx.fxml;
     opens iss.kienephongthuyfvix.uniportal.controller.TDV to javafx.fxml;
     opens iss.kienephongthuyfvix.uniportal.controller.SV to javafx.fxml;
+    opens iss.kienephongthuyfvix.uniportal.controller.NVCB to javafx.fxml;
 }

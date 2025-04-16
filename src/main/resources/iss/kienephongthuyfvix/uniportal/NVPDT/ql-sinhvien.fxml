@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #f9fafb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVPDT.QLSinhvien">
+    <top>
+        <AnchorPane prefHeight="87.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label layoutX="19.0" layoutY="11.0" text="Quản lý sinh viên">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <TextField editable="false" layoutX="19.0" layoutY="44.0" promptText="Học kì 2 - Năm học 2025" style="-fx-background-color: transparent;" />
+            </children>
+        </AnchorPane>
+    </top>
+    <bottom>
+        <AnchorPane prefHeight="633.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+            <children>
+                <AnchorPane layoutX="22.0" layoutY="6.0" prefHeight="598.0" prefWidth="1034.0" style="-fx-background-color: WHITE; -fx-background-radius: 10px; -fx-border-color: transparent;" styleClass="custom-table-view" stylesheets="@../style.css">
+                    <children>
+                        <TextField fx:id="searchBar" layoutX="814.0" layoutY="13.0" prefHeight="30.0" prefWidth="205.0" promptText="Tìm kiếm..." />
+                        <FontIcon iconLiteral="fas-search" layoutX="794.0" layoutY="33.0">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </FontIcon>
+                        <TableView fx:id="tableView" layoutX="10.0" layoutY="74.0" prefHeight="515.0" prefWidth="1014.0">
+                            <columns>
+                                <TableColumn fx:id="maSVColumn" editable="false" prefWidth="96.79998779296875" text="Mã sinh viên" />
+                                <TableColumn fx:id="hoTenColumn" editable="false" prefWidth="144.79995727539062" text="Họ tên" />
+                                <TableColumn fx:id="phaiColumn" editable="false" minWidth="0.0" prefWidth="47.199951171875" text="Phái" />
+                                <TableColumn fx:id="ngaySinhColumn" editable="false" minWidth="0.0" prefWidth="122.39996337890625" text="Ngày sinh" />
+                                <TableColumn fx:id="diaChiColumn" editable="false" prefWidth="192.79998779296875" text="Địa chỉ" />
+                                <TableColumn fx:id="dienThoaiColumn" editable="false" prefWidth="144.800048828125" sortable="false" text="Điện thoại" />
+                        <TableColumn fx:id="khoaColumn" prefWidth="130.39996337890625" text="Khoa" />
+                        <TableColumn fx:id="tinhTrangColumn" prefWidth="136.0" text="Tình trạng" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </bottom>
+</BorderPane>

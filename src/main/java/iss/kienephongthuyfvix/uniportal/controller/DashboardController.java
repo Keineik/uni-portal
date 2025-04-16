@@ -42,44 +42,35 @@ public class DashboardController {
                 sidebarButtons.add(createButton("Phát thông báo", "#PhatTB"));
                 break;
 
-            case "Nhân viên cơ bản":
-                sidebarButtons.add(createButton("Inbox", "#Inbox"));
-                sidebarButtons.add(createButton("Someday", "#Someday"));
-                break;
-
             case "Trưởng đơn vị":
-                sidebarButtons.add(createButton("Inbox", "#Inbox"));
-                sidebarButtons.add(createButton("Someday", "#Someday"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 break;
 
             case "Sinh viên":
-                sidebarButtons.add(createButton("Inbox", "#Inbox"));
-                sidebarButtons.add(createButton("Someday", "#Someday"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 break;
 
             case "Nhân viên Phòng Công tác Sinh viên":
-                sidebarButtons.add(createButton("Inbox", "#Inbox"));
-                sidebarButtons.add(createButton("Someday", "#Someday"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 break;
 
             case "Nhân viên Phòng Khảo thí":
-                sidebarButtons.add(createButton("Inbox", "#Inbox"));
-                sidebarButtons.add(createButton("Someday", "#Someday"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 break;
 
             case "Nhân viên Phòng Tổ chức Hành chính":
-                sidebarButtons.add(createButton("Inbox", "#Inbox"));
-                sidebarButtons.add(createButton("Someday", "#Someday"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 break;
 
             case "Nhân viên Phòng Đào tạo":
-                sidebarButtons.add(createButton("Inbox", "#Inbox"));
-                sidebarButtons.add(createButton("Someday", "#Someday"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Quản lí sinh viên", "#PDT_QLSV"));
+                sidebarButtons.add(createButton("Quản lí môn học", "#PDT_QLMH"));
+                sidebarButtons.add(createButton("Quản lí đăng ký môn", "#PDT_QLDKM"));
                 break;
 
             case "Giảng viên":
-                sidebarButtons.add(createButton("Inbox", "#Inbox"));
-                sidebarButtons.add(createButton("Someday", "#Someday"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 break;
         }
         sidebarContainer.getChildren().addAll(sidebarButtons);
@@ -113,12 +104,19 @@ public class DashboardController {
             case "#QLRole":
                 QuanLyRole(new ActionEvent());
                 break;
+            case "#ThongTinNhanVien":
+                ThongTinNhanVien(new ActionEvent());
+                break;
+            case "#PDT_QLMH":
+                PDT_QLMH(new ActionEvent());
+                break;
+            case "#PDT_QLSV":
+                PDT_QLSV(new ActionEvent());
+                break;
             case "#PhatTB":
                 PhatThongBao(new ActionEvent());
-                break;
             case "#CapQuyen":
                 CapQuyen(new ActionEvent());
-                break;
             // Add more cases for other actions
         }
     }
@@ -127,21 +125,6 @@ public class DashboardController {
         for (JFXButton button : sidebarButtons) {
             button.setStyle("-fx-background-color: transparent; -fx-text-fill: WHITE");
         }
-    }
-
-    @FXML
-    void Important(ActionEvent event) {
-        // Implementation
-    }
-
-    @FXML
-    void Inbox(ActionEvent event) {
-        // Implementation
-    }
-
-    @FXML
-    void Someday(ActionEvent event) {
-        // Implementation
     }
 
     @FXML
@@ -168,6 +151,28 @@ public class DashboardController {
     @FXML
     void PhatThongBao(ActionEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/phat-thong-bao.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+
+    @FXML
+    void ThongTinNhanVien(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVCB/thong-tin.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void PDT_QLMH(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPDT/ql-monhoc.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void PDT_QLSV(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPDT/ql-sinhvien.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }

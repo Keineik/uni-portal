@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVCB.ThongTin">
+   <top>
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Thông Tin Nhân Viên" BorderPane.alignment="TOP_LEFT">
+         <BorderPane.margin>
+            <Insets left="10.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
+   <center>
+      <AnchorPane prefHeight="720.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+            <TextField fx:id="hotenField" editable="false" layoutX="434.0" layoutY="184.0" style="-fx-background-color: transparent;">
+            <font>
+               <Font name="System Bold" size="16.0" />
+            </font>
+         </TextField>
+          <VBox alignment="TOP_CENTER" spacing="20" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+         <GridPane layoutX="348.0" layoutY="306.0" prefHeight="228.0" prefWidth="534.0">
+           <columnConstraints>
+             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints maxHeight="37.8000244140625" minHeight="10.0" prefHeight="21.8000244140625" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="64.9999755859375" minHeight="10.0" prefHeight="39.199993896484365" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="66.8000244140625" minHeight="10.0" prefHeight="23.999999999999993" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="74.4" minHeight="10.0" prefHeight="39.2" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="72.60001220703126" minHeight="10.0" prefHeight="26.39999389648436" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="75.39999999999998" minHeight="10.0" prefHeight="38.800012207031244" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="75.39999999999998" minHeight="10.0" prefHeight="22.99998779296874" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="75.39999999999998" minHeight="10.0" prefHeight="39.800012207031244" vgrow="SOMETIMES" />
+           </rowConstraints>
+            <children>
+            
+                  <Label text="Số Điện Thoại" textFill="#00000099" GridPane.rowIndex="4" />
+                  <TextField fx:id="dtField" editable="false" style="-fx-background-color: transparent;" GridPane.rowIndex="5" />
+            
+                  <Label text="Đơn vị" textFill="#00000099" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="madvField" editable="false" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            
+                  <Label text="Phái" textFill="#00000099" GridPane.rowIndex="2" />
+                  <TextField fx:id="phaiField" editable="false" style="-fx-background-color: transparent;" GridPane.rowIndex="3" />
+            
+                  <Label text="Ngày Sinh" textFill="#00000099" GridPane.columnIndex="1" />
+                  <TextField fx:id="ngsinhField" editable="false" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            
+                  <Label text="Lương" textFill="#00000099" GridPane.rowIndex="6" />
+                  <TextField fx:id="luongField" editable="false" style="-fx-background-color: transparent;" GridPane.rowIndex="7" />
+            
+                  <Label text="Phụ Cấp" textFill="#00000099" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="phucapField" editable="false" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label text="Mã Nhân Viên" />
+                  <TextField fx:id="manvField" editable="false" style="-fx-background-color: transparent;" GridPane.rowIndex="1" />
+            </children>
+         </GridPane>
+            <TextField fx:id="vaitroField" editable="false" layoutX="464.0" layoutY="228.0" style="-fx-background-color: transparent;" />
+         <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="465.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../img/receptionist.png" />
+            </image>
+         </ImageView>
+      </AnchorPane>
+   </center>
+</BorderPane>
