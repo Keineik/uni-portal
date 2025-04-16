@@ -24,16 +24,15 @@ public class MoMonDAO {
     }
 
     public void insertMoMon(MoMon moMon) throws SQLException {
-        String query = "INSERT INTO MOMON (MAMM, MAHP, MAGV, HK, NAM) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO MOMON (MAHP, MAGV, HK, NAM) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setString(1, moMon.getMamm());
-            pstmt.setString(2, moMon.getMahp());
-            pstmt.setString(3, moMon.getMagv());
-            pstmt.setInt(4, moMon.getHk());
-            pstmt.setInt(5, moMon.getNam());
+            pstmt.setString(1, moMon.getMahp());
+            pstmt.setString(2, moMon.getMagv());
+            pstmt.setInt(3, moMon.getHk());
+            pstmt.setInt(4, moMon.getNam());
             pstmt.executeUpdate();
         }
     }
@@ -48,18 +47,18 @@ public class MoMonDAO {
             pstmt.setString(2, moMon.getMagv());
             pstmt.setInt(3, moMon.getHk());
             pstmt.setInt(4, moMon.getNam());
-            pstmt.setString(5, moMon.getMamm());
+            pstmt.setInt(5, moMon.getMamm());
             pstmt.executeUpdate();
         }
     }
 
-    public void deleteMoMon(String mamm) throws SQLException {
+    public void deleteMoMon(int mamm) throws SQLException {
         String query = "DELETE FROM MOMON WHERE MAMM = ?";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setString(1, mamm);
+            pstmt.setInt(1, mamm);
             pstmt.executeUpdate();
         }
     }

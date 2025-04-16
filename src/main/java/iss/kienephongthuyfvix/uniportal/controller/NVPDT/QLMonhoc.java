@@ -39,7 +39,7 @@ public class QLMonhoc {
     private TableColumn<MoMon, String> maHPColumn;
 
     @FXML
-    private TableColumn<MoMon, String> maMMColumn;
+    private TableColumn<MoMon, Integer> maMMColumn;
 
     @FXML
     private TableColumn<MoMon, Integer> namColumn;
@@ -54,7 +54,7 @@ public class QLMonhoc {
     @FXML
     public void initialize() {
         // Initialize table columns
-        maMMColumn.setCellValueFactory(data -> data.getValue().mammProperty());
+        maMMColumn.setCellValueFactory(data -> data.getValue().mammProperty().asObject());
         maHPColumn.setCellValueFactory(data -> data.getValue().mahpProperty());
         maGVColumn.setCellValueFactory(data -> data.getValue().magvProperty());
         hkColumn.setCellValueFactory(data -> data.getValue().hkProperty().asObject());
@@ -102,7 +102,7 @@ public class QLMonhoc {
 
         ObservableList<MoMon> filteredList = FXCollections.observableArrayList();
         for (MoMon moMon : moMonData) {
-            if (moMon.getMamm().toLowerCase().contains(keyword.toLowerCase()) ||
+            if (String.valueOf(moMon.getMamm()).contains(keyword.toLowerCase()) ||
                     moMon.getMahp().toLowerCase().contains(keyword.toLowerCase()) ||
                     moMon.getMagv().toLowerCase().contains(keyword.toLowerCase())) {
                 filteredList.add(moMon);

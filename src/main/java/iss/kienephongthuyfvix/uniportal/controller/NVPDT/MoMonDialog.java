@@ -1,8 +1,6 @@
 package iss.kienephongthuyfvix.uniportal.controller.NVPDT;
 
 import iss.kienephongthuyfvix.uniportal.model.MoMon;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -46,7 +44,7 @@ public class MoMonDialog {
         this.moMon = moMon;
 
         if (moMon != null) {
-            mammField.setText(moMon.getMamm());
+            mammField.setText(String.valueOf(moMon.getMamm()));
             mahpField.setText(moMon.getMahp());
             magvField.setText(moMon.getMagv());
             hkField.setText(String.valueOf(moMon.getHk()));
@@ -61,14 +59,14 @@ public class MoMonDialog {
     private void handleSave() {
         if (moMon == null) {
             moMon = new MoMon(
-                    mammField.getText(),
+                    Integer.parseInt(mammField.getText()),
                     mahpField.getText(),
                     magvField.getText(),
                     Integer.parseInt(hkField.getText()),
                     Integer.parseInt(namField.getText())
             );
         } else {
-            moMon.setMamm(mammField.getText());
+            moMon.setMamm(Integer.parseInt(mammField.getText()));
             moMon.setMahp(mahpField.getText());
             moMon.setMagv(magvField.getText());
             moMon.setHk(Integer.parseInt(hkField.getText()));

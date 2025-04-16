@@ -4,22 +4,19 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MoMon {
-    //MOMON (MAMM, MAHP, MAGV, HK, NAM)
-    private final StringProperty mamm;
+    private final IntegerProperty mamm;
     private final StringProperty mahp;
     private final StringProperty magv;
     private final IntegerProperty hk;
     private final IntegerProperty nam;
 
-    public MoMon(String mamm, String mahp, String magv, int hk, int nam) {
-        this.mamm = new SimpleStringProperty(mamm);
+    public MoMon(int mamm, String mahp, String magv, int hk, int nam) {
+        this.mamm = new SimpleIntegerProperty(mamm);
         this.mahp = new SimpleStringProperty(mahp);
         this.magv = new SimpleStringProperty(magv);
         this.hk = new SimpleIntegerProperty(hk);
@@ -28,7 +25,7 @@ public class MoMon {
 
     public static MoMon fromResultSet(ResultSet rs) throws SQLException {
         return new MoMon(
-                rs.getString("MAMM"),
+                rs.getInt("MAMM"),
                 rs.getString("MAHP"),
                 rs.getString("MAGV"),
                 rs.getInt("HK"),
@@ -36,7 +33,7 @@ public class MoMon {
         );
     }
 
-    public StringProperty mammProperty() {
+    public IntegerProperty mammProperty() {
         return mamm;
     }
 
@@ -56,7 +53,7 @@ public class MoMon {
         return nam;
     }
 
-    public String getMamm() {
+    public int getMamm() {
         return mamm.get();
     }
 
@@ -76,7 +73,7 @@ public class MoMon {
         return nam.get();
     }
 
-    public void setMamm(String mamm) {
+    public void setMamm(int mamm) {
         this.mamm.set(mamm);
     }
 

@@ -24,19 +24,18 @@ public class SinhVienDAO {
     }
 
     public void insertSinhVien(SinhVien sinhVien) throws SQLException {
-        String query = "INSERT INTO SINHVIEN (MASV, HOTEN, PHAI, NGSINH, DCHI, DT, KHOA, TINHTRANG) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO SINHVIEN VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setString(1, sinhVien.getMaSV());
-            pstmt.setString(2, sinhVien.getHoTen());
-            pstmt.setString(3, sinhVien.getPhai());
-            pstmt.setDate(4, new java.sql.Date(sinhVien.getNgaySinh().getTime()));
-            pstmt.setString(5, sinhVien.getDiaChi());
-            pstmt.setString(6, sinhVien.getDienThoai());
-            pstmt.setString(7, sinhVien.getKhoa());
-            pstmt.setString(8, sinhVien.getTinhTrang());
+            pstmt.setString(1, sinhVien.getHoTen());
+            pstmt.setString(2, sinhVien.getPhai());
+            pstmt.setDate(3, new java.sql.Date(sinhVien.getNgaySinh().getTime()));
+            pstmt.setString(4, sinhVien.getDiaChi());
+            pstmt.setString(5, sinhVien.getDienThoai());
+            pstmt.setString(6, sinhVien.getKhoa());
+            pstmt.setString(7, sinhVien.getTinhTrang());
             pstmt.executeUpdate();
         }
     }

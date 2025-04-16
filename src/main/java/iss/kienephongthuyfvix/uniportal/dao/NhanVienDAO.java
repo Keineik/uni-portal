@@ -23,20 +23,19 @@ public class NhanVienDAO {
     }
 
     public void insertNhanVien(NhanVien nhanVien) throws SQLException {
-        String query = "INSERT INTO NHANVIEN (MANV, HOTEN, PHAI, NGSINH, LUONG, PHUCAP, DT, VAITRO, MADV) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO NHANVIEN VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setString(1, nhanVien.getManv());
-            pstmt.setString(2, nhanVien.getHoten());
-            pstmt.setString(3, nhanVien.getPhai());
-            pstmt.setDate(4, nhanVien.getNgsinh());
-            pstmt.setDouble(5, nhanVien.getLuong());
-            pstmt.setDouble(6, nhanVien.getPhucap());
-            pstmt.setString(7, nhanVien.getDt());
-            pstmt.setString(8, nhanVien.getVaitro());
-            pstmt.setString(9, nhanVien.getMadv());
+            pstmt.setString(1, nhanVien.getHoten());
+            pstmt.setString(2, nhanVien.getPhai());
+            pstmt.setDate(3, nhanVien.getNgsinh());
+            pstmt.setDouble(4, nhanVien.getLuong());
+            pstmt.setDouble(5, nhanVien.getPhucap());
+            pstmt.setString(6, nhanVien.getDt());
+            pstmt.setString(7, nhanVien.getVaitro());
+            pstmt.setString(8, nhanVien.getMadv());
             pstmt.executeUpdate();
         }
     }
