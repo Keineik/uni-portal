@@ -86,7 +86,17 @@
 
 .button
 {
-    -fx-background-color:  #18c27b
+    -fx-background-color:  #18c27b;
+    -fx-text-fill: WHITE;
+    -fx-background-radius: 5px;
+}
+
+.cancel-button
+{
+    -fx-background-color:  transparent;
+    -fx-text-fill: #18c27b;
+    -fx-border-color: #18c27b;
+    -fx-border-radius: 5px;
 }
 
 .action-button {

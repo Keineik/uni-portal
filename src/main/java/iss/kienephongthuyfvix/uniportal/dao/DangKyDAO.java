@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DangKyDAO {
-    public List<DangKy> getAllDangKy() throws SQLException {
+    public List<DangKy> getAllDangKyWithHocPhanDetails() throws SQLException {
         List<DangKy> dangKyList = new ArrayList<>();
-        String query = "SELECT * FROM DANGKY";
+        String query = "SELECT DANGKY.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
+                "FROM DANGKY JOIN MOMON ON DANGKY.MAMM = MOMON.MAMM" +
+                " JOIN HOCPHAN ON MOMON.MAHP = HOCPHAN.MAHP";
 
         try (Connection conn = Database.getConnection();
              Statement stmt = conn.createStatement();
@@ -22,24 +24,20 @@ public class DangKyDAO {
         return dangKyList;
     }
 
-    public void insertDangKy(DangKy dangKy) throws SQLException {
-        String query = "INSERT INTO DANGKY (MASV, MAMM, DIEMTH, DIEMQT, DIEMTHI, DIEMTK) VALUES (?, ?, ?, ?, ?, ?)";
+    public void insertDangKy(String maSV, int maMM) throws SQLException {
+        String query = "INSERT INTO DANGKY (MASV, MAMM, DIEMTH, DIEMQT, DIEMTHI, DIEMTK) VALUES (?, ?, NULL, NULL, NULL, NULL)";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setString(1, dangKy.getMaSV());
-            pstmt.setInt(2, dangKy.getMaMM());
-            pstmt.setDouble(3, dangKy.getDiemTH());
-            pstmt.setDouble(4, dangKy.getDiemQT());
-            pstmt.setDouble(5, dangKy.getDiemThi());
-            pstmt.setDouble(6, dangKy.getDiemTK());
+            pstmt.setString(1, maSV);
+            pstmt.setInt(2, maMM);
             pstmt.executeUpdate();
         }
     }
 
-    public void updateDangKy(DangKy dangKy) throws SQLException {
-        String query = "UPDATE DANGKY SET DIEMTH = ?, DIEMQT = ?, DIEMTHI = ?, DIEMTK = ? WHERE MASV = ? AND MAMM = ?";
+    public void updateDiem(DangKy dangKy) throws SQLException {
+        String query = "UPDATE DANGKY SET DIEMTH = ?, DIEMQT = ?, DIEMTHI = ? WHERE MASV = ? AND MAMM = ?";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -47,9 +45,8 @@ public class DangKyDAO {
             pstmt.setDouble(1, dangKy.getDiemTH());
             pstmt.setDouble(2, dangKy.getDiemQT());
             pstmt.setDouble(3, dangKy.getDiemThi());
-            pstmt.setDouble(4, dangKy.getDiemTK());
-            pstmt.setString(5, dangKy.getMaSV());
-            pstmt.setInt(6, dangKy.getMaMM());
+            pstmt.setString(4, dangKy.getMaSV());
+            pstmt.setInt(5, dangKy.getMaMM());
             pstmt.executeUpdate();
         }
     }

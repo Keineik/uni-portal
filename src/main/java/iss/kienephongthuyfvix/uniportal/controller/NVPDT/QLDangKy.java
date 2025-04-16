@@ -1,7 +1,9 @@
 package iss.kienephongthuyfvix.uniportal.controller.NVPDT;
 
-import iss.kienephongthuyfvix.uniportal.dao.MoMonDAO;
-import iss.kienephongthuyfvix.uniportal.model.MoMon;
+import iss.kienephongthuyfvix.uniportal.dao.DangKyDAO;
+import iss.kienephongthuyfvix.uniportal.model.DangKy;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,47 +21,50 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class QLMonhoc {
+public class QLDangKy {
+
+    @FXML
+    private TableColumn<DangKy, Void> actionsColumn;
+
+    @FXML
+    private TableView<DangKy> dangKyListView;
+
+    @FXML
+    private TableColumn<DangKy, String> maHPColumn;
+
+    @FXML
+    private TableColumn<DangKy, String> maSVColumn;
 
     @FXML
     private TextField searchBar;
 
     @FXML
-    private TableColumn<MoMon, Void> actionColumn;
+    private TableColumn<DangKy, Integer> soTCColumn;
 
     @FXML
-    private TableColumn<MoMon, Integer> hkColumn;
+    private TableColumn<DangKy, Integer> stltColumn;
 
     @FXML
-    private TableColumn<MoMon, String> maGVColumn;
+    private TableColumn<DangKy, Integer> stthColumn;
 
     @FXML
-    private TableColumn<MoMon, String> maHPColumn;
+    private TableColumn<DangKy, String> tenHPColumn;
 
-    @FXML
-    private TableColumn<MoMon, Integer> maMMColumn;
-
-    @FXML
-    private TableColumn<MoMon, Integer> namColumn;
-
-    @FXML
-    private TableView<MoMon> moMonListView;
-
-    private final ObservableList<MoMon> moMonData = FXCollections.observableArrayList();
-
-    private final MoMonDAO moMonDAO = new MoMonDAO();
+    private final ObservableList<DangKy> dangKyData = FXCollections.observableArrayList();
+    private final DangKyDAO dangKyDAO = new DangKyDAO();
 
     @FXML
     public void initialize() {
         // Initialize table columns
-        maMMColumn.setCellValueFactory(data -> data.getValue().mammProperty().asObject());
-        maHPColumn.setCellValueFactory(data -> data.getValue().mahpProperty());
-        maGVColumn.setCellValueFactory(data -> data.getValue().magvProperty());
-        hkColumn.setCellValueFactory(data -> data.getValue().hkProperty().asObject());
-        namColumn.setCellValueFactory(data -> data.getValue().namProperty().asObject());
+        maSVColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getMaSV()));
+        maHPColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getMaMM() + ""));
+        tenHPColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTenHP()));
+        soTCColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getSoTC()).asObject());
+        stltColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getStLT()).asObject());
+        stthColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getStTH()).asObject());
 
         // Load data into the table
-        loadMoMonData();
+        loadDangKyData();
 
         // Add action buttons to the action column
         addActionButtons();
@@ -68,49 +73,35 @@ public class QLMonhoc {
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> filterTable(newValue));
     }
 
-    private void loadMoMonData() {
-        moMonData.clear();
+    private void loadDangKyData() {
+        dangKyData.clear();
         try {
-            moMonData.addAll(moMonDAO.getAllMoMon());
-            moMonListView.setItems(moMonData);
+            dangKyData.addAll(dangKyDAO.getAllDangKyWithHocPhanDetails());
+            dangKyListView.setItems(dangKyData);
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error loading data from the database: " + e.getMessage());
         }
     }
 
-    private void saveMoMonToDatabase(MoMon moMon) {
-        try {
-            if (moMonData.contains(moMon)) {
-                moMonDAO.updateMoMon(moMon);
-            } else {
-                moMonDAO.insertMoMon(moMon);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error saving data to the database: " + e.getMessage());
-        }
-    }
-
     private void filterTable(String keyword) {
         if (keyword == null || keyword.isEmpty()) {
-            moMonListView.setItems(moMonData);
+            dangKyListView.setItems(dangKyData);
             return;
         }
 
-        ObservableList<MoMon> filteredList = FXCollections.observableArrayList();
-        for (MoMon moMon : moMonData) {
-            if (String.valueOf(moMon.getMamm()).contains(keyword.toLowerCase()) ||
-                    moMon.getMahp().toLowerCase().contains(keyword.toLowerCase()) ||
-                    moMon.getMagv().toLowerCase().contains(keyword.toLowerCase())) {
-                filteredList.add(moMon);
+        ObservableList<DangKy> filteredList = FXCollections.observableArrayList();
+        for (DangKy dangKy : dangKyData) {
+            if (dangKy.getMaSV().toLowerCase().contains(keyword.toLowerCase()) ||
+                    dangKy.getTenHP().toLowerCase().contains(keyword.toLowerCase())) {
+                filteredList.add(dangKy);
             }
         }
-        moMonListView.setItems(filteredList);
+        dangKyListView.setItems(filteredList);
     }
 
     private void addActionButtons() {
-        actionColumn.setCellFactory(col -> new TableCell<>() {
+        actionsColumn.setCellFactory(col -> new TableCell<>() {
             private final Button editButton = new Button();
             private final Button deleteButton = new Button();
             private final HBox actionBox = new HBox(5, editButton, deleteButton);
@@ -123,8 +114,8 @@ public class QLMonhoc {
                 editButton.setGraphic(editIcon);
                 editButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                 editButton.setOnAction(event -> {
-                    MoMon moMon = getTableView().getItems().get(getIndex());
-                    openMoMonDialog(moMon);
+                    DangKy dangKy = getTableView().getItems().get(getIndex());
+                    openDangKyDialog(dangKy);
                 });
 
                 // Delete button
@@ -134,8 +125,8 @@ public class QLMonhoc {
                 deleteButton.setGraphic(deleteIcon);
                 deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                 deleteButton.setOnAction(event -> {
-                    MoMon moMon = getTableView().getItems().get(getIndex());
-                    deleteMoMon(moMon);
+                    DangKy dangKy = getTableView().getItems().get(getIndex());
+                    deleteDangKy(dangKy);
                 });
 
                 actionBox.setStyle("-fx-alignment: CENTER;");
@@ -153,11 +144,11 @@ public class QLMonhoc {
         });
     }
 
-    private void deleteMoMon(MoMon moMon) {
+    private void deleteDangKy(DangKy dangKy) {
         Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationDialog.setTitle("Xác nhận xóa");
-        confirmationDialog.setHeaderText("Bạn có chắc muốn xóa môn này?");
-        confirmationDialog.setContentText("Mã mở môn: " + moMon.getMamm());
+        confirmationDialog.setHeaderText("Bạn có chắc muốn xóa đăng ký này?");
+        confirmationDialog.setContentText("Mã sinh viên: " + dangKy.getMaSV() + ", Mã học phần: " + dangKy.getMaMM());
 
         ButtonType yesButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
@@ -167,8 +158,8 @@ public class QLMonhoc {
         confirmationDialog.showAndWait().ifPresent(response -> {
             if (response == yesButton) {
                 try {
-                    moMonDAO.deleteMoMon(moMon.getMamm());
-                    moMonData.remove(moMon);
+                    dangKyDAO.deleteDangKy(dangKy.getMaSV(), dangKy.getMaMM());
+                    dangKyData.remove(dangKy);
                 } catch (SQLException e) {
                     e.printStackTrace();
                     System.out.println("Error deleting data from the database: " + e.getMessage());
@@ -178,30 +169,29 @@ public class QLMonhoc {
     }
 
     @FXML
-    void themMonHoc(ActionEvent event) {
-        openMoMonDialog(null);
+    void themDangKy(ActionEvent event) {
+        openDangKyDialog(null);
     }
 
-    private void openMoMonDialog(MoMon moMon) {
+    private void openDangKyDialog(DangKy dangKy) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPDT/mo-mon-dialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPDT/dang-ky-dialog.fxml"));
             Parent root = loader.load();
 
-            MoMonDialog controller = loader.getController();
-            controller.setMoMon(moMon);
+            DangKyDialog controller = loader.getController();
+            controller.setDangKy(dangKy);
 
             Stage dialogStage = new Stage();
-            dialogStage.setTitle(moMon == null ? "Thêm Môn Học" : "Chỉnh Sửa Môn Học");
+            dialogStage.setTitle(dangKy == null ? "Thêm Đăng Ký" : "Chỉnh Sửa Đăng Ký");
             dialogStage.setScene(new Scene(root));
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.setResizable(false);
             dialogStage.showAndWait();
 
-            loadMoMonData();
+            // Reload data after dialog is closed
+            loadDangKyData();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 }

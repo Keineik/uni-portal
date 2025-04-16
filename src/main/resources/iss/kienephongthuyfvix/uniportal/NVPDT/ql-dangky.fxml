@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #f9fafb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVPDT.QLDangKy">
+    <top>
+        <AnchorPane prefHeight="87.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label layoutX="19.0" layoutY="11.0" text="Quản lý đăng ký học phần">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <TextField editable="false" layoutX="19.0" layoutY="44.0" promptText="Học kì 2 - Năm học 2025" style="-fx-background-color: transparent;" />
+            </children>
+        </AnchorPane>
+    </top>
+    <bottom>
+        <AnchorPane prefHeight="633.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+            <children>
+                <AnchorPane layoutX="22.0" layoutY="6.0" prefHeight="598.0" prefWidth="1034.0" style="-fx-background-color: WHITE; -fx-background-radius: 10px; -fx-border-color: transparent;" styleClass="custom-table-view" stylesheets="@../style.css">
+                    <children>
+                        <Button layoutX="10.0" layoutY="14.0" mnemonicParsing="false" onAction="#themDangKy" stylesheets="@../style.css" text="Thêm đăng ký học phần" textFill="WHITE">
+                            <graphic>
+                                <FontIcon iconColor="WHITE" iconLiteral="fas-plus" />
+                            </graphic>
+                        </Button>
+                        <TextField fx:id="searchBar" layoutX="787.0" layoutY="13.0" prefHeight="30.0" prefWidth="205.0" promptText="Tìm kiếm..." />
+                        <FontIcon iconLiteral="fas-search" layoutX="1004.0" layoutY="34.0">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </FontIcon>
+                        <TableView fx:id="dangKyListView" layoutX="10.0" layoutY="74.0" prefHeight="515.0" prefWidth="1014.0">
+                            <columns>
+                                <TableColumn fx:id="maSVColumn" editable="false" prefWidth="147.99999618530273" text="Mã sinh viên" />
+                                <TableColumn fx:id="maHPColumn" editable="false" prefWidth="140.80003356933594" text="Mã học phần" />
+                                <TableColumn fx:id="tenHPColumn" editable="false" minWidth="0.0" prefWidth="184.0" text="Tên học phần" />
+                                <TableColumn fx:id="soTCColumn" editable="false" minWidth="0.0" prefWidth="130.39999389648438" text="Số tín chỉ" />
+                                <TableColumn fx:id="stltColumn" editable="false" prefWidth="129.60003662109375" text="Số tiết lý thuyết" />
+                                <TableColumn fx:id="stthColumn" editable="false" prefWidth="136.00006103515625" sortable="false" text="Số tiết thực hành" />
+                        <TableColumn fx:id="actionsColumn" prefWidth="149.5999755859375" text="Thao tác" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </bottom>
+</BorderPane>

@@ -1,6 +1,7 @@
 package iss.kienephongthuyfvix.uniportal.dao;
 
 import iss.kienephongthuyfvix.uniportal.model.MoMon;
+import javafx.util.Pair;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -61,5 +62,22 @@ public class MoMonDAO {
             pstmt.setInt(1, mamm);
             pstmt.executeUpdate();
         }
+    }
+
+    public List<Pair<String, String>> getListHocPhan() throws SQLException {
+        List<Pair<String, String>> hocPhanList = new ArrayList<>();
+        String query = "SELECT MAMM, TENHP FROM HOCPHAN JOIN MOMON ON HOCPHAN.MAHP = MOMON.MAHP";
+
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                hocPhanList.add(
+                        new Pair<>(rs.getString("MAMM"), rs.getString("TENHP"))
+                );
+            }
+        }
+        return hocPhanList;
     }
 }

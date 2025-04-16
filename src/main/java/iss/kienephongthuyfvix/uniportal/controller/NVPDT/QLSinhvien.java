@@ -5,9 +5,7 @@ import iss.kienephongthuyfvix.uniportal.model.SinhVien;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 
 import java.sql.SQLException;
@@ -62,13 +60,7 @@ public class QLSinhvien {
 
         loadSinhVienData();
 
-        ObservableList<String> tinhTrangOptions = FXCollections.observableArrayList("Đang học", "Nghỉ học", "Bảo lưu");
-        tinhTrangColumn.setCellFactory(ComboBoxTableCell.forTableColumn(tinhTrangOptions));
-        tinhTrangColumn.setOnEditCommit(event -> {
-            SinhVien sinhVien = event.getRowValue();
-            sinhVien.setTinhTrang(event.getNewValue());
-            updateTinhTrangInDatabase(sinhVien);
-        });
+        addComboBoxToTinhTrangColumn();
 
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
             filterSinhVienList(newValue);
@@ -89,6 +81,57 @@ public class QLSinhvien {
             }
         }
         tableView.setItems(filteredList);
+    }
+
+    private void addComboBoxToTinhTrangColumn() {
+        ObservableList<String> tinhTrangOptions = FXCollections.observableArrayList("Đang học", "Nghỉ học", "Bảo lưu", "Đã tốt nghiệp");
+        tinhTrangColumn.setCellFactory(col -> new TableCell<>() {
+            private final ComboBox<String> comboBox = new ComboBox<>(tinhTrangOptions);
+            {
+                comboBox.setOnAction(event -> {
+                    SinhVien sinhVien = getTableView().getItems().get(getIndex());
+                    String selectedValue = comboBox.getValue();
+                    if (selectedValue != null) {
+                        sinhVien.setTinhTrang(selectedValue);
+                        updateTinhTrangInDatabase(sinhVien);
+                    }
+                });
+
+                // Add a listener to change the ComboBox color based on the selection
+                comboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        switch (newValue) {
+                            case "Đang học":
+                                comboBox.setStyle("-fx-background-color: lightgreen;");
+                                break;
+                            case "Nghỉ học":
+                                comboBox.setStyle("-fx-background-color: lightcoral;");
+                                break;
+                            case "Bảo lưu":
+                                comboBox.setStyle("-fx-background-color: lightblue;");
+                                break;
+                            case "Đã tốt nghiệp":
+                                comboBox.setStyle("-fx-background-color: lightgoldenrodyellow;");
+                                break;
+                            default:
+                                comboBox.setStyle(""); // Reset to default
+                                break;
+                        }
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    comboBox.setValue(item);
+                    setGraphic(comboBox);
+                }
+            }
+        });
     }
 
     private void loadSinhVienData() {

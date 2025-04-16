@@ -11,6 +11,7 @@ module iss.kienephongthuyfvix.hcmums {
     requires com.zaxxer.hikari;
     requires java.sql;
     requires org.slf4j;
+    requires java.compiler;
 
     opens iss.kienephongthuyfvix.uniportal.controller to javafx.fxml;
     exports iss.kienephongthuyfvix.uniportal;

@@ -1,11 +1,13 @@
 package iss.kienephongthuyfvix.uniportal.dao;
 
 import iss.kienephongthuyfvix.uniportal.model.HocPhan;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class HocPhanDAO {
     public List<HocPhan> getAllHocPhan() throws SQLException {
         List<HocPhan> hocPhanList = new ArrayList<>();
@@ -20,6 +22,24 @@ public class HocPhanDAO {
             }
         }
         return hocPhanList;
+    }
+
+    public HocPhan getHocPhan(String hocPhan) throws SQLException {
+        String query = "SELECT * FROM HOCPHAN WHERE MAHP = ?";
+        HocPhan hp = null;
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, hocPhan);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                hp = HocPhan.fromResultSet(rs);
+            }
+        }
+
+        return hp;
     }
 
     public void insertHocPhan(HocPhan hocPhan) throws SQLException {

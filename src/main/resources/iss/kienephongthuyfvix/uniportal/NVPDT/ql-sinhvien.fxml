@@ -41,8 +41,8 @@
                                 <TableColumn fx:id="ngaySinhColumn" editable="false" minWidth="0.0" prefWidth="116.0" text="Ngày sinh" />
                                 <TableColumn fx:id="diaChiColumn" editable="false" prefWidth="148.79998779296875" text="Địa chỉ" />
                                 <TableColumn fx:id="dienThoaiColumn" editable="false" prefWidth="167.20001220703125" sortable="false" text="Điện thoại" />
-                        <TableColumn fx:id="khoaColumn" prefWidth="139.2000732421875" text="Khoa" />
-                        <TableColumn fx:id="tinhTrangColumn" prefWidth="136.0" text="Tình trạng" />
+                        <TableColumn fx:id="khoaColumn" prefWidth="99.19989013671875" text="Khoa" />
+                        <TableColumn fx:id="tinhTrangColumn" prefWidth="177.60009765625" text="Tình trạng" />
                             </columns>
                         </TableView>
                     </children>
