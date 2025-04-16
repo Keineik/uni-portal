@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="298.0" prefWidth="402.0" style="-fx-background-color: white;" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVPKT.DiemDialog">
+    <GridPane hgap="10" layoutX="24.0" layoutY="14.0" prefWidth="354.0" vgap="10">
+        <Label text="Mã sinh viên:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="maSVField" editable="false" prefHeight="26.0" prefWidth="269.0" promptText="Tự động" style="-fx-background-color: transparent; -fx-border-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Mã  mở môn:" GridPane.rowIndex="1" />
+
+        <Label text="Mã học phần:" GridPane.rowIndex="2" />
+
+        <Label text="Học kỳ:" GridPane.rowIndex="3" />
+      <GridPane GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+         
+                       <Label alignment="CENTER" prefHeight="18.0" prefWidth="92.0" text="Năm:" GridPane.columnIndex="1" />
+              <TextField fx:id="hkField" editable="false" promptText="Tự động" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+              <TextField fx:id="namField" editable="false" promptText="Tự động" style="-fx-background-color: transparent; -fx-border-color: transparent;" GridPane.columnIndex="2" />
+         </children>
+      </GridPane>
+      <Label text="Điểm TH:" GridPane.rowIndex="4" />
+      <Label text="Điểm CK:" GridPane.rowIndex="5" />
+      <TextField fx:id="maMMField" editable="false" layoutX="99.0" layoutY="10.0" prefHeight="26.0" prefWidth="269.0" promptText="Tự động" style="-fx-background-color: transparent; -fx-border-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="maHPField" editable="false" layoutX="99.0" layoutY="48.0" prefHeight="26.0" prefWidth="269.0" promptText="Tự động" style="-fx-background-color: transparent; -fx-border-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <GridPane layoutX="99.0" layoutY="123.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="90.0" text="Điểm QT:" textAlignment="CENTER" GridPane.columnIndex="1" />
+            <TextField fx:id="diemTHField" />
+            <TextField fx:id="diemQTField" GridPane.columnIndex="2" />
+         </children>
+      </GridPane>
+      <GridPane layoutX="99.0" layoutY="164.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <TextField fx:id="diemTKField" editable="false" promptText="Tự động" style="-fx-background-color: transparent; -fx-border-color: transparent;" GridPane.columnIndex="2" />
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="90.0" text="Điểm TK:" textAlignment="CENTER" GridPane.columnIndex="1" />
+            <TextField fx:id="diemCKField" />
+         </children>
+      </GridPane>
+        <columnConstraints>
+            <ColumnConstraints maxWidth="91.59998779296875" minWidth="63.59998779296875" prefWidth="78.8" />
+            <ColumnConstraints maxWidth="281.20001220703125" minWidth="253.20001220703125" prefWidth="266.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints maxHeight="42.39998779296876" minHeight="28.799981689453134" prefHeight="29.60000000000001" />
+            <RowConstraints maxHeight="22.40001831054687" minHeight="8.800012207031244" prefHeight="21.599999999999994" />
+         <RowConstraints maxHeight="22.40001831054687" minHeight="10.0" prefHeight="30.0" />
+        </rowConstraints>
+    </GridPane>
+
+    <HBox layoutX="20.0" layoutY="250.0" spacing="10" />
+    <Button fx:id="cancelButton" layoutX="323.0" layoutY="250.0" prefHeight="26.0" prefWidth="54.0" styleClass="cancel-button" stylesheets="@../style.css" text="Hủy" />
+    <Button fx:id="saveButton" layoutX="257.0" layoutY="250.0" prefHeight="26.0" prefWidth="53.0" stylesheets="@../style.css" text="Lưu" />
+</AnchorPane>

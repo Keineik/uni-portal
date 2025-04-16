@@ -17,7 +17,7 @@ module iss.kienephongthuyfvix.hcmums {
     exports iss.kienephongthuyfvix.uniportal;
     opens iss.kienephongthuyfvix.uniportal.controller.DBA to javafx.fxml;
     opens iss.kienephongthuyfvix.uniportal.controller.NVPDT to javafx.fxml;
-    //opens iss.kienephongthuyfvix.uniportal.controller.NVPKT to javafx.fxml;
+    opens iss.kienephongthuyfvix.uniportal.controller.NVPKT to javafx.fxml;
     //opens iss.kienephongthuyfvix.uniportal.controller.NVPCTSV to javafx.fxml;
     //opens iss.kienephongthuyfvix.uniportal.controller.NVTCHC to javafx.fxml;
     //opens iss.kienephongthuyfvix.uniportal.controller.GV to javafx.fxml;

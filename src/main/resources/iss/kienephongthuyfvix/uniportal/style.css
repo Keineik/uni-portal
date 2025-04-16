@@ -9,11 +9,15 @@
 }
 
 .text-field{
-    -fx-prompt-text-fill:c5c5c5;
-    -fx-font-size: 14px;
+    -fx-background-color: transparent;
+    -fx-border-color:  #DADADA;
 
 }
 
+.combo-box{
+    -fx-background-color: transparent;
+    -fx-border-color:  #DADADA;
+}
 
 .jfx-snackbar-content{
     -fx-background-color: #ff1c03;

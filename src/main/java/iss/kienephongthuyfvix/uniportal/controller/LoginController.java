@@ -29,8 +29,9 @@ public class LoginController {
     protected void handleLogin(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        loadDashboard("DBA");
-        //Database.initialize("system", "sa");
+        Database.initialize("system", "sa");
+        loadDashboard("Nhân viên Phòng Khảo thí");
+
 //        if (username.isEmpty() || password.isEmpty()) {
 //            showError("Username and password cannot be empty");
 //            return;
