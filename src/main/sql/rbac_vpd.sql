@@ -293,6 +293,25 @@ END;
 EXEC QLDAIHOC.USP_CreateAllAccounts;
 SELECT * FROM DBA_USERS WHERE USERNAME LIKE 'NV0%' OR USERNAME LIKE 'SV0%';
 
+-- ======================================================
+-- ======= Kiểm tra các cơ chế kiểm soát truy cập =======
+-- ======================================================
+-- Tạo tài khoản cho tất cả người dùng (sinh viên và nhân viên)
+-- Xóa các tài khoản cũ nếu có
+BEGIN 
+    FOR account IN (SELECT * FROM DBA_USERS WHERE USERNAME LIKE 'NV0%' OR USERNAME LIKE 'SV0%') LOOP
+        -- Ngắt kết nối của user
+        FOR ses IN (SELECT * FROM V$SESSION WHERE USERNAME = account.USERNAME) LOOP
+            EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION ''' || ses.SID || ',' || ses.SERIAL# || ''' IMMEDIATE';
+        END LOOP;
+        -- Xóa tài khoản
+        EXECUTE IMMEDIATE 'DROP USER ' || account.USERNAME || ' CASCADE';
+    END LOOP;
+END;
+/
+EXEC QLDAIHOC.USP_CreateAllAccounts;
+SELECT * FROM DBA_USERS WHERE USERNAME LIKE 'NV0%' OR USERNAME LIKE 'SV0%';
+
 -- =============================================
 -- Kiểm tra chính sách RBAC với NHANVIEN
 -- =============================================
@@ -314,34 +333,34 @@ UPDATE QLDAIHOC.UV_NVCB_NHANVIEN SET LUONG = 15000 WHERE MANV = 'NV00000001';
 
 -- Kiểm tra người dùng TRGDV xem dữ liệu của đơn vị mình quản lý
 -- Kiểm tra view đặc biệt cho trưởng đơn vị
--- Giả sử là trưởng khoa Toán
+-- Giả sử NV00000001 là trưởng khoa Toán cơ sở 1 (TOAN_CS1)
 CONNECT NV00000001/NV00000001
 SELECT * FROM QLDAIHOC.UV_TRGDV_NHANVIEN;
 
 -- Kiểm tra người dùng NV_TCHC có toàn quyền
--- Giả sử NV00000010 là nhân viên TCHC
+-- Giả sử NV00000017 là nhân viên TCHC ở cơ sở 1
 -- Kiểm tra xem/chèn/cập nhật/xóa
-CONNECT NV00000010/NV00000010  
+CONNECT NV00000017/NV00000017  
 SELECT * FROM QLDAIHOC.NHANVIEN;
 -- Thử thêm nhân viên mới
-CONNECT NV00000010/NV00000010  
-INSERT INTO QLDAIHOC.NHANVIEN (HOTEN, PHAI, NGSINH, LUONG, PHUCAP, DT, VAITRO, MADV)
-VALUES ('Test User', 'Nam', TO_DATE('1990-01-01', 'YYYY-MM-DD'), 10000, 1000, '0987654321', 'NVCB', 'TOAN');
+CONNECT NV00000017/NV00000017  
+INSERT INTO QLDAIHOC.NHANVIEN (HOTEN, PHAI, NGSINH, LUONG, PHUCAP, DT, VAITRO, MADV, COSO)
+VALUES ('Test User', 'Nam', TO_DATE('1990-01-01', 'YYYY-MM-DD'), 10000, 1000, '0987654399', 'NVCB', 'TOAN_CS1', 'CS1');
 COMMIT;
 -- Thử cập nhật lương
-CONNECT NV00000010/NV00000010  
-UPDATE QLDAIHOC.NHANVIEN SET LUONG = 12000 WHERE DT = '0987654321';
+CONNECT NV00000017/NV00000017  
+UPDATE QLDAIHOC.NHANVIEN SET LUONG = 12000 WHERE DT = '0987654399';
 COMMIT;
 -- Thử xóa nhân viên test
-CONNECT NV00000010/NV00000010  
-DELETE FROM QLDAIHOC.NHANVIEN WHERE DT = '0987654321';
+CONNECT NV00000017/NV00000017  
+DELETE FROM QLDAIHOC.NHANVIEN WHERE DT = '0987654399';
 COMMIT;
 
 -- =============================================
 -- Kiểm tra chính sách RBAC với MOMON
 -- =============================================
 -- Kiểm tra giảng viên chỉ xem được môn họ dạy
--- Giả sử NV00000002 là giảng viên
+-- Giả sử NV00000002 là giảng viên khoa Toán cơ sở 1
 -- Kiểm tra xem tất cả môn học (Phải thất bại)
 CONNECT NV00000002/NV00000002 
 SELECT * FROM QLDAIHOC.MOMON;
@@ -350,29 +369,29 @@ CONNECT NV00000002/NV00000002
 SELECT * FROM QLDAIHOC.UV_GV_MOMON;
 
 -- Kiểm tra NV_PDT với việc quản lý môn học
--- Giả sử NV00000008 là nhân viên PDT
-CONNECT NV00000008/NV00000008  
+-- Giả sử NV00000015 là nhân viên PDT cơ sở 1
+CONNECT NV00000015/NV00000015  
 -- Kiểm tra quyền thêm/sửa/xóa trên view học kỳ hiện tại
 SELECT * FROM QLDAIHOC.UV_NVPDT_MOMON;
 -- Thử thêm một mở môn mới cho học kỳ hiện tại
 INSERT INTO QLDAIHOC.UV_NVPDT_MOMON (MAHP, MAGV, HK, NAM)
-VALUES ('MTH0001', 'NV00000002', 3, 2024);
+VALUES ('MTH0001_CS1', 'NV00000002', 3, 2024);
 -- Xóa môn mới thêm sau khi test
 DELETE FROM QLDAIHOC.UV_NVPDT_MOMON 
-WHERE MAHP = 'MTH0001' AND MAGV = 'NV00000002' AND HK = 3 AND NAM = 2024;
+WHERE MAHP = 'MTH0001_CS1' AND MAGV = 'NV00000002' AND HK = 3 AND NAM = 2024;
 COMMIT;
 -- Thử thêm một mở môn học kỳ trước (Phải thất bại vì WITH CHECK OPTION)
 INSERT INTO QLDAIHOC.UV_NVPDT_MOMON (MAHP, MAGV, HK, NAM)
-VALUES ('MTH0001', 'NV00000002', 1, 2023);
+VALUES ('MTH0001_CS1', 'NV00000002', 1, 2023);
 
 -- Kiểm tra TRGDV xem môn học của các giảng viên đơn vị mình
--- Giả sử NV00000001 là trưởng khoa Toán
+-- Giả sử NV00000001 là trưởng khoa Toán cơ sở 1
 CONNECT NV00000001/NV00000001
 -- Kiểm tra xem qua view giới hạn
 SELECT * FROM QLDAIHOC.UV_TRGDV_MOMON;
 
 -- Kiểm tra sinh viên xem môn học của khoa mình
--- Giả sử SV00000001 thuộc khoa Toán
+-- Giả sử SV00000001 thuộc khoa Toán cơ sở 1
 CONNECT SV00000001/SV00000001  
 -- Kiểm tra danh sách môn học
 SELECT * FROM QLDAIHOC.UV_SV_MOMON;
@@ -391,26 +410,26 @@ UPDATE QLDAIHOC.SINHVIEN SET TINHTRANG = 'Nghỉ học' WHERE MASV = 'SV00000001
 COMMIT;
 
 -- Kiểm tra nhân viên CTSV thêm sinh viên mới
--- Giả sử NV00000011 là nhân viên CTSV
-CONNECT NV00000011/NV00000011
-INSERT INTO QLDAIHOC.SINHVIEN (HOTEN, PHAI, NGSINH, DT, KHOA, TINHTRANG)
-VALUES ('Sinh Viên Test', 'Nam', TO_DATE('2000-01-01', 'YYYY-MM-DD'), '0987654333', 'TOAN', 'Đang học');
+-- Giả sử NV00000018 là nhân viên CTSV cơ sở 1
+CONNECT NV00000018/NV00000018
+INSERT INTO QLDAIHOC.SINHVIEN (HOTEN, PHAI, NGSINH, DT, KHOA, TINHTRANG, COSO)
+VALUES ('Sinh Viên Test', 'Nam', TO_DATE('2000-01-01', 'YYYY-MM-DD'), '0987654333', 'TOAN_CS1', 'Đang học', 'CS1');
 COMMIT;
 -- Kiểm tra TINHTRANG phải là NULL sau khi chèn
 SELECT * FROM QLDAIHOC.SINHVIEN WHERE HOTEN = 'Sinh Viên Test';
 
 -- Kiểm tra nhân viên PDT cập nhật TINHTRANG
--- Giả sử NV00000008 là nhân viên PDT
-CONNECT NV00000008/NV00000008  
+-- Giả sử NV00000015 là nhân viên PDT cơ sở 1
+CONNECT NV00000015/NV00000015  
 UPDATE QLDAIHOC.SINHVIEN SET TINHTRANG = 'Đang học'
 WHERE HOTEN = 'Sinh Viên Test';
 SELECT MASV, HOTEN, TINHTRANG FROM QLDAIHOC.SINHVIEN WHERE HOTEN = 'Sinh Viên Test';
 COMMIT;
 
 -- Kiểm tra giảng viên chỉ xem được sinh viên của khoa mình
--- Giả sử NV00000002 là giảng viên khoa Toán
+-- Giả sử NV00000002 là giảng viên khoa Toán cơ sở 1
 CONNECT NV00000002/NV00000002  
--- Kiểm tra danh sách sinh viên (Chỉ sinh viên thuộc khoa Toán)
+-- Kiểm tra danh sách sinh viên (Chỉ sinh viên thuộc khoa Toán cơ sở 1)
 SELECT * FROM QLDAIHOC.SINHVIEN;
 
 -- =============================================
@@ -427,16 +446,15 @@ VALUES ('SV00000001', 10, NULL, NULL, NULL, NULL);
 COMMIT;
 
 -- Kiểm tra giảng viên xem được đăng ký của môn mình dạy
--- Giả sử NV00000002 là giảng viên
--- Xem danh sách đăng ký của môn dạy
+-- Giả sử NV00000002 là giảng viên khoa Toán cơ sở 1
 CONNECT NV00000002/NV00000002  
-SELECT d.*
+SELECT d.*, s.HOTEN
 FROM QLDAIHOC.DANGKY d
     JOIN QLDAIHOC.SINHVIEN s ON d.MASV = s.MASV;
 
 -- Kiểm tra nhân viên PDT quản lý đăng ký
--- Giả sử NV00000008 là nhân viên PDT
-CONNECT NV00000008/NV00000008  
+-- Giả sử NV00000015 là nhân viên PDT cơ sở 1
+CONNECT NV00000015/NV00000015  
 -- Xem tất cả đăng ký
 SELECT * FROM QLDAIHOC.DANGKY;
 -- Thử thêm đăng ký cho sinh viên (trong kỳ đang mở)
@@ -445,8 +463,8 @@ VALUES ('SV00000002', 11, NULL, NULL, NULL, NULL);
 COMMIT;
 
 -- Kiểm tra nhân viên khảo thí cập nhật điểm
--- Giả sử NV00000009 là nhân viên khảo thí
-CONNECT NV00000009/NV00000009  
+-- Giả sử NV00000016 là nhân viên khảo thí cơ sở 1
+CONNECT NV00000016/NV00000016  
 -- Kiểm tra quyền xem tất cả đăng ký
 SELECT * FROM QLDAIHOC.DANGKY;
 -- Thử cập nhật điểm
