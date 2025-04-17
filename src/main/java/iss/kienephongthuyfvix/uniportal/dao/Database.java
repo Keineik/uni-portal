@@ -14,7 +14,7 @@ public class Database {
     public static void initialize(String username, String password) {
         try {
             HikariConfig config = new HikariConfig();
-            config.setJdbcUrl("jdbc:oracle:thin:@//localhost:1521/XEPDB1");
+            config.setJdbcUrl("jdbc:oracle:thin:@//localhost:1521/XE");
             config.setUsername(username);
             config.setPassword(password);
             config.setDriverClassName("oracle.jdbc.driver.OracleDriver");

@@ -37,7 +37,7 @@ public class DashboardController {
         else if (role == "DBA") {
         }
         else {
-            handleButtonAction("#ThongTinNhanVien", sidebarButtons.getFirst());
+            handleButtonAction("#ThongTinGiangVien", sidebarButtons.getFirst());
         }
     }
 
@@ -83,7 +83,9 @@ public class DashboardController {
                 break;
 
             case "Giảng viên":
-                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinGiangVien"));
+                sidebarButtons.add(createButton("Phân công giảng dạy", "#GV_PCGD"));
+                sidebarButtons.add(createButton("Sinh viên", "#GV_SV"));
                 break;
         }
         sidebarContainer.getChildren().addAll(sidebarButtons);
@@ -146,6 +148,9 @@ public class DashboardController {
                 break;
             case "#QLDiem":
                 QLDIem(new ActionEvent());
+                break;
+            case "#ThongTinGiangVien":
+                ThongTinGiangVien(new ActionEvent());
                 break;
             // Add more cases for other actions
         }
@@ -238,6 +243,13 @@ public class DashboardController {
     @FXML
     void QLDIem(ActionEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPKT/ql-diem.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void ThongTinGiangVien(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/thong-tin.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
