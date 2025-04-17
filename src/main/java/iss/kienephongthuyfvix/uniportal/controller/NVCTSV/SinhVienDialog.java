@@ -64,7 +64,6 @@ public class SinhVienDialog {
 
     private SinhVien currentSinhVien;
     private boolean isEditMode = false;
-    private Map<String, String> khoaNameToCodeMap = new HashMap<>();
 
     public void setSinhVien(SinhVien sinhVien) {
         this.currentSinhVien = sinhVien;
@@ -121,8 +120,7 @@ public class SinhVienDialog {
 
             for (DonVi donVi : donViList) {
                 if ("Khoa".equals(donVi.getLoaiDV())) {
-                    khoaItems.add(donVi.getTenDV());
-                    khoaNameToCodeMap.put(donVi.getTenDV(), donVi.getMaDV());
+                    khoaItems.add(donVi.getMaDV());
                 }
             }
 
@@ -148,7 +146,7 @@ public class SinhVienDialog {
             LocalDate ngSinh = ngSinhPicker.getValue();
             String diaChi = dChiField.getText().trim();
             String dienThoai = dTField.getText().trim();
-            String khoaName = khoaCombo.getValue(); String khoa = khoaNameToCodeMap.get(khoaName);
+            String khoa = khoaCombo.getValue();
             String tinhTrang = tinhTrangCombo.getValue();
             String coSo = coSoCombo.getValue();
 

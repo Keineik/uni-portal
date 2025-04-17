@@ -21,6 +21,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class QLSinhVien {
@@ -115,7 +116,10 @@ public class QLSinhVien {
         // Initialize khoa combo box
         try {
             khoaCombo.getItems().add("Tất cả khoa");
-            khoaCombo.getItems().addAll(donViDAO.getAllDonVi().stream().map(DonVi::getTenDV).toList());
+            khoaCombo.getItems().addAll(donViDAO.getAllDonVi().stream()
+                    .filter(donVi -> {return Objects.equals(donVi.getLoaiDV(), "Khoa");})
+                    .map(DonVi::getMaDV)
+                    .toList());
             khoaCombo.setValue("Tất cả khoa");
         } catch (SQLException e) {
             e.printStackTrace();
