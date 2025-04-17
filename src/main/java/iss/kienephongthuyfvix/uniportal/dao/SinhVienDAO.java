@@ -41,7 +41,7 @@ public class SinhVienDAO {
     }
 
     public void insertSinhVien(SinhVien sinhVien) throws SQLException {
-        String query = "INSERT INTO SINHVIEN VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO SINHVIEN VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL)";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {

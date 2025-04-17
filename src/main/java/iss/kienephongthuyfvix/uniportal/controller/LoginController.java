@@ -46,8 +46,8 @@ public class LoginController {
 //            System.out.println("Error: " + e.getMessage());
 //        }
 //        loadDashboard("Nhân viên Phòng Đào tạo");
-        Database.initialize("system", "sa");
-        loadDashboard("Sinh viên");
+        Database.initialize("system", "admin");
+        loadDashboard("Nhân viên Phòng Công tác Sinh viên");
 //        if (username.isEmpty() || password.isEmpty()) {
 //            showError("Username and password cannot be empty");
 //            return;

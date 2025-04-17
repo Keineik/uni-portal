@@ -55,6 +55,7 @@ public class DashboardController {
 
             case "Nhân viên Phòng Công tác Sinh viên":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Quản lý sinh viên", "#NVCTSV_QLSV"));
                 break;
 
             case "Nhân viên Phòng Khảo thí":
@@ -133,6 +134,9 @@ public class DashboardController {
                 break;
             case "#KetQuaHT":
                 KetQuaHT(new ActionEvent());
+                break;
+            case "#NVCTSV_QLSV":
+                NVCTSV_QLSV(new ActionEvent());
                 break;
             // Add more cases for other actions
         }
@@ -218,6 +222,13 @@ public class DashboardController {
     @FXML
     void KetQuaHT(ActionEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/ket-qua-ht.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void NVCTSV_QLSV(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVCTSV/ql-sinhvien.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
