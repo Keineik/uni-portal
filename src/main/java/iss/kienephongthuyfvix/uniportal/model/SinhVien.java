@@ -67,4 +67,5 @@ public class SinhVien {
     public void setDienThoai(String dienThoai) { this.dienThoai.set(dienThoai); }
     public void setKhoa(String khoa) { this.khoa.set(khoa); }
     public void setTinhTrang(String tinhTrang) { this.tinhTrang.set(tinhTrang); }
+
 }

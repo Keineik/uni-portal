@@ -152,6 +152,9 @@ public class DashboardController {
             case "#ThongTinGiangVien":
                 ThongTinGiangVien(new ActionEvent());
                 break;
+            case "#GV_PCGD":
+                PhanCongGiangDay(new ActionEvent());
+                break;
             // Add more cases for other actions
         }
     }
@@ -250,6 +253,13 @@ public class DashboardController {
     @FXML
     void ThongTinGiangVien(ActionEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/thong-tin.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void PhanCongGiangDay(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/phan-cong.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }

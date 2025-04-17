@@ -1,6 +1,7 @@
 package iss.kienephongthuyfvix.uniportal.dao;
 
 import iss.kienephongthuyfvix.uniportal.model.DangKy;
+import iss.kienephongthuyfvix.uniportal.model.SinhVien;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -82,4 +83,24 @@ public class DangKyDAO {
         }
         return dangKyList;
     }
+
+    public List<SinhVien> getSinhVienByMaMM(int maMM) throws SQLException {
+        List<SinhVien> list = new ArrayList<>();
+        String query = "SELECT SINHVIEN.* " +
+                "FROM DANGKY JOIN SINHVIEN ON DANGKY.MASV = SINHVIEN.MASV " +
+                "WHERE DANGKY.MAMM = ?";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, maMM);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                list.add(SinhVien.fromResultSet(rs));
+            }
+        }
+        return list;
+    }
+
 }
