@@ -1,8 +1,6 @@
 package iss.kienephongthuyfvix.uniportal.controller;
 
 import com.jfoenix.controls.JFXButton;
-import iss.kienephongthuyfvix.uniportal.controller.SV.DangKyHP;
-import iss.kienephongthuyfvix.uniportal.controller.SV.KetQuaHT;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,16 +27,8 @@ public class DashboardController {
         // Initialization code if needed
     }
 
-    public void initializeRole(String role) throws IOException {
+    public void initializeRole(String role) {
         addSidebarButtons(role);
-        if (role == "Sinh viên") {
-            handleButtonAction("#ThongTinSinhVien", sidebarButtons.getFirst());
-        }
-        else if (role == "DBA") {
-        }
-        else {
-            handleButtonAction("#ThongTinGiangVien", sidebarButtons.getFirst());
-        }
     }
 
     private void addSidebarButtons(String employeeType) {
@@ -68,7 +58,6 @@ public class DashboardController {
 
             case "Nhân viên Phòng Khảo thí":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
-                sidebarButtons.add(createButton("Quản lý điểm", "#QLDiem"));
                 break;
 
             case "Nhân viên Phòng Tổ chức Hành chính":
@@ -83,9 +72,7 @@ public class DashboardController {
                 break;
 
             case "Giảng viên":
-                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinGiangVien"));
-                sidebarButtons.add(createButton("Phân công giảng dạy", "#GV_PCGD"));
-                sidebarButtons.add(createButton("Sinh viên", "#GV_SV"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 break;
         }
         sidebarContainer.getChildren().addAll(sidebarButtons);
@@ -141,19 +128,10 @@ public class DashboardController {
                 ThongTinSinhVien(new ActionEvent());
                 break;
             case "#DangKyHP":
-                DangKyHP(new ActionEvent());
+                // Handle DangKyHP action
                 break;
             case "#KetQuaHT":
-                KetQuaHT(new ActionEvent());
-                break;
-            case "#QLDiem":
-                QLDIem(new ActionEvent());
-                break;
-            case "#ThongTinGiangVien":
-                ThongTinGiangVien(new ActionEvent());
-                break;
-            case "#GV_PCGD":
-                PhanCongGiangDay(new ActionEvent());
+                // Handle KetQuaHT action
                 break;
             // Add more cases for other actions
         }
@@ -225,41 +203,6 @@ public class DashboardController {
     @FXML
     void ThongTinSinhVien(ActionEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/thong-tin.fxml"));
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(fxml);
-    }
-
-    @FXML
-    void DangKyHP(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/dang-ky-hp.fxml"));
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(fxml);
-    }
-
-    @FXML
-    void KetQuaHT(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/ket-qua-ht.fxml"));
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(fxml);
-    }
-
-    @FXML
-    void QLDIem(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPKT/ql-diem.fxml"));
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(fxml);
-    }
-
-    @FXML
-    void ThongTinGiangVien(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/thong-tin.fxml"));
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(fxml);
-    }
-
-    @FXML
-    void PhanCongGiangDay(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/phan-cong.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }

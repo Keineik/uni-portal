@@ -12,15 +12,13 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="iss.kienephongthuyfvix.uniportal.controller.DBA.QuanLyRole">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.DBA.QuanLyRole">
 
     <VBox spacing="10" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Quản lý Role" />
             <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
-            <Button fx:id="createRoleButton" styleClass="white-green-button" stylesheets="@../style.css" text="Tạo Role" textFill="WHITE">
+            <Button fx:id="createRoleButton" styleClass="white-green-button" stylesheets="@../style.css" text="➕ Tạo Role" textFill="WHITE">
                 <font>
                     <Font name="System Bold" size="15.0" />
                 </font>
@@ -30,7 +28,7 @@
         <HBox alignment="CENTER_LEFT" spacing="5" style="-fx-background-color: white; -fx-padding: 5; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-radius: 5;">
             <Label>
                 <graphic>
-                    <FontIcon iconLiteral="fas-search" iconSize="16" iconColor="#888" />
+                    <FontIcon iconColor="#888" iconLiteral="fas-search" iconSize="16" />
                 </graphic>
             </Label>
             <TextField fx:id="searchField" promptText="Tìm kiếm role..." style="-fx-background-color: transparent; -fx-border-width: 0;" />
@@ -43,8 +41,8 @@
 
         <TableView fx:id="roleListView" prefHeight="527.0" prefWidth="800.0" styleClass="custom-table-view" stylesheets="@../style.css">
             <columns>
-                <TableColumn fx:id="roleNameColumn" prefWidth="300.0" text="Tên Role" />
-                <TableColumn fx:id="actionColumn" maxWidth="90.0" prefWidth="77.0" text="Hành động"/>
+                <TableColumn fx:id="roleNameColumn" prefWidth="349.0" text="Tên Role" />
+                <TableColumn fx:id="actionColumn" maxWidth="748.0" prefWidth="699.0" text="" />
             </columns>
         </TableView>
     </VBox>

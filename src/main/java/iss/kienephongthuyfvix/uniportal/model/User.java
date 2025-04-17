@@ -6,34 +6,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class User {
-    private final StringProperty userId;
     private final StringProperty username;
     private final ObservableList<String> roles = FXCollections.observableArrayList();
 
-    public User(String userId, String username, String... initialRoles) {
-        this.userId = new SimpleStringProperty(userId);
+    public User(String username, String... initialRoles) {
         this.username = new SimpleStringProperty(username);
-        this.roles.addAll(initialRoles);
-    }
-
-    public StringProperty userIdProperty() {
-        return userId;
+        this.roles.addAll(FXCollections.observableArrayList(initialRoles));
     }
 
     public StringProperty usernameProperty() {
         return username;
     }
-
-    public String getUserId() {
-        return userId.get();
-    }
-
     public String getUsername() {
         return username.get();
-    }
-
-    public void setUserId(String id) {
-        userId.set(id);
     }
 
     public void setUsername(String name) {
@@ -44,5 +29,14 @@ public class User {
         return roles;
     }
 
+    public void addRole(String role) {
+        if (!roles.contains(role)) {
+            roles.add(role);
+        }
+    }
+
+    public void removeRole(String role) {
+        roles.remove(role);
+    }
 
 }

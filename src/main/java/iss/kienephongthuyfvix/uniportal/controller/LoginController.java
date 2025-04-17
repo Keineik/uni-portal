@@ -29,9 +29,25 @@ public class LoginController {
     protected void handleLogin(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        Database.initialize("sys AS SYSDBA", "tqp912");
-        loadDashboard("Giảng viên");
 
+//        try {
+//            Database.initialize(username, password);
+//            try (Connection conn = Database.getConnection();
+//                 var stmt = conn.createStatement();
+//                 var rs = stmt.executeQuery("SELECT USER FROM DUAL")) {
+//                if (rs.next()) {
+//                   loadDashboard("DBA");
+////                    loadDashboard("Nhân viên Phòng Đào tạo");
+//                    System.out.println("Logged in as: " + rs.getString(1));
+//                }
+//            }
+//        } catch (Exception e) {
+//            showError("Error: " + e.getMessage());
+//            System.out.println("Error: " + e.getMessage());
+//        }
+//        loadDashboard("Nhân viên Phòng Đào tạo");
+        Database.initialize("system", "123");
+        loadDashboard("DBA");
 //        if (username.isEmpty() || password.isEmpty()) {
 //            showError("Username and password cannot be empty");
 //            return;

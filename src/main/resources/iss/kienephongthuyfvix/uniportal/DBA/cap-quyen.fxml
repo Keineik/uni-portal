@@ -65,29 +65,13 @@
         </children>
     </AnchorPane>
 
-    <AnchorPane fx:id="selectColumnPermissionPane" layoutX="33.0" layoutY="394.0" prefHeight="214.0" prefWidth="472.0" styleClass="light-gray-box" stylesheets="@../style.css">
-        <children>
-            <Label layoutX="10.0" layoutY="9.0" text="Phân quyền SELECT theo cột" textFill="#0000008c">
-                <font>
-                    <Font name="System Bold" size="12.0" />
-                </font>
-            </Label>
-            <CheckBox fx:id="selectColumnId" layoutX="16.0" layoutY="33.0" text="ID" />
-            <CheckBox fx:id="selectColumnName" layoutX="16.0" layoutY="62.0" text="Họ tên" />
-            <CheckBox fx:id="selectColumnSalary" layoutX="16.0" layoutY="91.0" text="Lương" />
-        </children>
-    </AnchorPane>
-
-    <AnchorPane fx:id="updateColumnPermissionPane" layoutX="522.0" layoutY="393.0" prefHeight="214.0" prefWidth="519.0" styleClass="light-gray-box" stylesheets="@../style.css">
+    <AnchorPane fx:id="updateColumnPermissionPane" layoutX="32.0" layoutY="393.0" prefHeight="214.0" prefWidth="1009.0" styleClass="light-gray-box" stylesheets="@../style.css">
         <children>
             <Label layoutX="10.0" layoutY="9.0" text="Phân quyền UPDATE theo cột" textFill="#0000008c">
                 <font>
                     <Font name="System Bold" size="12.0" />
                 </font>
             </Label>
-            <CheckBox fx:id="updateColumnId" layoutX="16.0" layoutY="33.0" text="ID" />
-            <CheckBox fx:id="updateColumnName" layoutX="16.0" layoutY="62.0" text="Họ tên" />
-            <CheckBox fx:id="updateColumnSalary" layoutX="16.0" layoutY="91.0" text="Lương" />
         </children>
     </AnchorPane>
 
@@ -109,13 +93,13 @@
 
     <Group layoutX="11.0" layoutY="541.0" />
 
-    <Button fx:id="cancelButton" layoutX="788.0" layoutY="660.0" prefHeight="34.0" prefWidth="69.0" style="-fx-background-color: white;" styleClass="white-button" stylesheets="@../style.css" text="Hủy bỏ">
+    <Button fx:id="cancelButton" layoutX="788.0" layoutY="660.0" prefHeight="34.0" prefWidth="69.0" style="-fx-background-color: white;" styleClass="cancel-button" stylesheets="@../style.css" text="Hủy bỏ">
         <font>
             <Font name="System Bold" size="12.0" />
         </font>
     </Button>
 
-    <Button fx:id="grantButton" layoutX="869.0" layoutY="660.0" prefHeight="34.0" prefWidth="137.0" styleClass="white-green-button" stylesheets="@../style.css" text="Xác nhận cấp quyền">
+    <Button fx:id="grantButton" layoutX="869.0" layoutY="660.0" onAction="#handleGrant" prefHeight="34.0" prefWidth="137.0" styleClass="white-green-button" stylesheets="@../style.css" text="Xác nhận cấp quyền">
         <font>
             <Font name="System Bold" size="12.0" />
         </font>

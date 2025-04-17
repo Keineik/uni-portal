@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700" prefWidth="900" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.DBA.QuanLyRole">
+       <Label layoutX="50.0" layoutY="16.0" text="Tên Role" />
+       <TextField fx:id="roleNameField" layoutX="40.0" layoutY="39.0" prefHeight="25.0" prefWidth="335.0" promptText="Nhập tên role" />
+       <VBox layoutX="52.0" layoutY="166.0" spacing="5" />
+       <VBox layoutX="418.0" layoutY="166.0" spacing="5" />
+      <Button fx:id="cancelButton" layoutX="689.0" layoutY="655.0" prefHeight="27.0" prefWidth="87.0" style="-fx-background-color: white; -fx-font-weight: bold;" styleClass="white-button" stylesheets="@../style.css" text="Hủy" />
+      <Button fx:id="createRoleButton" layoutX="579.0" layoutY="656.0" prefHeight="25.0" prefWidth="102.0" styleClass="white-green-button" stylesheets="@../style.css" text="Tạo Role">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font>
+   </Button>
+   <AnchorPane layoutX="40.0" layoutY="166.0" prefHeight="67.0" prefWidth="757.0" styleClass="light-gray-box" stylesheets="@../style.css">
+      <children>
+         <Label layoutX="9.0" text="Quyền truy cập" textFill="#0000008c">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
+         <CheckBox fx:id="selectCheckBox" layoutX="13.0" layoutY="28.0" text="SELECT" />
+         <CheckBox fx:id="insertCheckBox" layoutX="93.0" layoutY="28.0" text="INSERT" />
+         <CheckBox fx:id="updateCheckBox" layoutX="173.0" layoutY="28.0" text="UPDATE" />
+         <CheckBox fx:id="deleteCheckBox" layoutX="263.0" layoutY="28.0" text="DELETE" />
+         <CheckBox fx:id="executeCheckBox" layoutX="353.0" layoutY="28.0" text="EXECUTE" />
+      </children>
+   </AnchorPane>
+   <AnchorPane layoutX="40.0" layoutY="245.0" prefHeight="105.0" prefWidth="757.0" styleClass="light-gray-box" stylesheets="@../style.css">
+      <children>
+         <Label layoutX="12.0" layoutY="8.0" text="Tùy chọn mở rộng" textFill="#0000008c">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
+         <CheckBox fx:id="selectGrantOption" layoutX="14.0" layoutY="41.0" text="SELECT with GRANT OPTION" />
+         <CheckBox fx:id="insertGrantOption" layoutX="14.0" layoutY="66.0" text="INSERT with GRANT OPTION" />
+         <CheckBox fx:id="updateGrantOption" layoutX="211.0" layoutY="41.0" text="UPDATE with GRANT OPTION" />
+         <CheckBox fx:id="deleteGrantOption" layoutX="211.0" layoutY="66.0" text="DELETE with GRANT OPTION" />
+         <CheckBox fx:id="executeGrantOption" layoutX="419.0" layoutY="41.0" text="EXECUTE with GRANT OPTION" />
+      </children>
+   </AnchorPane>
+   <AnchorPane layoutX="40.0" layoutY="79.0" prefHeight="77.0" prefWidth="757.0" styleClass="light-gray-box" stylesheets="@../style.css">
+      <children>
+         <Label layoutX="20.0" layoutY="6.0" text="Loại đối tượng dữ liệu" textFill="#0000008c">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
+         <ChoiceBox fx:id="objectTypeChoiceBox" layoutX="20.0" layoutY="30.0" prefHeight="25.0" prefWidth="241.0" />
+         <Label layoutX="321.0" layoutY="7.0" text="Tên đối tượng dữ liệu" textFill="#0000008c">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
+         <ChoiceBox fx:id="objectNameChoiceBox" layoutX="319.0" layoutY="28.0" prefHeight="25.0" prefWidth="254.0" />
+      </children>
+   </AnchorPane>
+   <AnchorPane fx:id="selectColumnPermissionPane" layoutX="40.0" layoutY="357.0" prefHeight="105.0" prefWidth="349.0" styleClass="light-gray-box" stylesheets="@../style.css">
+      <children>
+         <Label layoutX="10.0" layoutY="9.0" text="Phân quyền SELECT theo cột" textFill="#0000008c">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
+         <CheckBox fx:id="selectColumnId" layoutX="16.0" layoutY="33.0" text="ID" />
+         <CheckBox fx:id="selectColumnName" layoutX="16.0" layoutY="62.0" text="Họ tên" />
+         <CheckBox fx:id="selectColumnSalary" layoutX="16.0" layoutY="91.0" text="Lương" />
+      </children>
+   </AnchorPane>
+   <AnchorPane fx:id="updateColumnPermissionPane" layoutX="423.0" layoutY="357.0" prefHeight="130.0" prefWidth="374.0" styleClass="light-gray-box" stylesheets="@../style.css">
+      <children>
+         <Label layoutX="10.0" layoutY="9.0" text="Phân quyền UPDATE theo cột" textFill="#0000008c">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
+         <CheckBox fx:id="updateColumnId" layoutX="16.0" layoutY="33.0" text="ID" />
+         <CheckBox fx:id="updateColumnName" layoutX="16.0" layoutY="62.0" text="Họ tên" />
+         <CheckBox fx:id="updateColumnSalary" layoutX="16.0" layoutY="91.0" text="Lương" />
+      </children>
+   </AnchorPane>
+   <Button fx:id="addPrivilegeButton" layoutX="705.0" layoutY="497.0" styleClass="white-green-button" stylesheets="@../style.css" text="➕ Thêm quyền">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font>
+   </Button>
+   <TableView fx:id="privilegesTable" layoutX="30.0" layoutY="534.0" prefHeight="105.0" prefWidth="777.0">
+      <columns>
+         <TableColumn fx:id="objectColumn" prefWidth="115.5" text="Object" />
+         <TableColumn fx:id="typeColumn" prefWidth="223.5" text="Type" />
+         <TableColumn fx:id="privilegesColumn" prefWidth="289.0" text="Privileges" />
+         <TableColumn fx:id="actionsColumn" prefWidth="148.0" text="Actions" />
+      </columns>
+   </TableView>
+</AnchorPane>

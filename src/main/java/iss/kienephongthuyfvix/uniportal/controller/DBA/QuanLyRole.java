@@ -6,10 +6,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
+
+import java.io.IOException;
 
 public class QuanLyRole {
 
@@ -32,6 +38,7 @@ public class QuanLyRole {
 
     @FXML
     public void initialize() {
+//        setupCreateRoleButton();
         roleNameColumn.setCellValueFactory(cellData -> cellData.getValue().roleNameProperty());
 
         roleListView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -127,11 +134,27 @@ public class QuanLyRole {
 
     }
 
-    @FXML
-    void onCreateRole(ActionEvent event) {
-        System.out.println("Tạo Role được nhấn");
-        // TODO: mở form tạo role mới
+    private void setupCreateRoleButton() {
+        if (createRoleButton != null) {
+            createRoleButton.setOnAction(e -> onCreateRole());
+        }
     }
+
+    @FXML
+    void onCreateRole() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/create-role.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Tạo Role Mới");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static class RoleModel {
         private final StringProperty roleName;
