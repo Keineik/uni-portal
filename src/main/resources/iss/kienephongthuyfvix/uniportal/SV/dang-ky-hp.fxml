@@ -17,7 +17,7 @@
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
-                <TextField editable="false" layoutX="19.0" layoutY="44.0" promptText="Học kì 2 - Năm học 2025" style="-fx-background-color: transparent;" />
+                <TextField editable="false" layoutX="19.0" layoutY="44.0" promptText="Học kì 2 - Năm học 2025" style="-fx-border-color: transparent;" />
             </children>
         </AnchorPane>
     </top>
