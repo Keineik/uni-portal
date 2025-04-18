@@ -2,17 +2,20 @@ package iss.kienephongthuyfvix.uniportal.controller.GV;
 
 import iss.kienephongthuyfvix.uniportal.dao.MoMonDAO;
 import iss.kienephongthuyfvix.uniportal.model.MoMon;
-import iss.kienephongthuyfvix.uniportal.dao.DangKyDAO;
-import iss.kienephongthuyfvix.uniportal.model.SinhVien;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -37,9 +40,7 @@ public class PhanCong {
     private TableColumn<MoMon, Void> colXem;
 
     private final MoMonDAO moMonDAO = new MoMonDAO();
-    private final DangKyDAO dangKyDAO = new DangKyDAO(); // đảm bảo bạn đã tạo class này
-
-    private final String maGV = "NV00000002"; // Thay bằng mã GV thực tế từ session đăng nhập
+    private final String maGV = "NV00000002"; // Giả lập mã giảng viên
 
     @FXML
     public void initialize() {
@@ -86,44 +87,33 @@ public class PhanCong {
                         btn.setStyle("-fx-background-color: transparent;");
                         btn.setOnAction(e -> {
                             MoMon moMon = getTableView().getItems().get(getIndex());
-                            showSinhVienDialog(moMon.getMamm());
+                            openSinhVienWindow(moMon.getMamm());
                         });
                     }
 
                     @Override
                     protected void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
+                        setGraphic(empty ? null : btn);
                     }
                 };
             }
         });
     }
 
-    private void showSinhVienDialog(int maMM) {
+    private void openSinhVienWindow(int maMM) {
         try {
-            List<SinhVien> svList = dangKyDAO.getSinhVienByMaMM(maMM);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/show-sinh-vien.fxml"));
+            Parent root = loader.load();
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Danh sách sinh viên đăng ký");
-            alert.setHeaderText("Lớp MAMM: " + maMM);
+            ShowSinhVien controller = loader.getController();
+            controller.loadSinhVienByMaMM(maMM);
 
-            StringBuilder content = new StringBuilder();
-            for (SinhVien sv : svList) {
-                content.append(sv.getMaSV()).append(" - ").append(sv.getHoTen()).append("\n");
-            }
-
-            if (svList.isEmpty()) {
-                content.append("Chưa có sinh viên đăng ký.");
-            }
-
-            alert.setContentText(content.toString());
-            alert.showAndWait();
-        } catch (SQLException e) {
+            Stage stage = new Stage();
+            stage.setTitle("Danh sách sinh viên đăng ký - MAMM: " + maMM);
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

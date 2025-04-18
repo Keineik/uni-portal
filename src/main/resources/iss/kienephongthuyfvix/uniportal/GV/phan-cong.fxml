@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.GV.PhanCong">
-
-    <TableView fx:id="tablePhanCong" layoutX="14.0" layoutY="14.0" prefHeight="360.0" prefWidth="570.0" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
-        <columns>
-            <TableColumn fx:id="colMaMM" prefWidth="80" text="Mã Môn Mở" />
-            <TableColumn fx:id="colTenHP" prefWidth="180.0" text="Tên Học Phần" />
-            <TableColumn fx:id="colHK" prefWidth="60.0" text="Học Kỳ" />
-            <TableColumn fx:id="colNam" prefWidth="79.20001220703125" text="Năm" />
-            <TableColumn fx:id="colXem" prefWidth="178.39998168945317" text="Xem SV" />
-        </columns>
-    </TableView>
-
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.GV.PhanCong">
+    <top>
+        <Label prefHeight="65.0" prefWidth="239.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Thông Tin Giảng Dạy" BorderPane.alignment="TOP_LEFT">
+            <BorderPane.margin>
+                <Insets left="10.0" />
+            </BorderPane.margin>
+        </Label>
+    </top>
+    <center>
+        <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="custom-table-view" stylesheets="@../style.css">
+            <TableView fx:id="tablePhanCong" layoutX="14.0" layoutY="14.0" prefHeight="360.0" prefWidth="570.0" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
+                <columns>
+                    <TableColumn fx:id="colMaMM" prefWidth="80" text="Mã Môn Mở" />
+                    <TableColumn fx:id="colTenHP" prefWidth="180.0" text="Tên Học Phần" />
+                    <TableColumn fx:id="colHK" prefWidth="60.0" text="Học Kỳ" />
+                    <TableColumn fx:id="colNam" prefWidth="79.2" text="Năm" />
+                    <TableColumn fx:id="colXem" prefWidth="178.4" text="Xem SV" />
+                </columns>
+            </TableView>
+        </AnchorPane>
+    </center>
+</BorderPane>

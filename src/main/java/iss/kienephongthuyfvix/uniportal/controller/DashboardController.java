@@ -1,6 +1,8 @@
 package iss.kienephongthuyfvix.uniportal.controller;
 
 import com.jfoenix.controls.JFXButton;
+import iss.kienephongthuyfvix.uniportal.controller.GV.ShowSinhVien;
+import iss.kienephongthuyfvix.uniportal.controller.SV.DangKyHP;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,6 +56,7 @@ public class DashboardController {
 
             case "Nhân viên Phòng Công tác Sinh viên":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Quản lý sinh viên", "#NVCTSV_QLSV"));
                 break;
 
             case "Nhân viên Phòng Khảo thí":
@@ -72,7 +75,9 @@ public class DashboardController {
                 break;
 
             case "Giảng viên":
-                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinGiangVien"));
+                sidebarButtons.add(createButton("Phân công giảng dạy", "#GV_PCGD"));
+                sidebarButtons.add(createButton("Sinh viên", "#GV_SV"));
                 break;
         }
         sidebarContainer.getChildren().addAll(sidebarButtons);
@@ -128,10 +133,22 @@ public class DashboardController {
                 ThongTinSinhVien(new ActionEvent());
                 break;
             case "#DangKyHP":
-                // Handle DangKyHP action
+                DangKyHP(new ActionEvent());
                 break;
             case "#KetQuaHT":
-                // Handle KetQuaHT action
+                KetQuaHT(new ActionEvent());
+                break;
+            case "#NVCTSV_QLSV":
+                NVCTSV_QLSV(new ActionEvent());
+                break;
+            case "#ThongTinGiangVien":
+                ThongTinGiangVien(new ActionEvent());
+                break;
+            case "#GV_PCGD":
+                PhanCongGiangDay(new ActionEvent());
+                break;
+            case "#GV_SV":
+                GVShowSinhVien(new ActionEvent());
                 break;
             // Add more cases for other actions
         }
@@ -203,6 +220,56 @@ public class DashboardController {
     @FXML
     void ThongTinSinhVien(ActionEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/thong-tin.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void DangKyHP(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/dang-ky-hp.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void KetQuaHT(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/ket-qua-ht.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void NVCTSV_QLSV(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVCTSV/ql-sinhvien.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void ThongTinGiangVien(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/thong-tin.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void PhanCongGiangDay(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/phan-cong.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+
+    @FXML
+    void GVShowSinhVien(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/show-sinh-vien.fxml"));
+        Parent fxml = loader.load();
+
+        String maKhoaGV = "TOAN_CS1"; // -> thay bằng mã khoa của current user
+
+        ShowSinhVien controller = loader.getController();
+        controller.setMaKhoa(maKhoaGV);
+
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
