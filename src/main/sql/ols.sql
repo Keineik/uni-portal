@@ -58,21 +58,21 @@ BEGIN
     -- Cấp bậc: Trưởng đơn vị > Nhân viên > Sinh viên
     SA_COMPONENTS.CREATE_LEVEL(
         policy_name => 'OLS_THONGBAO',
-        level_num => 30,
+        level_num => 3000,
         short_name => 'TRGDV',
         long_name => 'Trưởng đơn vị'
     );
     
     SA_COMPONENTS.CREATE_LEVEL(
         policy_name => 'OLS_THONGBAO',
-        level_num => 20,
+        level_num => 2000,
         short_name => 'NV',
         long_name => 'Nhân viên'
     );
     
     SA_COMPONENTS.CREATE_LEVEL(
         policy_name => 'OLS_THONGBAO',
-        level_num => 10,
+        level_num => 1000,
         short_name => 'SV',
         long_name => 'Sinh viên'
     );
@@ -87,7 +87,7 @@ BEGIN
     -- Khoa Toán
     SA_COMPONENTS.CREATE_COMPARTMENT(
         policy_name => 'OLS_THONGBAO',
-        comp_num => 1,
+        comp_num => 10,
         short_name => 'TOAN',
         long_name => 'Khoa Toán Tin'
     );
@@ -95,7 +95,7 @@ BEGIN
     -- Khoa Lý
     SA_COMPONENTS.CREATE_COMPARTMENT(
         policy_name => 'OLS_THONGBAO',
-        comp_num => 2,
+        comp_num => 20,
         short_name => 'LY',
         long_name => 'Khoa Vật lý'
     );
@@ -103,7 +103,7 @@ BEGIN
     -- Khoa Hóa
     SA_COMPONENTS.CREATE_COMPARTMENT(
         policy_name => 'OLS_THONGBAO',
-        comp_num => 3,
+        comp_num => 30,
         short_name => 'HOA',
         long_name => 'Khoa Hóa học'
     );
@@ -111,7 +111,7 @@ BEGIN
     -- Hành chính
     SA_COMPONENTS.CREATE_COMPARTMENT(
         policy_name => 'OLS_THONGBAO',
-        comp_num => 4,
+        comp_num => 40,
         short_name => 'HC',
         long_name => 'Hành chính'
     );
@@ -137,17 +137,31 @@ BEGIN
 END;
 /
 
+
+
 -- Áp dụng chính sách OLS vào bảng THONGBAO
 BEGIN
     SA_POLICY_ADMIN.APPLY_TABLE_POLICY(
         policy_name => 'OLS_THONGBAO',
         schema_name => 'QLDAIHOC',
         table_name => 'THONGBAO',
-        table_options => 'NO_CONTROL'
+        table_options => 'READ_CONTROL'
+    );
+END;
+
+-- Gán toàn bộ label (full access) vào acc admin
+BEGIN
+    
+    SA_USER_ADMIN.SET_USER_LABELS(
+        policy_name    => 'OLS_THONGBAO',
+        user_name      => 'QLDAIHOC',
+        max_read_label => 'TRGDV:TOAN,LY,HOA,HC:CS1,CS2',
+        max_write_label => 'TRGDV:TOAN,LY,HOA,HC:CS1,CS2',
+        def_label      => 'TRGDV:TOAN,LY,HOA,HC:CS1,CS2',
+        row_label      => 'TRGDV:TOAN,LY,HOA,HC:CS1,CS2'
     );
 END;
 /
-
 -- =========================
 -- Stored Procedures
 -- =========================
@@ -174,12 +188,11 @@ BEGIN
             END IF;
             
             -- Trưởng đơn vị chỉ đọc thông báo của đơn vị và cơ sở mình
-            -- Không có quyền ghi
             SA_USER_ADMIN.SET_USER_LABELS(
                 policy_name => 'OLS_THONGBAO',
                 user_name => trgdv_rec.MANV,
                 max_read_label => 'TRGDV:' || v_linhvuc || ':' || trgdv_rec.COSO,
-                max_write_label => 'NV::', -- Không có quyền viết
+                max_write_label => 'TRGDV:' || v_linhvuc || ':' || trgdv_rec.COSO,
                 def_label => 'TRGDV:' || v_linhvuc || ':' || trgdv_rec.COSO,
                 row_label => 'TRGDV:' || v_linhvuc || ':' || trgdv_rec.COSO
             );
@@ -230,7 +243,7 @@ BEGIN
                 policy_name => 'OLS_THONGBAO',
                 user_name => nv_rec.MANV,
                 max_read_label => v_read_label,
-                max_write_label => 'NV::', -- Không có quyền viết
+                max_write_label => v_read_label,
                 def_label => v_read_label,
                 row_label => v_read_label
             );
@@ -275,7 +288,7 @@ BEGIN
                 policy_name => 'OLS_THONGBAO',
                 user_name => sv_rec.MASV,
                 max_read_label => v_read_label,
-                max_write_label => 'SV::', -- Không có quyền viết
+                max_write_label => v_read_label,
                 def_label => v_read_label,
                 row_label => v_read_label
             );
@@ -324,9 +337,9 @@ CREATE OR REPLACE PROCEDURE USP_DBA_ThemThongBao(
     v_coso VARCHAR2(10);
 BEGIN
     -- Kiểm tra người dùng có phải là SYSDBA
-    IF SYS_CONTEXT('USERENV', 'ISDBA') != 'TRUE' THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Chỉ DBA mới có thể thực hiện procedure này');
-    END IF;
+--    IF SYS_CONTEXT('USERENV', 'ISDBA') != 'TRUE' THEN
+--        RAISE_APPLICATION_ERROR(-20001, 'Chỉ DBA mới có thể thực hiện procedure này');
+--    END IF;
     
     -- Chuyển đổi tên dài của cấp bậc thành tên ngắn
     CASE p_capbac_name
@@ -373,13 +386,8 @@ BEGIN
     v_label := v_capbac || ':' || v_linhvuc || ':' || v_coso;
     
     -- Insert thông báo với nhãn OLS tương ứng (đã bỏ cột NGUOITAO)
-    INSERT INTO THONGBAO(TIEUDE, NOIDUNG, NGAYTAO, CAPBAC, LINHVUC, COSO)
-    VALUES(p_tieude, p_noidung, SYSDATE, v_capbac, v_linhvuc, v_coso);
-    
-    -- Gán nhãn OLS cho dòng mới nhất
-    UPDATE THONGBAO 
-    SET OLS_LABEL = CHAR_TO_LABEL('OLS_THONGBAO', v_label)
-    WHERE MATB = (SELECT MAX(MATB) FROM THONGBAO);
+    INSERT INTO THONGBAO(TIEUDE, NOIDUNG, NGAYTAO, CAPBAC, LINHVUC, COSO, OLS_LABEL)
+    VALUES(p_tieude, p_noidung, SYSDATE, v_capbac, v_linhvuc, v_coso, CHAR_TO_LABEL('OLS_THONGBAO', v_label));
     
     COMMIT;
 EXCEPTION

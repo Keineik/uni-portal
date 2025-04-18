@@ -46,29 +46,36 @@ public class DashboardController {
 
             case "Trưởng đơn vị":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 break;
 
             case "Sinh viên":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinSinhVien"));
+                sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 sidebarButtons.add(createButton("Đăng ký học phần", "#DangKyHP"));
                 sidebarButtons.add(createButton("Kết quả học tập", "#KetQuaHT"));
                 break;
 
             case "Nhân viên Phòng Công tác Sinh viên":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 sidebarButtons.add(createButton("Quản lý sinh viên", "#NVCTSV_QLSV"));
                 break;
 
             case "Nhân viên Phòng Khảo thí":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
+                sidebarButtons.add(createButton("Quản lý điểm", "#NVPKT_QLD"));
                 break;
 
             case "Nhân viên Phòng Tổ chức Hành chính":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 break;
 
             case "Nhân viên Phòng Đào tạo":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 sidebarButtons.add(createButton("Quản lí sinh viên", "#PDT_QLSV"));
                 sidebarButtons.add(createButton("Quản lí môn học", "#PDT_QLMH"));
                 sidebarButtons.add(createButton("Quản lí đăng ký học phần", "#PDT_QLDK"));
@@ -76,6 +83,7 @@ public class DashboardController {
 
             case "Giảng viên":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinGiangVien"));
+                sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 sidebarButtons.add(createButton("Phân công giảng dạy", "#GV_PCGD"));
                 sidebarButtons.add(createButton("Sinh viên", "#GV_SV"));
                 break;
@@ -150,7 +158,12 @@ public class DashboardController {
             case "#GV_SV":
                 GVShowSinhVien(new ActionEvent());
                 break;
-            // Add more cases for other actions
+            case "#ThongBao":
+                TrangThongBao(new ActionEvent());
+                break;
+            case "#NVPKT_QLD":
+                NVPKT_QLD(new ActionEvent());
+                break;
         }
     }
 
@@ -270,6 +283,20 @@ public class DashboardController {
         ShowSinhVien controller = loader.getController();
         controller.setMaKhoa(maKhoaGV);
 
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void TrangThongBao(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVCB/thong-bao.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void NVPKT_QLD(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPKT/ql-diem.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
