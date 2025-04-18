@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.DBA.QuanLyRole">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.DBA.QuanLyRole">
 
     <VBox spacing="10" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Quản lý Role" />
             <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
-            <Button fx:id="createRoleButton" styleClass="white-green-button" stylesheets="@../style.css" text="➕ Tạo Role" textFill="WHITE">
+            <Button fx:id="createRoleButton" styleClass="white-green-button" stylesheets="@../style.css"  onAction="#openCreateRole" text="➕ Tạo Role" textFill="WHITE">
                 <font>
                     <Font name="System Bold" size="15.0" />
                 </font>
@@ -41,8 +34,8 @@
 
         <TableView fx:id="roleListView" prefHeight="527.0" prefWidth="800.0" styleClass="custom-table-view" stylesheets="@../style.css">
             <columns>
-                <TableColumn fx:id="roleNameColumn" prefWidth="349.0" text="Tên Role" />
-                <TableColumn fx:id="actionColumn" maxWidth="748.0" prefWidth="699.0" text="" />
+                <TableColumn fx:id="roleNameColumn" prefWidth="902.0" text="Tên Role" />
+                <TableColumn fx:id="actionColumn" maxWidth="748.0" prefWidth="146.0" text="" />
             </columns>
         </TableView>
     </VBox>

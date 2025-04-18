@@ -1,9 +1,12 @@
 package iss.kienephongthuyfvix.uniportal.controller.DBA;
 
+import com.jfoenix.controls.JFXCheckBox;
 import iss.kienephongthuyfvix.uniportal.dao.Database;
+import iss.kienephongthuyfvix.uniportal.dao.ObjectDao;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,35 +15,35 @@ import java.util.List;
 public class CapQuyen {
 
     private Connection connection;
+    private ObjectDao objectDao;
 
     @FXML private ToggleGroup granteeTypeGroup;
     @FXML private RadioButton userRadio;
     @FXML private RadioButton roleRadio;
 
-    @FXML private CheckBox selectCheckBox;
-    @FXML private CheckBox insertCheckBox;
-    @FXML private CheckBox updateCheckBox;
-    @FXML private CheckBox deleteCheckBox;
-    @FXML private CheckBox executeCheckBox;
+    @FXML private JFXCheckBox selectCheckBox;
+    @FXML private JFXCheckBox insertCheckBox;
+    @FXML private JFXCheckBox updateCheckBox;
+    @FXML private JFXCheckBox deleteCheckBox;
+    @FXML private JFXCheckBox executeCheckBox;
 
-    @FXML private CheckBox selectGrantOption;
-    @FXML private CheckBox insertGrantOption;
-    @FXML private CheckBox updateGrantOption;
-    @FXML private CheckBox deleteGrantOption;
-    @FXML private CheckBox executeGrantOption;
+    @FXML private JFXCheckBox selectGrantOption;
+    @FXML private JFXCheckBox insertGrantOption;
+    @FXML private JFXCheckBox updateGrantOption;
+    @FXML private JFXCheckBox deleteGrantOption;
+    @FXML private JFXCheckBox executeGrantOption;
 
     @FXML private AnchorPane updateColumnPermissionPane;
 
     @FXML private ChoiceBox<String> granteeChoiceBox;
     @FXML private ChoiceBox<String> objectTypeChoiceBox;
     @FXML private ChoiceBox<String> objectNameChoiceBox;
-    @FXML private Button grantButton;
 
     @FXML
     public void initialize() {
-
         try {
             connection = Database.getConnection();
+            objectDao = new ObjectDao(connection); // Initialize ObjectDao
         } catch (SQLException e) {
             showAlert("Lỗi kết nối", "Không thể kết nối tới CSDL: " + e.getMessage(), Alert.AlertType.ERROR);
             return;
@@ -71,15 +74,29 @@ public class CapQuyen {
         loadDataIntoChoiceBoxes();
 
         userRadio.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) loadDataIntoChoiceBoxes();
+            if (newValue) {
+                hideAllGrantOptions();
+                loadDataIntoChoiceBoxes();
+            }
         });
 
         roleRadio.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) loadDataIntoChoiceBoxes();
         });
+
+        objectTypeChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            boolean isProcedureOrFunction = "PROCEDURE".equalsIgnoreCase(newVal) || "FUNCTION".equalsIgnoreCase(newVal);
+            executeCheckBox.setVisible(isProcedureOrFunction);
+            executeCheckBox.setManaged(isProcedureOrFunction);
+
+            if (!isProcedureOrFunction) {
+                executeCheckBox.setSelected(false);
+                executeGrantOption.setVisible(false);
+            }
+        });
     }
 
-    private void bindGrantOptionVisibility(CheckBox mainCheckBox, CheckBox grantOptionCheckBox) {
+    private void bindGrantOptionVisibility(JFXCheckBox mainCheckBox, JFXCheckBox grantOptionCheckBox) {
         grantOptionCheckBox.setVisible(false);
         grantOptionCheckBox.managedProperty().bind(grantOptionCheckBox.visibleProperty());
         mainCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> grantOptionCheckBox.setVisible(newVal));
@@ -91,6 +108,8 @@ public class CapQuyen {
         updateGrantOption.setVisible(false);
         deleteGrantOption.setVisible(false);
         executeGrantOption.setVisible(false);
+        executeCheckBox.setVisible(false);
+        executeCheckBox.setManaged(false);
     }
 
     private void updateColumnPermissionVisibility() {
@@ -113,109 +132,139 @@ public class CapQuyen {
                 return;
             }
 
-            Statement stmt = connection.createStatement();
-
             String grantee = granteeChoiceBox.getValue();
-            String objectType = objectTypeChoiceBox.getValue();
             String objectName = objectNameChoiceBox.getValue();
-
-            String fullObjectName = objectName;
 
             if (grantee == null || grantee.isEmpty() || objectName == null || objectName.isEmpty()) {
                 showAlert("Lỗi", "Vui lòng chọn đầy đủ thông tin cấp quyền!", Alert.AlertType.ERROR);
                 return;
             }
 
-            List<String> permissionClauses = new ArrayList<>();
-            boolean hasGrantOption = false;
+            List<String> normalPermissions = new ArrayList<>();
+            List<String> grantOptionPermissions = new ArrayList<>();
 
             if (selectCheckBox.isSelected()) {
-                permissionClauses.add("SELECT");
-                if (selectGrantOption.isSelected()) hasGrantOption = true;
+                if (selectGrantOption.isSelected()) {
+                    grantOptionPermissions.add("SELECT");
+                } else {
+                    normalPermissions.add("SELECT");
+                }
             }
 
+            // INSERT
             if (insertCheckBox.isSelected()) {
-                permissionClauses.add("INSERT");
-                if (insertGrantOption.isSelected()) hasGrantOption = true;
+                if (insertGrantOption.isSelected()) {
+                    grantOptionPermissions.add("INSERT");
+                } else {
+                    normalPermissions.add("INSERT");
+                }
             }
 
+            // UPDATE
             if (updateCheckBox.isSelected()) {
                 List<String> updateColumns = getSelectedColumns(updateColumnPermissionPane);
                 if (!updateColumns.isEmpty()) {
-                    permissionClauses.add("UPDATE (" + String.join(", ", updateColumns) + ")");
+                    String updateClause = "UPDATE (" + String.join(", ", updateColumns) + ")";
+                    if (updateGrantOption.isSelected()) {
+                        grantOptionPermissions.add("UPDATE");
+                    } else {
+                        normalPermissions.add("UPDATE");
+                    }
                 } else {
-                    permissionClauses.add("UPDATE");
+                    if (updateGrantOption.isSelected()) {
+                        grantOptionPermissions.add("UPDATE");
+                    } else {
+                        normalPermissions.add("UPDATE");
+                    }
                 }
-                if (updateGrantOption.isSelected()) hasGrantOption = true;
             }
 
+            // DELETE
             if (deleteCheckBox.isSelected()) {
-                permissionClauses.add("DELETE");
-                if (deleteGrantOption.isSelected()) hasGrantOption = true;
+                if (deleteGrantOption.isSelected()) {
+                    grantOptionPermissions.add("DELETE");
+                } else {
+                    normalPermissions.add("DELETE");
+                }
             }
 
+            // EXECUTE
             if (executeCheckBox.isSelected()) {
-                permissionClauses.add("EXECUTE");
-                if (executeGrantOption.isSelected()) hasGrantOption = true;
+                if (executeGrantOption.isSelected()) {
+                    grantOptionPermissions.add("EXECUTE");
+                } else {
+                    normalPermissions.add("EXECUTE");
+                }
             }
 
-            if (permissionClauses.isEmpty()) {
+            if (normalPermissions.isEmpty() && grantOptionPermissions.isEmpty()) {
                 showAlert("Thông báo", "Vui lòng chọn ít nhất một quyền!", Alert.AlertType.WARNING);
                 return;
             }
 
-            String baseQuery = "GRANT " + String.join(", ", permissionClauses)
-                    + " ON " + fullObjectName
-                    + " TO " + grantee;
-
-            if (hasGrantOption) {
-                baseQuery += " WITH GRANT OPTION";
+            if (!normalPermissions.isEmpty()) {
+                String grantSQL = buildGrantSQL(normalPermissions, objectName, grantee, false);
+                try (PreparedStatement stmt = connection.prepareStatement(grantSQL)) {
+                    stmt.executeUpdate();
+                    System.out.println("Executing SQL: " + grantSQL);
+                }
             }
 
-            System.out.println("Executing SQL: " + baseQuery);
-            stmt.executeUpdate(baseQuery);
+            if (!grantOptionPermissions.isEmpty()) {
+                String grantSQL = buildGrantSQL(grantOptionPermissions, objectName, grantee, true);
+                try (PreparedStatement stmt = connection.prepareStatement(grantSQL)) {
+                    stmt.executeUpdate();
+                    System.out.println("Executing SQL: " + grantSQL);
+                }
+            }
 
             showAlert("Cấp quyền thành công", "Đã cấp quyền cho " + grantee, Alert.AlertType.INFORMATION);
+            handleCancel(); // clear the form after successful grant
+
         } catch (SQLException e) {
+            e.printStackTrace();
             showAlert("Lỗi khi cấp quyền", e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
+    private String buildGrantSQL(List<String> permissions, String objectName, String grantee, boolean withGrantOption) {
+        String sql = "GRANT " + String.join(", ", permissions)
+                + " ON " + objectName
+                + " TO " + grantee;
+        if (withGrantOption) {
+            sql += " WITH GRANT OPTION";
+        }
+        return sql;
+    }
 
     private List<String> getSelectedColumns(AnchorPane pane) {
         List<String> selected = new ArrayList<>();
-        for (var node : pane.getChildren()) {
-            if (node instanceof CheckBox checkBox && checkBox.isSelected()) {
-                selected.add(checkBox.getText());
-            }
-        }
+        collectSelectedColumns(pane, selected);
         return selected;
     }
 
+    private void collectSelectedColumns(javafx.scene.Parent parent, List<String> selected) {
+        for (javafx.scene.Node node : parent.getChildrenUnmodifiable()) {
+            if (node instanceof JFXCheckBox checkBox && checkBox.isSelected()) {
+                selected.add(checkBox.getText());
+            } else if (node instanceof javafx.scene.Parent childParent) {
+                collectSelectedColumns(childParent, selected);
+            }
+        }
+    }
+
+
     private void loadDataIntoChoiceBoxes() {
         try {
-            Statement stmt = connection.createStatement();
-
+            List<String> grantees = objectDao.getGrantees(userRadio.isSelected());
             granteeChoiceBox.getItems().clear();
-            if (userRadio.isSelected()) {
-                String query = "SELECT DISTINCT GRANTEE FROM DBA_ROLE_PRIVS WHERE GRANTED_ROLE LIKE 'RL_%'";
-                ResultSet rs = stmt.executeQuery(query);
-                while (rs.next()) {
-                    granteeChoiceBox.getItems().add(rs.getString("GRANTEE"));
-                }
-            } else if (roleRadio.isSelected()) {
-                String query = "SELECT DISTINCT GRANTED_ROLE FROM DBA_ROLE_PRIVS WHERE GRANTED_ROLE LIKE 'RL_%'";
-                ResultSet rs = stmt.executeQuery(query);
-                while (rs.next()) {
-                    granteeChoiceBox.getItems().add(rs.getString("GRANTED_ROLE"));
-                }
-            }
+            granteeChoiceBox.getItems().addAll(grantees);
 
             objectTypeChoiceBox.getItems().clear();
-            objectTypeChoiceBox.getItems().addAll("TABLE", "VIEW", "PROCEDURE", "FUNCTION");
+            objectTypeChoiceBox.getItems().addAll(objectDao.getObjectTypes());
 
             objectTypeChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-                loadObjectNames(newVal, stmt);
+                loadObjectNames(newVal);
             });
 
         } catch (SQLException e) {
@@ -223,17 +272,11 @@ public class CapQuyen {
         }
     }
 
-    private void loadObjectNames(String objectType, Statement stmt) {
+    private void loadObjectNames(String objectType) {
         try {
-            String query = "SELECT OBJECT_NAME FROM ALL_OBJECTS WHERE OWNER = 'QLDAIHOC' AND OBJECT_TYPE = ?";
-            PreparedStatement ps = stmt.getConnection().prepareStatement(query);
-            ps.setString(1, objectType);
-            ResultSet rs = ps.executeQuery();
-
+            List<String> objectNames = objectDao.getObjectNames(objectType);
             objectNameChoiceBox.getItems().clear();
-            while (rs.next()) {
-                objectNameChoiceBox.getItems().add(rs.getString("OBJECT_NAME"));
-            }
+            objectNameChoiceBox.getItems().addAll(objectNames);
         } catch (SQLException e) {
             showAlert("Lỗi khi tải tên đối tượng", e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -242,13 +285,8 @@ public class CapQuyen {
     private void loadColumnsForTable(String tableName) {
         updateColumnPermissionPane.getChildren().clear();
 
-        try (Connection connection = Database.getConnection()) {
-            String query = "SELECT COLUMN_NAME FROM ALL_TAB_COLUMNS WHERE TABLE_NAME = ? AND OWNER = 'QLDAIHOC'";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, tableName.toUpperCase());
-            ResultSet rs = ps.executeQuery();
-
-            int y = 33;
+        try {
+            List<String> columns = objectDao.getTableColumns(tableName);
 
             Label updateLabel = new Label("Phân quyền UPDATE theo cột");
             updateLabel.setLayoutX(10);
@@ -256,20 +294,60 @@ public class CapQuyen {
             updateLabel.setStyle("-fx-text-fill: #0000008c; -fx-font-weight: bold;");
             updateColumnPermissionPane.getChildren().add(updateLabel);
 
-            while (rs.next()) {
-                String col = rs.getString("COLUMN_NAME");
+            GridPane gridPane = new GridPane();
+            gridPane.setLayoutX(16);
+            gridPane.setLayoutY(33);
+            gridPane.setHgap(20); // Khoảng cách ngang giữa các cột
+            gridPane.setVgap(10); // Khoảng cách dọc giữa các hàng
 
-                CheckBox updateBox = new CheckBox(col);
-                updateBox.setLayoutX(16);
-                updateBox.setLayoutY(y);
-                updateColumnPermissionPane.getChildren().add(updateBox);
+            int column = 0;
+            int row = 0;
 
-                y += 30;
+            for (String col : columns) {
+                JFXCheckBox updateBox = new JFXCheckBox(col);
+                gridPane.add(updateBox, column, row);
+
+                column++;
+                if (column >= 3) {
+                    column = 0;
+                    row++;
+                }
             }
+
+            updateColumnPermissionPane.getChildren().add(gridPane);
 
         } catch (SQLException e) {
             showAlert("Lỗi khi tải danh sách cột", e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    @FXML
+    public void handleCancel() {
+        // Clear checkboxes
+        selectCheckBox.setSelected(false);
+        insertCheckBox.setSelected(false);
+        updateCheckBox.setSelected(false);
+        deleteCheckBox.setSelected(false);
+        executeCheckBox.setSelected(false);
+
+        // Clear WITH GRANT OPTION checkboxes
+        selectGrantOption.setSelected(false);
+        insertGrantOption.setSelected(false);
+        updateGrantOption.setSelected(false);
+        deleteGrantOption.setSelected(false);
+        executeGrantOption.setSelected(false);
+
+        // Clear choiceboxes
+        granteeChoiceBox.getSelectionModel().clearSelection();
+        objectTypeChoiceBox.getSelectionModel().clearSelection();
+        objectNameChoiceBox.getSelectionModel().clearSelection();
+
+        // Clear radio buttons
+        granteeTypeGroup.selectToggle(null);
+
+        // Clear update column permission pane
+        updateColumnPermissionPane.setVisible(false);
+        updateColumnPermissionPane.getChildren().clear();
     }
 
     private void showAlert(String title, String content, Alert.AlertType type) {

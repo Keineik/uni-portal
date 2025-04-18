@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import com.jfoenix.controls.JFXCheckBox?>
 <AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.DBA.CapQuyen">
 
     <Label layoutX="35.0" layoutY="10.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Cấp quyền truy cập">
@@ -32,21 +33,21 @@
                     <Font name="System Bold" size="12.0" />
                 </font>
             </Label>
-            <ChoiceBox fx:id="granteeChoiceBox" layoutX="453.0" layoutY="39.0" prefHeight="25.0" prefWidth="472.0" />
+            <ChoiceBox fx:id="granteeChoiceBox" layoutX="453.0" layoutY="39.0" prefHeight="25.0" prefWidth="472.0" styleClass="custom-combobox" stylesheets="@../style.css" />
 
             <Label layoutX="14.0" layoutY="81.0" text="Loại đối tượng dữ liệu" textFill="#0000008c">
                 <font>
                     <Font name="System Bold" size="12.0" />
                 </font>
             </Label>
-            <ChoiceBox fx:id="objectTypeChoiceBox" layoutX="14.0" layoutY="105.0" prefHeight="25.0" prefWidth="389.0" />
+            <ChoiceBox fx:id="objectTypeChoiceBox" layoutX="14.0" layoutY="105.0" prefHeight="25.0" prefWidth="389.0" styleClass="custom-combobox" stylesheets="@../style.css" />
 
             <Label layoutX="454.0" layoutY="84.0" text="Tên đối tượng dữ liệu" textFill="#0000008c">
                 <font>
                     <Font name="System Bold" size="12.0" />
                 </font>
             </Label>
-            <ChoiceBox fx:id="objectNameChoiceBox" layoutX="452.0" layoutY="105.0" prefHeight="25.0" prefWidth="472.0" />
+            <ChoiceBox fx:id="objectNameChoiceBox" layoutX="452.0" layoutY="105.0" prefHeight="25.0" prefWidth="472.0" styleClass="custom-combobox" stylesheets="@../style.css" />
         </children>
     </AnchorPane>
 
@@ -57,11 +58,11 @@
                     <Font name="System Bold" size="12.0" />
                 </font>
             </Label>
-            <CheckBox fx:id="selectCheckBox" layoutX="13.0" layoutY="28.0" text="SELECT" />
-            <CheckBox fx:id="insertCheckBox" layoutX="93.0" layoutY="28.0" text="INSERT" />
-            <CheckBox fx:id="updateCheckBox" layoutX="173.0" layoutY="28.0" text="UPDATE" />
-            <CheckBox fx:id="deleteCheckBox" layoutX="263.0" layoutY="28.0" text="DELETE" />
-            <CheckBox fx:id="executeCheckBox" layoutX="353.0" layoutY="28.0" text="EXECUTE" />
+            <JFXCheckBox fx:id="selectCheckBox" layoutX="13.0" layoutY="28.0" text="SELECT" />
+            <JFXCheckBox fx:id="insertCheckBox" layoutX="93.0" layoutY="28.0" text="INSERT" />
+            <JFXCheckBox fx:id="updateCheckBox" layoutX="173.0" layoutY="28.0" text="UPDATE" />
+            <JFXCheckBox fx:id="deleteCheckBox" layoutX="263.0" layoutY="28.0" text="DELETE" />
+            <JFXCheckBox fx:id="executeCheckBox" layoutX="353.0" layoutY="28.0" text="EXECUTE" />
         </children>
     </AnchorPane>
 
@@ -83,17 +84,17 @@
                     <Font name="System Bold" size="12.0" />
                 </font>
             </Label>
-            <CheckBox fx:id="selectGrantOption" layoutX="14.0" layoutY="41.0" text="SELECT with GRANT OPTION" />
-            <CheckBox fx:id="insertGrantOption" layoutX="208.0" layoutY="41.0" text="INSERT with GRANT OPTION" />
-            <CheckBox fx:id="updateGrantOption" layoutX="399.0" layoutY="41.0" text="UPDATE with GRANT OPTION" />
-            <CheckBox fx:id="deleteGrantOption" layoutX="596.0" layoutY="41.0" text="DELETE with GRANT OPTION" />
-            <CheckBox fx:id="executeGrantOption" layoutX="794.0" layoutY="41.0" text="EXECUTE with GRANT OPTION" />
+            <JFXCheckBox fx:id="selectGrantOption" layoutX="14.0" layoutY="41.0" text="SELECT with GRANT OPTION" />
+            <JFXCheckBox fx:id="insertGrantOption" layoutX="208.0" layoutY="41.0" text="INSERT with GRANT OPTION" />
+            <JFXCheckBox fx:id="updateGrantOption" layoutX="399.0" layoutY="41.0" text="UPDATE with GRANT OPTION" />
+            <JFXCheckBox fx:id="deleteGrantOption" layoutX="596.0" layoutY="41.0" text="DELETE with GRANT OPTION" />
+            <JFXCheckBox fx:id="executeGrantOption" layoutX="794.0" layoutY="41.0" text="EXECUTE with GRANT OPTION" />
         </children>
     </AnchorPane>
 
     <Group layoutX="11.0" layoutY="541.0" />
 
-    <Button fx:id="cancelButton" layoutX="788.0" layoutY="660.0" prefHeight="34.0" prefWidth="69.0" style="-fx-background-color: white;" styleClass="cancel-button" stylesheets="@../style.css" text="Hủy bỏ">
+    <Button fx:id="cancelButton" layoutX="788.0" layoutY="660.0" prefHeight="34.0" prefWidth="69.0" style="-fx-background-color: white;" styleClass="cancel-button" stylesheets="@../style.css" onAction="#handleCancel" text="Hủy bỏ">
         <font>
             <Font name="System Bold" size="12.0" />
         </font>
