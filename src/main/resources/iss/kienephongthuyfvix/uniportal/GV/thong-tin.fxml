@@ -15,7 +15,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.GV.ThongTinGV">
     <top>
-        <Label prefHeight="65.0" prefWidth="239.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Thông Tin Giảng Viên" BorderPane.alignment="TOP_LEFT">
+        <Label prefHeight="65.0" prefWidth="239.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Thông Tin Cá Nhân" BorderPane.alignment="TOP_LEFT">
             <BorderPane.margin>
                 <Insets left="10.0" />
             </BorderPane.margin>

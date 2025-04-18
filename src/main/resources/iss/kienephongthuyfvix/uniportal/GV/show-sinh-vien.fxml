@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="iss.kienephongthuyfvix.uniportal.controller.GV.ShowSinhVien"
+            stylesheets="@../style.css">
+
+    <!-- Top Section with Label -->
+    <top>
+        <Label prefHeight="65.0" prefWidth="239.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Danh sách sinh viên đã đăng ký">
+            <BorderPane.margin>
+                <Insets left="10.0"/>
+            </BorderPane.margin>
+        </Label>
+    </top>
+
+    <!-- Center Section with TableView inside AnchorPane -->
+    <center>
+        <AnchorPane prefHeight="400.0" prefWidth="900.0" styleClass="custom-table-view">
+            <TableView fx:id="tableSinhVien" prefHeight="400.0" prefWidth="900.0" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+                <columns>
+                    <TableColumn fx:id="colMaSV" text="Mã SV" prefWidth="100"/>
+                    <TableColumn fx:id="colHoTen" text="Họ tên" prefWidth="150"/>
+                    <TableColumn fx:id="colPhai" text="Phái" prefWidth="60"/>
+                    <TableColumn fx:id="colNgaySinh" text="Ngày sinh" prefWidth="100"/>
+                    <TableColumn fx:id="colDiaChi" text="Địa chỉ" prefWidth="150"/>
+                    <TableColumn fx:id="colDienThoai" text="Điện thoại" prefWidth="100"/>
+                    <TableColumn fx:id="colKhoa" text="Khoa" prefWidth="100"/>
+                    <TableColumn fx:id="colTinhTrang" text="Tình trạng" prefWidth="100"/>
+                </columns>
+            </TableView>
+        </AnchorPane>
+    </center>
+</BorderPane>

@@ -40,6 +40,42 @@ public class SinhVienDAO {
         return sinhVien;
     }
 
+    public List<SinhVien> getSinhVienByMaMM(int maMM) throws SQLException {
+        List<SinhVien> sinhVienList = new ArrayList<>();
+        String query = "SELECT SV.* FROM SINHVIEN SV " +
+                "JOIN DANGKY DK ON SV.MASV = DK.MASV " +
+                "WHERE DK.MAMM = ?";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, maMM);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                sinhVienList.add(SinhVien.fromResultSet(rs));
+            }
+        }
+        return sinhVienList;
+    }
+
+    public List<SinhVien> getSinhVienByKhoa(String khoa) throws SQLException {
+        List<SinhVien> sinhVienList = new ArrayList<>();
+        String query = "SELECT * FROM SINHVIEN WHERE KHOA = ?";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, khoa);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                sinhVienList.add(SinhVien.fromResultSet(rs));
+            }
+        }
+        return sinhVienList;
+    }
+
     public void insertSinhVien(SinhVien sinhVien) throws SQLException {
         String query = "INSERT INTO SINHVIEN VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL)";
 
