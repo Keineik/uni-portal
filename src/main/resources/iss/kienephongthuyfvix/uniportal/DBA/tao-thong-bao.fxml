@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.DBA.PhatThongBao">
+<AnchorPane prefHeight="558.0" prefWidth="783.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.DBA.TaoThongBao">
 
      <Label layoutX="20.0" layoutY="20.0" text="Tạo Thông Báo Mới">
          <font>
@@ -16,63 +16,63 @@
          </font>
      </Label>
 
-     <TextField fx:id="titleField" layoutX="21.0" layoutY="65.0" prefHeight="25.0" prefWidth="752.0" promptText="Nhập tiêu đề thông báo..." />
+     <TextField fx:id="titleField" layoutX="16.0" layoutY="67.0" prefHeight="25.0" prefWidth="752.0" promptText="Nhập tiêu đề thông báo..." />
 
-     <TextArea fx:id="contentArea" layoutX="20.0" layoutY="105.0" prefHeight="199.0" prefRowCount="6" prefWidth="752.0" promptText="Nhập nội dung thông báo..." />
-   <AnchorPane layoutX="20.0" layoutY="322.0" prefHeight="146.0" prefWidth="752.0" styleClass="light-white-box" stylesheets="@../style.css">
+     <TextArea fx:id="contentArea" layoutX="16.0" layoutY="103.0" prefHeight="199.0" prefRowCount="6" prefWidth="752.0" promptText="Nhập nội dung thông báo..." />
+   <AnchorPane layoutX="16.0" layoutY="321.0" prefHeight="146.0" prefWidth="752.0" styleClass="light-white-box" stylesheets="@../style.css">
       <children>
              <Label layoutX="11.0" layoutY="8.0" text="Cơ sở" textFill="#0000007d">
             <font>
                <Font size="14.0" />
             </font></Label>
-         <CheckBox layoutX="70.0" layoutY="9.0" mnemonicParsing="false" text="Cơ sở 1">
+         <JFXCheckBox fx:id="coso1Check" layoutX="70.0" layoutY="9.0" mnemonicParsing="false" text="Cơ sở 1">
             <font>
                <Font size="14.0" />
-            </font></CheckBox>
-         <CheckBox layoutX="70.0" layoutY="37.0" mnemonicParsing="false" prefWidth="82.0" text="Cơ sở 2">
+            </font></JFXCheckBox>
+         <JFXCheckBox fx:id="coso2Check" layoutX="70.0" layoutY="37.0" mnemonicParsing="false" prefWidth="82.0" text="Cơ sở 2">
             <font>
                <Font size="14.0" />
-            </font></CheckBox>
+            </font></JFXCheckBox>
       
              <Label layoutX="438.0" layoutY="6.0" text="Cấp bậc" textFill="#0000007d">
             <font>
                <Font size="14.0" />
             </font></Label>
       
-             <Label layoutX="8.0" layoutY="99.0" text="Lĩnh vực" textFill="#0000007d">
+             <Label layoutX="11.0" layoutY="105.0" text="Lĩnh vực" textFill="#0000007d">
             <font>
                <Font size="14.0" />
             </font></Label>
-         <CheckBox layoutX="513.0" layoutY="6.0" mnemonicParsing="false" text="Trưởng đơn vị">
+         <JFXCheckBox fx:id="trgdvCheck" layoutX="513.0" layoutY="6.0" mnemonicParsing="false" text="Trưởng đơn vị">
             <font>
                <Font size="14.0" />
-            </font></CheckBox>
-         <CheckBox layoutX="513.0" layoutY="34.0" mnemonicParsing="false" text="Nhân viên">
+            </font></JFXCheckBox>
+         <JFXCheckBox fx:id="nvCheck" layoutX="513.0" layoutY="34.0" mnemonicParsing="false" text="Nhân viên">
             <font>
                <Font size="14.0" />
-            </font></CheckBox>
-         <CheckBox layoutX="513.0" layoutY="64.0" mnemonicParsing="false" text="Sinh viên">
+            </font></JFXCheckBox>
+         <JFXCheckBox fx:id="svCheck" layoutX="513.0" layoutY="64.0" mnemonicParsing="false" text="Sinh viên">
             <font>
                <Font size="14.0" />
-            </font></CheckBox>
-         <CheckBox layoutX="73.0" layoutY="99.0" mnemonicParsing="false" text="Toán">
+            </font></JFXCheckBox>
+         <JFXCheckBox fx:id="toanCheck" layoutX="70.0" layoutY="105.0" mnemonicParsing="false" text="Toán">
             <font>
                <Font size="14.0" />
-            </font></CheckBox>
-         <CheckBox layoutX="147.0" layoutY="99.0" mnemonicParsing="false" text="Lý">
+            </font></JFXCheckBox>
+         <JFXCheckBox fx:id="lyCheck" layoutX="144.0" layoutY="105.0" mnemonicParsing="false" text="Lý">
             <font>
                <Font size="14.0" />
-            </font></CheckBox>
-         <CheckBox layoutX="206.0" layoutY="99.0" mnemonicParsing="false" text="Hóa">
+            </font></JFXCheckBox>
+         <JFXCheckBox fx:id="hoaCheck" layoutX="203.0" layoutY="105.0" mnemonicParsing="false" text="Hóa">
             <font>
                <Font size="14.0" />
-            </font></CheckBox>
-         <CheckBox layoutX="276.0" layoutY="98.0" mnemonicParsing="false" text="Hành chính">
+            </font></JFXCheckBox>
+         <JFXCheckBox fx:id="hcCheck" layoutX="273.0" layoutY="104.0" mnemonicParsing="false" text="Hành chính">
             <font>
                <Font size="14.0" />
-            </font></CheckBox>
+            </font></JFXCheckBox>
       </children>
    </AnchorPane>
-      <Button layoutX="550.0" layoutY="532.0" prefHeight="30.0" prefWidth="96.0" style="-fx-background-color: white; -fx-font-weight: bold;" styleClass="cancel-button" stylesheets="@../style.css" text="Hủy" />
-      <Button layoutX="656.0" layoutY="531.0" prefHeight="30.0" prefWidth="122.0" style="-fx-font-weight: bold;" styleClass="white-green-button" stylesheets="@../style.css" text="Gửi Thông Báo" />
+      <Button fx:id="cancelButton" layoutX="672.0" layoutY="501.0" prefHeight="30.0" prefWidth="96.0" style="-fx-background-color: white; -fx-font-weight: bold;" styleClass="cancel-button" stylesheets="@../style.css" text="Hủy" />
+      <Button fx:id="submitButton" layoutX="540.0" layoutY="501.0" prefHeight="30.0" prefWidth="122.0" style="-fx-font-weight: bold;" styleClass="white-green-button" stylesheets="@../style.css" text="Gửi Thông Báo" />
 </AnchorPane>
