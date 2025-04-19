@@ -53,7 +53,7 @@ public class PhanCong {
     }
 
     private void loadPhanCong() throws SQLException {
-        List<MoMon> moMons = moMonDAO.getAllMoMon();
+        List<MoMon> moMons = moMonDAO.getAllMoMonGV();
         ObservableList<MoMon> data = FXCollections.observableArrayList();
 
         for (MoMon m : moMons) {

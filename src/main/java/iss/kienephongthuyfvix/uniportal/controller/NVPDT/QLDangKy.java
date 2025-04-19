@@ -76,7 +76,7 @@ public class QLDangKy {
     private void loadDangKyData() {
         dangKyData.clear();
         try {
-            dangKyData.addAll(dangKyDAO.getAllDangKyWithHocPhanDetails());
+            dangKyData.addAll(dangKyDAO.getAllDangKyWithHocPhanDetailsNVPDT());
             dangKyListView.setItems(dangKyData);
         } catch (SQLException e) {
             e.printStackTrace();

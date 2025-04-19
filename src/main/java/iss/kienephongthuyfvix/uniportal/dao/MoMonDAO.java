@@ -12,8 +12,24 @@ public class MoMonDAO {
 
     public List<MoMon> getAllMoMon() throws SQLException {
         List<MoMon> moMonList = new ArrayList<>();
-        String query = "SELECT MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH" +
-                " FROM MOMON JOIN HOCPHAN ON MOMON.MAHP = HOCPHAN.MAHP";
+        String query = "SELECT UV_NVPDT_MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH" +
+                " FROM UV_NVPDT_MOMON JOIN HOCPHAN ON UV_NVPDT_MOMON.MAHP = HOCPHAN.MAHP";
+
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                moMonList.add(MoMon.fromResultSet(rs));
+            }
+        }
+        return moMonList;
+    }
+
+    public List<MoMon> getAllMoMonGV() throws SQLException {
+        List<MoMon> moMonList = new ArrayList<>();
+        String query = "SELECT UV_GV_MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH" +
+                " FROM UV_GV_MOMON JOIN HOCPHAN ON UV_GV_MOMON.MAHP = HOCPHAN.MAHP";
 
         try (Connection conn = Database.getConnection();
              Statement stmt = conn.createStatement();
@@ -27,7 +43,7 @@ public class MoMonDAO {
     }
 
     public void insertMoMon(MoMon moMon) throws SQLException {
-        String query = "INSERT INTO MOMON (MAHP, MAGV, HK, NAM) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO UV_NVPDT_MOMON (MAHP, MAGV, HK, NAM) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -41,7 +57,7 @@ public class MoMonDAO {
     }
 
     public void updateMoMon(MoMon moMon) throws SQLException {
-        String query = "UPDATE MOMON SET MAHP = ?, MAGV = ?, HK = ?, NAM = ? WHERE MAMM = ?";
+        String query = "UPDATE UV_NVPDT_MOMON SET MAHP = ?, MAGV = ?, HK = ?, NAM = ? WHERE MAMM = ?";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -56,7 +72,7 @@ public class MoMonDAO {
     }
 
     public void deleteMoMon(int mamm) throws SQLException {
-        String query = "DELETE FROM MOMON WHERE MAMM = ?";
+        String query = "DELETE FROM UV_NVPDT_MOMON WHERE MAMM = ?";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -68,7 +84,7 @@ public class MoMonDAO {
 
     public List<Pair<String, String>> getListHocPhan() throws SQLException {
         List<Pair<String, String>> hocPhanList = new ArrayList<>();
-        String query = "SELECT MAMM, TENHP FROM HOCPHAN JOIN MOMON ON HOCPHAN.MAHP = MOMON.MAHP";
+        String query = "SELECT MAMM, TENHP FROM HOCPHAN JOIN UV_NVPDT_MOMON ON HOCPHAN.MAHP = UV_NVPDT_MOMON.MAHP";
 
         try (Connection conn = Database.getConnection();
              Statement stmt = conn.createStatement();
@@ -84,16 +100,14 @@ public class MoMonDAO {
     }
 
     public List<MoMon> getAllDaDangKy(String maSV) throws SQLException {
-        String query = "SELECT MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
-                "FROM DANGKY JOIN MOMON ON DANGKY.MAMM = MOMON.MAMM" +
-                " JOIN HOCPHAN ON MOMON.MAHP = HOCPHAN.MAHP" +
-                " WHERE DANGKY.MASV = ?";
+        String query = "SELECT UV_SV_MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
+                "FROM DANGKY JOIN UV_SV_MOMON ON DANGKY.MAMM = UV_SV_MOMON.MAMM" +
+                " JOIN HOCPHAN ON UV_SV_MOMON.MAHP = HOCPHAN.MAHP";
         List<MoMon> monDDKList = new ArrayList<>();
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setString(1, maSV);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -104,19 +118,17 @@ public class MoMonDAO {
     }
 
     public List<MoMon> getAllChuaDangKy(String maSV) throws SQLException {
-        String query = "SELECT MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
-                        "FROM HOCPHAN JOIN MOMON ON MOMON.MAHP = HOCPHAN.MAHP " +
+        String query = "SELECT UV_SV_MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
+                        "FROM HOCPHAN JOIN UV_SV_MOMON ON UV_SV_MOMON.MAHP = HOCPHAN.MAHP " +
                         "MINUS " +
-                        "SELECT MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
-                        "FROM DANGKY JOIN MOMON ON DANGKY.MAMM = MOMON.MAMM " +
-                        "JOIN HOCPHAN ON MOMON.MAHP = HOCPHAN.MAHP " +
-                        "WHERE DANGKY.MASV = ?";
+                        "SELECT UV_SV_MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH " +
+                        "FROM DANGKY JOIN UV_SV_MOMON ON DANGKY.MAMM = UV_SV_MOMON.MAMM " +
+                        "JOIN HOCPHAN ON UV_SV_MOMON.MAHP = HOCPHAN.MAHP ";
         List<MoMon> monCDKList = new ArrayList<>();
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setString(1, maSV);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {

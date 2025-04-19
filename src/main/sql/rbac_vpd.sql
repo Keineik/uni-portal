@@ -185,7 +185,7 @@ END;
 -----   theo nguyện vọng của sinh viên. Dữ liệu về điểm số liên quan các dòng đăng ký học phần đều mang giá trị NULL. 
 ----- Người dùng có vai trò "NV PKT” có quyền xem dữ liệu đăng ký học phần của SV và được quyền cập nhật các trường liên quan đến điểm số (theo bảng điểm do giảng viên quyết định).
 ----- Người dùng có vai trò "GV” có quyền xem danh sách lớp, bảng điểm các lớp học phần mà giảng viên đó phụ trách giảng dạy.
-GRANT SELECT, INSERT, UPDATE, DELETE ON DANGKY TO RL_SV, RL_GV;
+GRANT SELECT, INSERT, UPDATE, DELETE ON DANGKY TO RL_SV, RL_NV_PDT;
 GRANT SELECT, UPDATE ON DANGKY TO RL_NV_PKT;
 GRANT SELECT ON DANGKY TO RL_GV;
 /
@@ -273,6 +273,10 @@ BEGIN
     );
 END;
 /
+
+-- Những bảng còn lại không có chính sách bảo mật thì
+-- cho phép tất cả người dùng có quyền truy cập đọc
+GRANT SELECT ON HOCPHAN TO RL_NVCB, RL_GV, RL_NV_PDT, RL_NV_PKT, RL_NV_TCHC, RL_NV_CTSV, RL_TRGDV, RL_SV;
 
 -- ======================================================
 -- ======= Kiểm tra các cơ chế kiểm soát truy cập =======

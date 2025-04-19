@@ -25,6 +25,23 @@ public class DangKyDAO {
         return dangKyList;
     }
 
+    public List<DangKy> getAllDangKyWithHocPhanDetailsNVPDT() throws SQLException {
+        List<DangKy> dangKyList = new ArrayList<>();
+        String query = "SELECT DANGKY.*, UV_NVPDT_MOMON.HK, UV_NVPDT_MOMON.NAM, HOCPHAN.* " +
+                "FROM DANGKY JOIN UV_NVPDT_MOMON ON DANGKY.MAMM = UV_NVPDT_MOMON.MAMM" +
+                " JOIN HOCPHAN ON UV_NVPDT_MOMON.MAHP = HOCPHAN.MAHP";
+
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                dangKyList.add(DangKy.fromResultSet(rs));
+            }
+        }
+        return dangKyList;
+    }
+
     public void insertDangKy(String maSV, int maMM) throws SQLException {
         String query = "INSERT INTO DANGKY (MASV, MAMM, DIEMTH, DIEMQT, DIEMTHI, DIEMTK) VALUES (?, ?, NULL, NULL, NULL, NULL)";
 
