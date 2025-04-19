@@ -23,6 +23,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -31,6 +33,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CreateRole {
     private Connection connection;
@@ -54,6 +57,9 @@ public class CreateRole {
     private TableColumn<Privilege, String> typeColumn;
     @FXML
     private TableColumn<Privilege, String> privilegesColumn;
+
+    @FXML
+    private TableColumn<Privilege, String> actionsColumn;
 
     private final ObservableList<Privilege> privilegeList = FXCollections.observableArrayList();
 
@@ -83,8 +89,10 @@ public class CreateRole {
             return;
         }
 
+        executeCheckBox.setVisible(false);
+        executeCheckBox.setManaged(false);
+
         if (updateColumnPermissionPane != null && updateCheckBox != null && objectNameChoiceBox != null && objectTypeChoiceBox != null){
-            System.out.println("safafad");
             updateColumnPermissionPane.setVisible(false);
             updateColumnPermissionPane.managedProperty().bind(updateColumnPermissionPane.visibleProperty());
 
@@ -101,6 +109,11 @@ public class CreateRole {
 
             objectTypeChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
                 boolean isProcedureOrFunction = "PROCEDURE".equalsIgnoreCase(newVal) || "FUNCTION".equalsIgnoreCase(newVal);
+                selectCheckBox.setVisible(!isProcedureOrFunction);
+                insertCheckBox.setVisible(!isProcedureOrFunction);
+                updateCheckBox.setVisible(!isProcedureOrFunction);
+                deleteCheckBox.setVisible(!isProcedureOrFunction);
+
                 executeCheckBox.setVisible(isProcedureOrFunction);
                 executeCheckBox.setManaged(isProcedureOrFunction);
 
@@ -109,21 +122,56 @@ public class CreateRole {
                 }
             });
 
-
-            // Bind columns to Privilege properties
-//            if (objectColumn != null && typeColumn != null && privilegesColumn != null) {
-//                objectColumn.setCellValueFactory(new PropertyValueFactory<>("object"));
-//                typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-//                privilegesColumn.setCellValueFactory(new PropertyValueFactory<>("privileges"));
-//            } else {
-//                System.err.println("Table columns are not initialized.");
-//            }
-
             privilegesTable.setItems(privilegeList);
+            Tooltip tooltip = new Tooltip("Double click để xem chi tiết");
+            Tooltip.install(privilegesTable, tooltip);
+
+            tooltip.setShowDelay(Duration.millis(10));
+            tooltip.setHideDelay(Duration.millis(300));
             if (objectColumn != null && typeColumn != null && privilegesColumn != null) {
                 objectColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getObject()));
                 typeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType()));
                 privilegesColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDisplayPrivileges()));
+                actionsColumn.setCellFactory(column -> new TableCell<>() {
+                    private final Button deleteButton = new Button();
+
+                    {
+                        // Set up the delete button with the trash icon
+                        FontIcon trashIcon = new FontIcon("fas-trash");
+                        trashIcon.setIconSize(12);
+                        deleteButton.setGraphic(trashIcon);
+                        deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+
+                        // Handle delete button click
+                        deleteButton.setOnAction(event -> {
+                            Privilege privilege = getTableView().getItems().get(getIndex());
+
+                            Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+                            confirmDialog.setTitle("Xác nhận xóa quyền");
+                            confirmDialog.setHeaderText("Bạn có chắc chắn muốn xóa quyền này?");
+                            confirmDialog.setContentText(privilege.toString());
+
+                            Optional<ButtonType> result = confirmDialog.showAndWait();
+                            if (result.isPresent() && result.get() == ButtonType.OK) {
+                                privilegeList.remove(privilege);
+                                privilegesTable.setItems(FXCollections.observableArrayList(privilegeList));
+                                System.out.println("Đã xóa quyền: " + privilege);
+                            } else {
+                                System.out.println("Hủy xóa quyền.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || getIndex() >= privilegeList.size()) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(deleteButton);
+                        }
+                    }
+                });
             } else {
                 System.err.println("Table columns are not initialized.");
             }
@@ -138,12 +186,6 @@ public class CreateRole {
                 }
             });
         }
-    }
-
-    private void bindGrantOptionVisibility(CheckBox mainCheckBox, CheckBox grantOptionCheckBox) {
-        grantOptionCheckBox.setVisible(false);
-        grantOptionCheckBox.managedProperty().bind(grantOptionCheckBox.visibleProperty());
-        mainCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> grantOptionCheckBox.setVisible(newVal));
     }
 
     private void updateColumnPermissionVisibility() {
@@ -179,7 +221,6 @@ public class CreateRole {
     }
 
     private void hideAllGrantOptions() {
-
         executeCheckBox.setVisible(false);
         executeCheckBox.setManaged(false);
     }
@@ -188,6 +229,10 @@ public class CreateRole {
         updateColumnPermissionPane.getChildren().clear();
 
         try {
+            if (tableName == null || tableName.trim().isEmpty()) {
+                System.out.println("Table name is null or empty");
+                return;
+            }
             List<String> columns = objectDao.getTableColumns(tableName);
 
             Label updateLabel = new Label("Phân quyền UPDATE theo cột");
@@ -231,6 +276,12 @@ public class CreateRole {
         List<String> grantOptions = new ArrayList<>();
         List<String> updateColumns = new ArrayList<>();
 
+        // Validate that object and type are not null or empty
+        if (object == null || object.isBlank() || type == null || type.isBlank()) {
+            showAlert("Lỗi", "Hãy chọn đối tượng và loại đối tượng trước khi thêm quyền.", Alert.AlertType.ERROR);
+            return;
+        }
+
         // Check SELECT permission and grant option
         if (selectCheckBox.isSelected()) {
             privileges.add("SELECT");
@@ -269,7 +320,6 @@ public class CreateRole {
         Privilege privilege = new Privilege(object, type, privileges, grantOptions, updateColumns);
         privilegeList.add(privilege);
 
-        // Optionally, update your TableView or any other UI components here
         privilegesTable.setItems(FXCollections.observableArrayList(privilegeList));
         clearPrivilegeSelections();
     }

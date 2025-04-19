@@ -8,6 +8,7 @@ public class Privilege {
     private List<String> privileges;
     private List<String> withGrantOption;
     private List<String> updateColumns;
+    private List<String> originalPrivileges;
 
     public Privilege(String object, String type, List<String> privileges, List<String> withGrantOption, List<String> updateColumns) {
         this.object = object;
@@ -90,5 +91,13 @@ public class Privilege {
         }
         if (sb.length() > 0) sb.setLength(sb.length() - 2); // remove trailing comma
         return sb.toString();
+    }
+
+    public List<String> getOriginalPrivileges() {
+        return originalPrivileges;
+    }
+
+    public void setOriginalPrivileges(List<String> originalPrivileges) {
+        this.originalPrivileges = originalPrivileges;
     }
 }

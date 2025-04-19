@@ -7,7 +7,7 @@
 
 <AnchorPane prefHeight="700" prefWidth="870" styleClass="combo-box" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.DBA.CreateRole">
        <Label layoutX="50.0" layoutY="16.0" text="Tên Role" />
-       <TextField fx:id="roleNameField" layoutX="40.0" layoutY="39.0" prefHeight="25.0" prefWidth="335.0" promptText="Nhập tên role" />
+       <TextField fx:id="roleNameField" layoutX="43.0" layoutY="39.0" prefHeight="27.0" prefWidth="332.0" promptText="Nhập tên role" />
        <VBox layoutX="52.0" layoutY="166.0" spacing="5" />
        <VBox layoutX="418.0" layoutY="166.0" spacing="5" />
       <Button fx:id="cancelButton" layoutX="717.0" layoutY="664.0" prefHeight="27.0" prefWidth="87.0" style="-fx-font-weight: bold;" styleClass="cancel-button" stylesheets="@../style.css" text="Hủy" />

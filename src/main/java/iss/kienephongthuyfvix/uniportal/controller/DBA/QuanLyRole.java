@@ -1,15 +1,15 @@
 package iss.kienephongthuyfvix.uniportal.controller.DBA;
 
-import com.jfoenix.controls.JFXCheckBox;
-import iss.kienephongthuyfvix.uniportal.dao.Database;
 import iss.kienephongthuyfvix.uniportal.dao.ObjectDao;
 import iss.kienephongthuyfvix.uniportal.dao.RoleDao;
 import iss.kienephongthuyfvix.uniportal.model.Privilege;
 import iss.kienephongthuyfvix.uniportal.model.Role;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,9 +17,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 import javafx.scene.layout.GridPane;
 
@@ -54,21 +56,33 @@ public class QuanLyRole {
 
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
         if (roleListView != null) {
             roleNameColumn.setCellValueFactory(new PropertyValueFactory<>("roleName"));
             addActionColumn();
-            try {
-                loadRoleList();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            loadRoleList();
+
+            Tooltip tooltip = new Tooltip("Double click để xem chi tiết");
+            Tooltip.install(roleListView, tooltip);
+
+            tooltip.setShowDelay(Duration.millis(10));
+            tooltip.setHideDelay(Duration.millis(300));
+
+            roleListView.setRowFactory(tv -> {
+                TableRow<Role> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && !row.isEmpty()) {
+                        Role selectedRole = row.getItem();
+                        showPrivilegesForRole(selectedRole);
+                    }
+                });
+                return row;
+            });
+
         }
 
         if (searchField != null) {
-            searchField.setOnKeyReleased(event -> {
-                System.out.println("Key released: " + event.getText());
-            });
+            searchField.setOnKeyReleased(this::handleSearch);
         } else {
             System.err.println("searchField is not initialized.");
         }
@@ -91,6 +105,9 @@ public class QuanLyRole {
                         editButton.setGraphic(new FontIcon("fas-pen"));
                         editButton.getStyleClass().add("action-button");
                         editButton.setOnAction(e -> {
+//                            System.out.println("Danh sách Role trong bảng:");
+//                            getTableView().getItems().forEach(System.out::println);
+
                             Role role = getTableView().getItems().get(getIndex());
                             openEditRoleDialog(role);
                         });
@@ -116,6 +133,54 @@ public class QuanLyRole {
             }
         });
     }
+
+    private void showPrivilegesForRole(Role role) {
+        try {
+            List<Privilege> privileges = roleDao.getPrivilegesByRole(role.getRoleName());
+            if (privileges.isEmpty()) {
+                showAlert("Thông báo", "Role này không có quyền nào.", Alert.AlertType.INFORMATION);
+                return;
+            }
+
+            showAllPrivilegesPopup(privileges, role.getRoleName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Lỗi", "Không thể tải danh sách quyền: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void showAllPrivilegesPopup(List<Privilege> privileges, String roleName) {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.WINDOW_MODAL);
+        popupStage.initOwner(roleListView.getScene().getWindow());
+
+        TableView<Privilege> table = new TableView<>();
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        TableColumn<Privilege, String> objectCol = new TableColumn<>("Object");
+        objectCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getObject()));
+
+        TableColumn<Privilege, String> typeCol = new TableColumn<>("Type");
+        typeCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType()));
+
+        TableColumn<Privilege, String> privilegesCol = new TableColumn<>("Privileges");
+        privilegesCol.setCellValueFactory(data -> new SimpleStringProperty(String.join(", ", data.getValue().getPrivileges())));
+
+        TableColumn<Privilege, String> updateColsCol = new TableColumn<>("Update Columns");
+        updateColsCol.setCellValueFactory(data -> new SimpleStringProperty(String.join(", ", data.getValue().getUpdateColumns())));
+
+        table.getColumns().addAll(objectCol, typeCol, privilegesCol, updateColsCol);
+        table.setItems(FXCollections.observableArrayList(privileges));
+
+        VBox vbox = new VBox(10, table);
+        vbox.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(vbox, 700, 400);
+        popupStage.setScene(scene);
+        popupStage.setTitle("Chi tiết quyền của role: " + roleName);
+        popupStage.show();
+    }
+
 
     @FXML
     public void openCreateRole() {
@@ -184,47 +249,28 @@ public class QuanLyRole {
             }
         });
     }
-    private void openEditRoleDialog(Role role) {
+
+    public void openEditRoleDialog(Role roleToEdit) {
+//        System.out.println("roleToEdit: " + (roleToEdit == null ? "null" : roleToEdit.getRoleName()));
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/edit-role.fxml"));
             Parent root = loader.load();
 
-            TextField roleNameField = (TextField) root.lookup("#roleNameField");
-            Button saveButton = (Button) root.lookup("#saveButton");
-            Button cancelButton = (Button) root.lookup("#cancelButton");
+            EditRole controller = loader.getController();
+//            System.out.println("Controller instance: " + loader.getController());
+            controller.setRoleToEdit(roleToEdit);
 
-            roleNameField.setText(role.getRoleName());
+            Stage stage = new Stage();
+            stage.setTitle(roleToEdit == null ? "Create Role" : "Edit Role");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
 
-            saveButton.setOnAction(e -> {
-                role.setRoleName(roleNameField.getText());
-
-                try {
-                    roleDao.updateRole(role);
-                    loadRoleList();
-                    Stage stage = (Stage) root.getScene().getWindow();
-                    stage.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "Error updating role: " + ex.getMessage());
-                    alert.showAndWait();
-                }
-            });
-
-            cancelButton.setOnAction(e -> {
-                Stage stage = (Stage) root.getScene().getWindow();
-                stage.close();
-            });
-
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Chỉnh sửa Role");
-            dialogStage.setScene(new Scene(root));
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setResizable(false);
-            dialogStage.showAndWait();
-
-        } catch (IOException e) {
-            System.err.println("Error loading the edit role dialog: " + e.getMessage());
+            loadRoleList();
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
+            showAlert("Error", "Error opening the Create Role dialog: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 

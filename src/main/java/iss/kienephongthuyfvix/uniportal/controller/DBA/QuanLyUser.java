@@ -1,6 +1,7 @@
 package iss.kienephongthuyfvix.uniportal.controller.DBA;
 
 import iss.kienephongthuyfvix.uniportal.dao.UserDao;
+import iss.kienephongthuyfvix.uniportal.model.Privilege;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,9 +15,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,6 +56,12 @@ public class QuanLyUser {
     @FXML
     public void initialize() {
         initUserTableIfAvailable();
+        Tooltip tooltip = new Tooltip("Double click để xem chi tiết");
+        Tooltip.install(userListView, tooltip);
+
+        tooltip.setShowDelay(Duration.millis(10));
+        tooltip.setHideDelay(Duration.millis(300));
+
         setupCreateUserButton();
         setupCreateUserForm();
         if (searchField != null) {
@@ -68,6 +77,7 @@ public class QuanLyUser {
                             || user.getRoles().stream().anyMatch(role -> role.toLowerCase().contains(lowerCaseFilter));
                 });
             });
+
         }
     }
 
@@ -93,6 +103,28 @@ public class QuanLyUser {
 
             filteredUsers = new FilteredList<>(masterUserList, p -> true);
             userListView.setItems(filteredUsers);
+
+//            userListView.setRowFactory(tv -> {
+//                TableRow<User> row = new TableRow<>();
+//                Tooltip tooltip = new Tooltip("Double click để xem chi tiết");
+//                row.setTooltip(tooltip);
+//                return row;
+//            });
+
+
+            userListView.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) { // Double click
+                    User selectedUser = userListView.getSelectionModel().getSelectedItem();
+                    if (selectedUser != null) {
+                        try {
+                            showAllPrivilegesForUser(selectedUser.getUsername());
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            });
+
         }
     }
 
@@ -105,28 +137,6 @@ public class QuanLyUser {
     private void setupCreateUserForm() {
         if ( multiRoleListView != null && createButton != null && cancelButton != null) {
             multiRoleListView.setItems(FXCollections.observableArrayList("RL_NVCB","RL_GV" ,"RL_NV_PDT" ,"RL_NV_PKT" ,"RL_NV_TCHC" ,"RL_NV_CTSV" ,"RL_TRGDV" ,"RL_SV"));
-
-            createButton.setOnAction(e -> {
-                String username = usernameField.getText().trim();
-                List<String> selectedRoles = multiRoleListView.getSelectionModel().getSelectedItems();
-
-                System.out.println("Tạo user: " + username + " với các role: " + selectedRoles);
-
-                try {
-                    User newUser = new User(username, String.valueOf(selectedRoles));
-                    userDao.createUser(newUser);
-
-                    masterUserList.add(newUser);
-                    filteredUsers.setAll(masterUserList);
-                    Stage stage = (Stage) createButton.getScene().getWindow();
-                    stage.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "Error creating user: " + ex.getMessage());
-                    alert.showAndWait();
-                }
-            });
-
 
             cancelButton.setOnAction(e -> {
                 Stage stage = (Stage) cancelButton.getScene().getWindow();
@@ -203,6 +213,8 @@ public class QuanLyUser {
                         .map(Map.Entry::getKey)
                         .collect(Collectors.toList());
 
+                System.out.println("Tạo user: " + username + " với các role: " + selectedRoles);
+
                 if (username.isEmpty() || selectedRoles.isEmpty()) {
                     Alert alert = new Alert(Alert.AlertType.WARNING, "Vui lòng nhập đầy đủ thông tin và chọn ít nhất một role.");
                     alert.showAndWait();
@@ -216,9 +228,17 @@ public class QuanLyUser {
                 }
 
                 User newUser = new User(username, String.join(",", selectedRoles));
-                masterUserList.add(newUser);
+                try {
+                    userDao.createUser(newUser);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
 
-                Stage stage = (Stage) root.getScene().getWindow();
+                masterUserList.add(newUser);
+//                filteredUsers.setAll(masterUserList);
+
+                Stage stage = (Stage) createButton.getScene().getWindow();
+                showAlert("Thành công", "Tạo user thành công", Alert.AlertType.INFORMATION);
                 stage.close();
             });
 
@@ -238,6 +258,14 @@ public class QuanLyUser {
             System.err.println("Lỗi khi mở hộp thoại tạo user: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void showAlert(String title, String content, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
 
@@ -287,6 +315,16 @@ public class QuanLyUser {
                     content.getChildren().addAll(roleLabel, deleteButton);
                     content.setAlignment(Pos.CENTER_LEFT);
                 }
+//                @Override
+//                protected void updateItem(String role, boolean empty) {
+//                    super.updateItem(role, empty);
+//                    if (empty || role == null) {
+//                        setGraphic(null);
+//                    } else {
+//                        roleLabel.setText(String.join(", ", currentRoles));
+//                        setGraphic(content);
+//                    }
+//                }
 
                 @Override
                 protected void updateItem(String role, boolean empty) {
@@ -316,6 +354,7 @@ public class QuanLyUser {
                     userDao.updateUser(user);
                     userListView.refresh();
                     Stage stage = (Stage) root.getScene().getWindow();
+                    showAlert("Thành công", "Chỉnh sửa user thành công", Alert.AlertType.INFORMATION);
                     stage.close();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
@@ -342,6 +381,51 @@ public class QuanLyUser {
         }
     }
 
+    private void showAllPrivilegesForUser(String username) throws SQLException {
+        // Fetch privileges for the user
+        UserDao userDao = new UserDao();
+        List<Privilege> privileges = userDao.getPrivilegesByUser(username);
+
+        // Create the popup window
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.WINDOW_MODAL);
+        popupStage.initOwner(userListView.getScene().getWindow());
+
+        // TableView for displaying privileges
+        TableView<Privilege> table = new TableView<>();
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        // Define columns
+        TableColumn<Privilege, String> objectCol = new TableColumn<>("Object");
+        objectCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getObject()));
+
+        TableColumn<Privilege, String> typeCol = new TableColumn<>("Type");
+        typeCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType()));
+
+        TableColumn<Privilege, String> privilegesCol = new TableColumn<>("Privileges");
+        privilegesCol.setCellValueFactory(data -> new SimpleStringProperty(
+                String.join(", ", Optional.ofNullable(data.getValue().getPrivileges()).orElse(Collections.emptyList()))));
+
+        TableColumn<Privilege, String> updateColsCol = new TableColumn<>("Update Columns");
+        updateColsCol.setCellValueFactory(data -> new SimpleStringProperty(
+                String.join(", ", Optional.ofNullable(data.getValue().getUpdateColumns()).orElse(Collections.emptyList()))));
+
+        // Add columns to the table
+        table.getColumns().addAll(objectCol, typeCol, privilegesCol, updateColsCol);
+
+        // Populate the table with privileges
+        table.setItems(FXCollections.observableArrayList(privileges));
+
+        // Create layout and set scene
+        VBox vbox = new VBox(10, table);
+        vbox.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(vbox, 700, 400);
+        popupStage.setScene(scene);
+        popupStage.setTitle("Chi tiết quyền của user: " + username); // Display user name
+        popupStage.show();
+    }
+
 
     private void deleteUser(User user) {
         Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
@@ -360,6 +444,7 @@ public class QuanLyUser {
                     userDao.deleteUser(user);
                     masterUserList.remove(user);
                     System.out.println("Đã xóa user: " + user.getUsername());
+                    showAlert("Thành công", "Xóa user thành công", Alert.AlertType.INFORMATION);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Error deleting user: " + ex.getMessage());

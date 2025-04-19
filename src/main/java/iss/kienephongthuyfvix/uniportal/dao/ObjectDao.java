@@ -14,15 +14,24 @@ public class ObjectDao {
     // Fetch all grantees (users/roles) from the database
     public List<String> getGrantees(boolean isUser) throws SQLException {
         List<String> grantees = new ArrayList<>();
-        String query = isUser
-                ? "SELECT DISTINCT GRANTEE FROM DBA_ROLE_PRIVS WHERE GRANTED_ROLE LIKE 'RL_%'"
-                : "SELECT DISTINCT GRANTED_ROLE FROM DBA_ROLE_PRIVS WHERE GRANTED_ROLE LIKE 'RL_%'";
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
 
-        while (rs.next()) {
-            grantees.add(rs.getString(1));
+        String query = String.format(
+                "SELECT DISTINCT %s FROM DBA_ROLE_PRIVS rp " +
+                        "JOIN DBA_TAB_PRIVS tp ON rp.GRANTED_ROLE = tp.GRANTEE " +
+                        "JOIN DBA_USERS u ON rp.GRANTEE = u.USERNAME " +
+                        "WHERE tp.OWNER = 'QLDAIHOC' AND rp.GRANTEE != 'SYSTEM' " +
+                        "AND rp.GRANTED_ROLE NOT IN ('CONNECT', 'RESOURCE') " +
+                        "ORDER BY %s",
+                isUser ? "rp.GRANTEE" : "rp.GRANTED_ROLE",
+                isUser ? "rp.GRANTEE" : "rp.GRANTED_ROLE"
+        );
+
+        try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                grantees.add(rs.getString(1));
+            }
         }
+
         return grantees;
     }
 
@@ -52,6 +61,10 @@ public class ObjectDao {
 
     // Fetch columns of a specific table for column-based permissions
     public List<String> getTableColumns(String tableName) throws SQLException {
+        if (tableName == null) {
+            throw new IllegalArgumentException("Table name cannot be null");
+        }
+
         List<String> columns = new ArrayList<>();
         String query = "SELECT COLUMN_NAME FROM ALL_TAB_COLUMNS WHERE TABLE_NAME = ? AND OWNER = 'QLDAIHOC'";
         PreparedStatement ps = connection.prepareStatement(query);
