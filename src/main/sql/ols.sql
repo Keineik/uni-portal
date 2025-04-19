@@ -53,6 +53,8 @@ END;
 /
 EXEC SA_SYSDBA.ENABLE_POLICY ('OLS_THONGBAO');
 
+GRANT OLS_THONGBAO_DBA TO QLDAIHOC;
+
 -- a) Tạo Levels cho các cấp bậc
 BEGIN
     -- Cấp bậc: Trưởng đơn vị > Nhân viên > Sinh viên
@@ -148,6 +150,7 @@ BEGIN
         table_options => 'READ_CONTROL'
     );
 END;
+/
 
 -- Gán toàn bộ label (full access) vào acc admin
 BEGIN
