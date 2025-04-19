@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.SV.ThongTinSV">
+<BorderPane stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.SV.ThongTinSV">
     <top>
         <Label prefHeight="63.0" prefWidth="218.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Thông tin sinh viên" BorderPane.alignment="TOP_LEFT">
             <BorderPane.margin>
@@ -25,7 +25,7 @@
     </top>
     <center>
         <AnchorPane prefHeight="720.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
-            <TextField fx:id="hotenField" alignment="CENTER" editable="false" layoutX="434.0" layoutY="184.0" style="-fx-background-color: transparent;">
+            <TextField fx:id="hotenField" alignment="CENTER" editable="false" layoutX="434.0" layoutY="184.0" style="-fx-border-color: transparent;">
                 <font>
                     <Font name="System Bold" size="16.0" />
                 </font>
@@ -49,24 +49,24 @@
                 <children>
 
                     <Label text="Số điện thoại" textFill="#00000099" GridPane.rowIndex="4" />
-                    <TextField fx:id="dtField" editable="false" prefHeight="26.0" prefWidth="238.0" GridPane.rowIndex="5" />
+                    <TextField fx:id="dtField" prefHeight="26.0" prefWidth="238.0" GridPane.rowIndex="5" />
 
                     <Label text="Địa chỉ" textFill="#00000099" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <TextField fx:id="diachiField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <TextField fx:id="diachiField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                     <Label text="Giới tính" textFill="#00000099" GridPane.rowIndex="2" />
-                    <TextField fx:id="phaiField" editable="false" style="-fx-background-color: transparent;" GridPane.rowIndex="3" />
+                    <TextField fx:id="phaiField" editable="false" style="-fx-border-color: transparent;" GridPane.rowIndex="3" />
 
                     <Label text="Ngày sinh" textFill="#00000099" GridPane.columnIndex="1" />
-                    <TextField fx:id="ngsinhField" editable="false" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField fx:id="ngsinhField" editable="false" style="-fx-border-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <Label text="Tình trạng" textFill="#00000099" GridPane.rowIndex="6" />
-                    <TextField fx:id="tinhtrangField" editable="false" style="-fx-background-color: transparent;" GridPane.rowIndex="7" />
+                    <TextField fx:id="tinhtrangField" editable="false" style="-fx-border-color: transparent;" GridPane.rowIndex="7" />
 
                     <Label text="Khoa" textFill="#00000099" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                    <TextField fx:id="khoaField" editable="false" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <TextField fx:id="khoaField" editable="false" style="-fx-border-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                     <Label text="Mã sinh viên" />
-                    <TextField fx:id="masvField" editable="false" style="-fx-background-color: transparent;" GridPane.rowIndex="1" />
+                    <TextField fx:id="masvField" editable="false" style="-fx-border-color: transparent;" GridPane.rowIndex="1" />
                 </children>
             </GridPane>
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="465.0" pickOnBounds="true" preserveRatio="true">
@@ -74,7 +74,7 @@
                     <Image url="@../img/student.png" />
                 </image>
             </ImageView>
-         <Button fx:id="saveButton" layoutX="464.0" layoutY="585.0" mnemonicParsing="false" stylesheets="@../style.css" text="Cập nhật thông tin">
+         <Button layoutX="464.0" layoutY="585.0" mnemonicParsing="false" onAction="#saveChanges" stylesheets="@../style.css" text="Cập nhật thông tin">
             <graphic>
                <FontIcon iconColor="WHITE" iconLiteral="fas-pen-square">
                   <font>

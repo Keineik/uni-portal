@@ -32,17 +32,14 @@ public class ThongTinSV {
     private TextField phaiField;
 
     @FXML
-    private Button saveButton;
-
-    @FXML
     private TextField tinhtrangField;
 
     private final SinhVienDAO sinhVienDAO = new SinhVienDAO();
-    private final String maSV = "SV00000001"; // TODO: Please change this
+    private SinhVien sinhVien;
 
     @FXML
     private void initialize() throws SQLException {
-        SinhVien sinhVien = sinhVienDAO.getSinhVienByMaSV(maSV);
+        sinhVien = sinhVienDAO.getCurrentSinhVien();
         masvField.setText(sinhVien.getMaSV());
         hotenField.setText(sinhVien.getHoTen());
         ngsinhField.setText(sinhVien.getNgaySinh().toString());
@@ -55,6 +52,6 @@ public class ThongTinSV {
 
     @FXML
     private void saveChanges() throws SQLException {
-        sinhVienDAO.updateDiaChiSdt(maSV, diachiField.getText(), dtField.getText());
+        sinhVienDAO.updateDiaChiSdt(sinhVien.getMaSV(), diachiField.getText(), dtField.getText());
     }
 }

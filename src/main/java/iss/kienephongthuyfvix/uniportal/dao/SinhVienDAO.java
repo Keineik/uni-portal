@@ -8,6 +8,21 @@ import java.util.List;
 
 public class SinhVienDAO {
 
+    public SinhVien getCurrentSinhVien() throws SQLException {
+        SinhVien sinhVien = null;
+        String query = "SELECT * FROM SINHVIEN";
+
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                sinhVien = SinhVien.fromResultSet(rs);
+            }
+        }
+        return sinhVien;
+    }
+
     public List<SinhVien> getAllSinhVien() throws SQLException {
         List<SinhVien> sinhVienList = new ArrayList<>();
         String query = "SELECT * FROM SINHVIEN";

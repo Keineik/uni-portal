@@ -1,8 +1,11 @@
 package iss.kienephongthuyfvix.uniportal.controller.NVCB;
 
+import iss.kienephongthuyfvix.uniportal.dao.NhanVienDAO;
 import iss.kienephongthuyfvix.uniportal.model.NhanVien;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+
+import java.sql.SQLException;
 
 public class ThongTin {
 
@@ -25,7 +28,12 @@ public class ThongTin {
     @FXML
     private TextField madvField;
 
-    public void setNhanVien(NhanVien nhanVien) {
+    private final NhanVienDAO nhanVienDAO = new NhanVienDAO();
+    private NhanVien nhanVien;
+
+    @FXML
+    private void initialize() throws SQLException {
+        nhanVien = nhanVienDAO.getCurrentNhanVien();
         manvField.setText(nhanVien.getManv());
         hotenField.setText(nhanVien.getHoten());
         phaiField.setText(nhanVien.getPhai());
@@ -35,5 +43,10 @@ public class ThongTin {
         dtField.setText(nhanVien.getDt());
         vaitroField.setText(nhanVien.getVaitro());
         madvField.setText(nhanVien.getMadv());
+    }
+
+    @FXML
+    private void saveChanges() throws SQLException {
+        nhanVienDAO.updateSDTforNVCB(dtField.getText());
     }
 }

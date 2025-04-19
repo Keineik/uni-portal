@@ -1,5 +1,6 @@
 package iss.kienephongthuyfvix.uniportal;
 
+import iss.kienephongthuyfvix.uniportal.dao.Database;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,5 +24,6 @@ public class Main extends Application {
     @Override
     public void stop() {
         System.out.println("Application closing - performing cleanup");
+        Database.closeDataSource();
     }
 }

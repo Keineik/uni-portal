@@ -37,43 +37,43 @@ public class DashboardController {
         sidebarContainer.getChildren().clear();
         sidebarButtons.clear();
         switch (employeeType) {
-            case "DBA":
+            case "RL_ADMIN":
                 sidebarButtons.add(createButton("Quản lý user", "#QLUser"));
                 sidebarButtons.add(createButton("Quản lý role", "#QLRole"));
                 sidebarButtons.add(createButton("Cấp quyền", "#CapQuyen"));
                 sidebarButtons.add(createButton("Phát thông báo", "#PhatTB"));
                 break;
 
-            case "Trưởng đơn vị":
+            case "RL_TRGDV":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 break;
 
-            case "Sinh viên":
+            case "RL_SV":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinSinhVien"));
                 sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 sidebarButtons.add(createButton("Đăng ký học phần", "#DangKyHP"));
                 sidebarButtons.add(createButton("Kết quả học tập", "#KetQuaHT"));
                 break;
 
-            case "Nhân viên Phòng Công tác Sinh viên":
+            case "RL_NV_CTSV":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 sidebarButtons.add(createButton("Quản lý sinh viên", "#NVCTSV_QLSV"));
                 break;
 
-            case "Nhân viên Phòng Khảo thí":
+            case "RL_NV_PKT":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 sidebarButtons.add(createButton("Quản lý điểm", "#NVPKT_QLD"));
                 break;
 
-            case "Nhân viên Phòng Tổ chức Hành chính":
+            case "RL_NV_TCHC":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 break;
 
-            case "Nhân viên Phòng Đào tạo":
+            case "RL_NV_PDT":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 sidebarButtons.add(createButton("Quản lí sinh viên", "#PDT_QLSV"));
@@ -81,7 +81,7 @@ public class DashboardController {
                 sidebarButtons.add(createButton("Quản lí đăng ký học phần", "#PDT_QLDK"));
                 break;
 
-            case "Giảng viên":
+            case "RL_GV":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinGiangVien"));
                 sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 sidebarButtons.add(createButton("Phân công giảng dạy", "#GV_PCGD"));

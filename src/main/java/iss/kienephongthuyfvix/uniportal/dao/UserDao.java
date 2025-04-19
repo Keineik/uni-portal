@@ -95,7 +95,7 @@ public class UserDao {
         }
     }
 
-    private List<String> getRolesOfUser(String username, Connection conn) throws SQLException {
+    public List<String> getRolesOfUser(String username, Connection conn) throws SQLException {
         List<String> roles = new ArrayList<>();
         String sql = "SELECT GRANTED_ROLE FROM DBA_ROLE_PRIVS WHERE GRANTEE = ?";
 
@@ -110,6 +110,21 @@ public class UserDao {
             }
         }
         return roles;
+    }
+
+    public List<String> getCurrentUserRoles() throws SQLException {
+        try (Connection conn = Database.getConnection()) {
+            List<String> roles = new ArrayList<>();
+            String sql = "SELECT ROLE FROM SESSION_ROLES";
+
+            try (PreparedStatement stmt = conn.prepareStatement(sql);
+                 ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    roles.add(rs.getString("ROLE"));
+                }
+            }
+            return roles;
+        }
     }
 
     public List<Privilege> getPrivilegesByUser(String userName) throws SQLException {

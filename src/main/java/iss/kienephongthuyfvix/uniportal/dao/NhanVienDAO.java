@@ -7,6 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NhanVienDAO {
+    public NhanVien getCurrentNhanVien() throws SQLException {
+        String query = "SELECT * FROM UV_NVCB_NHANVIEN";
+        NhanVien nhanVien = null;
+
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                nhanVien = NhanVien.fromResultSet(rs);
+            }
+        }
+        return nhanVien;
+    }
+
+    public void updateSDTforNVCB(String sdt) throws SQLException {
+        String query = "UPDATE UV_NVCB_NHANVIEN SET DT = ?";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, sdt);
+            pstmt.executeUpdate();
+        }
+    }
+
     public List<NhanVien> getAllNhanVien() throws SQLException {
         List<NhanVien> nhanVienList = new ArrayList<>();
         String query = "SELECT * FROM NHANVIEN";

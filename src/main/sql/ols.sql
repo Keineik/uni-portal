@@ -326,6 +326,35 @@ BEGIN
 END;
 /
 
+CREATE OR REPLACE PROCEDURE USP_GrantSelectOnThongBaoToUsers
+AS
+BEGIN
+    -- Loop through all employees
+    FOR emp_rec IN (SELECT MANV FROM QLDAIHOC.NHANVIEN) LOOP
+            BEGIN
+                EXECUTE IMMEDIATE 'GRANT SELECT ON QLDAIHOC.THONGBAO TO ' || emp_rec.MANV;
+                DBMS_OUTPUT.PUT_LINE('Granted SELECT on QLDAIHOC.THONGBAO to ' || emp_rec.MANV);
+            EXCEPTION
+                WHEN OTHERS THEN
+                    DBMS_OUTPUT.PUT_LINE('Error granting SELECT to ' || emp_rec.MANV || ': ' || SQLERRM);
+            END;
+        END LOOP;
+
+    -- Loop through all students
+    FOR std_rec IN (SELECT MASV FROM QLDAIHOC.SINHVIEN) LOOP
+            BEGIN
+                EXECUTE IMMEDIATE 'GRANT SELECT ON QLDAIHOC.THONGBAO TO ' || std_rec.MASV;
+                DBMS_OUTPUT.PUT_LINE('Granted SELECT on QLDAIHOC.THONGBAO to ' || std_rec.MASV);
+            EXCEPTION
+                WHEN OTHERS THEN
+                    DBMS_OUTPUT.PUT_LINE('Error granting SELECT to ' || std_rec.MASV || ': ' || SQLERRM);
+            END;
+        END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Completed granting SELECT on QLDAIHOC.THONGBAO to all users.');
+END;
+/
+
 -- 2. Thêm thông báo mới
 CREATE OR REPLACE PROCEDURE USP_DBA_ThemThongBao(
     p_tieude IN NVARCHAR2,

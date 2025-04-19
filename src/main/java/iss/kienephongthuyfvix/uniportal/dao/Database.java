@@ -38,7 +38,7 @@ public class Database {
 
     public static Connection getConnection() throws SQLException {
         if (dataSource == null) {
-            throw new SQLException("HikariCP is not initialized. Please log in first.");
+            throw new SQLException("Invalid username/password!");
         }
         return dataSource.getConnection();
     }

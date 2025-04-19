@@ -1,21 +1,27 @@
 package iss.kienephongthuyfvix.uniportal.controller;
 
 import iss.kienephongthuyfvix.uniportal.dao.Database;
+import iss.kienephongthuyfvix.uniportal.dao.UserDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.List;
 import java.util.Objects;
 
 public class LoginController {
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     @FXML
     private TextField usernameField;
 
@@ -30,62 +36,50 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-//        try {
-//            Database.initialize(username, password);
-//            try (Connection conn = Database.getConnection();
-//                 var stmt = conn.createStatement();
-//                 var rs = stmt.executeQuery("SELECT USER FROM DUAL")) {
-//                if (rs.next()) {
-//                   loadDashboard("DBA");
-////                    loadDashboard("Nhân viên Phòng Đào tạo");
-//                    System.out.println("Logged in as: " + rs.getString(1));
-//                }
-//            }
-//        } catch (Exception e) {
-//            showError("Error: " + e.getMessage());
-//            System.out.println("Error: " + e.getMessage());
-//        }
-//        loadDashboard("Nhân viên Phòng Đào tạo");
-        Database.initialize("sys AS SYSDBA", "123");
-        loadDashboard("DBA");
-//        if (username.isEmpty() || password.isEmpty()) {
-//            showError("Username and password cannot be empty");
-//            return;
-//        }
-//
-//        try {
-//            if (isValidCredentials(username, password)) {
-//
-//            }
-            // Attempt database connection with provided credentials
-//            Connection conn = Database.getConnection(username, password);
-//
-//            if (conn != null) {
-//                // Login successful
-//                loadMainApplication(username);
-//            } else {
-//                showError("Invalid username or password");
-//            }
-//        } catch (Exception e) {
-//            showError("Database connection error: " + e.getMessage());
-//        }
+        if (username.isEmpty() || password.isEmpty()) {
+            showError("Username and password cannot be empty");
+            return;
+        }
+
+        try {
+            Database.initialize(username, password);
+
+            UserDao userDao = new UserDao();
+            List<String> roles = userDao.getCurrentUserRoles();
+
+            if (roles.isEmpty()) {
+                showError("No roles assigned to the user");
+                return;
+            }
+
+            List<String> validRoles = List.of("RL_ADMIN", "RL_TRGDV", "RL_SV", "RL_NV_CTSV", "RL_NV_PKT", "RL_NV_TCHC", "RL_NV_PDT", "RL_GV");
+            roles.removeIf(role -> !validRoles.contains(role));
+
+            if (roles.size() == 1) {
+                loadDashboard(roles.getFirst());
+            } else {
+                String selectedRole = showRoleSelectionDialog(roles);
+                if (selectedRole != null) {
+                    loadDashboard(selectedRole);
+                }
+            }
+        } catch (Exception e) {
+            showError("Login failed: " + e.getMessage());
+        }
     }
 
-    @FXML
-    protected void handleReset(ActionEvent event) {
-        usernameField.clear();
-        passwordField.clear();
-        errorMessageLabel.setVisible(false);
+    private String showRoleSelectionDialog(List<String> roles) {
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(roles.getFirst(), roles);
+        dialog.setTitle("Select Role");
+        dialog.setHeaderText("Multiple Roles Found");
+        dialog.setContentText("Please select a role to continue:");
+
+        return dialog.showAndWait().orElse(null);
     }
 
     private void showError(String message) {
         errorMessageLabel.setText(message);
         errorMessageLabel.setVisible(true);
-    }
-
-    private boolean isValidCredentials(String username, String password) {
-        // Replace with actual authentication logic
-        return ("admin".equals(username) && "password".equals(password)) || ("1".equals(username) && "1".equals(password));
     }
 
     private void loadDashboard(String role) {
@@ -102,30 +96,7 @@ public class LoginController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadMainApplication(String username) {
-        try {
-            // Here you would load your main application FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/views/Main.fxml"));
-            Parent root = loader.load();
-
-            // Get the controller and pass any necessary data
-            // MainController mainController = loader.getController();
-            // mainController.setCurrentUser(username);
-
-            // Get current stage
-            Stage stage = (Stage) usernameField.getScene().getWindow();
-
-            // Create new scene and set it on the stage
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("University Management System - Logged in as: " + username);
-            stage.show();
-        } catch (IOException e) {
-            showError("Error loading main application: " + e.getMessage());
+            log.error(e.getMessage());
         }
     }
 }
