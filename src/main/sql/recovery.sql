@@ -1,0 +1,5 @@
+ALTER SESSION SET "_ORACLE_SCRIPT"=true;
+ALTER SESSION SET CURRENT_SCHEMA = "QLDAIHOC";
+
+-- Tạo trigger log lại lịch sử các bảng quan trọng
+SELECT * FROM DBA_FGA_AUDIT_TRAIL;
