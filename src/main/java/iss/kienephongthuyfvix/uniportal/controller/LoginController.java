@@ -2,6 +2,7 @@ package iss.kienephongthuyfvix.uniportal.controller;
 
 import iss.kienephongthuyfvix.uniportal.dao.Database;
 import iss.kienephongthuyfvix.uniportal.dao.UserDao;
+import iss.kienephongthuyfvix.uniportal.util.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -63,6 +64,7 @@ public class LoginController {
                     loadDashboard(selectedRole);
                 }
             }
+            Session.setCurrentUsername(username);
         } catch (Exception e) {
             showError("Login failed: " + e.getMessage());
         }

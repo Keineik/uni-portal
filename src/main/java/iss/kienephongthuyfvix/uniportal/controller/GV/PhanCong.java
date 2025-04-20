@@ -2,6 +2,7 @@ package iss.kienephongthuyfvix.uniportal.controller.GV;
 
 import iss.kienephongthuyfvix.uniportal.dao.MoMonDAO;
 import iss.kienephongthuyfvix.uniportal.model.MoMon;
+import iss.kienephongthuyfvix.uniportal.util.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -40,7 +41,7 @@ public class PhanCong {
     private TableColumn<MoMon, Void> colXem;
 
     private final MoMonDAO moMonDAO = new MoMonDAO();
-    private final String maGV = "NV00000002"; // Giả lập mã giảng viên
+    private final String maGV = Session.getCurrentUsername(); // Giả lập mã giảng viên
 
     @FXML
     public void initialize() {

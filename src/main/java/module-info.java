@@ -21,7 +21,7 @@ module iss.kienephongthuyfvix.hcmums {
     opens iss.kienephongthuyfvix.uniportal.controller.NVCTSV to javafx.fxml;
     //opens iss.kienephongthuyfvix.uniportal.controller.NVTCHC to javafx.fxml;
     opens iss.kienephongthuyfvix.uniportal.controller.GV to javafx.fxml;
-    //opens iss.kienephongthuyfvix.uniportal.controller.TDV to javafx.fxml;
+    opens iss.kienephongthuyfvix.uniportal.controller.TDV to javafx.fxml;
     opens iss.kienephongthuyfvix.uniportal.controller.SV to javafx.fxml;
     opens iss.kienephongthuyfvix.uniportal.controller.NVCB to javafx.fxml;
     opens iss.kienephongthuyfvix.uniportal.model to javafx.base;

@@ -133,3 +133,15 @@
     -fx-border-radius: 5px;
     -fx-font-weight: 100;
 }
+
+.field-label {
+    -fx-font-weight: bold;
+    -fx-pref-width: 120px;
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+}
+
+.field-value {
+    -fx-text-fill: #444;
+    -fx-font-size: 14px;
+}

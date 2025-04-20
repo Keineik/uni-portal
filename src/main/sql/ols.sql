@@ -32,6 +32,8 @@ ADD (
     COSO VARCHAR2(7)
 );
 
+GRANT OLS_THONGBAO_DBA TO QLDAIHOC;
+
 -- Tạo chính sách label security mới
 BEGIN
     -- Xoá policy cũ nếu tồn tại
@@ -52,8 +54,6 @@ BEGIN
 END;
 /
 EXEC SA_SYSDBA.ENABLE_POLICY ('OLS_THONGBAO');
-
-GRANT OLS_THONGBAO_DBA TO QLDAIHOC;
 
 -- a) Tạo Levels cho các cấp bậc
 BEGIN
