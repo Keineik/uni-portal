@@ -47,6 +47,21 @@ public class NhanVienDAO {
         return nhanVienList;
     }
 
+    public List<NhanVien> TRGDV_getAllNhanVien() throws SQLException {
+        List<NhanVien> nhanVienList = new ArrayList<>();
+        String query = "SELECT * FROM QLDAIHOC.UV_TRGDV_NHANVIEN";
+
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                nhanVienList.add(NhanVien.fromResultSet(rs));
+            }
+        }
+        return nhanVienList;
+    }
+
     public void insertNhanVien(NhanVien nhanVien) throws SQLException {
         String query = "INSERT INTO NHANVIEN VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)";
 

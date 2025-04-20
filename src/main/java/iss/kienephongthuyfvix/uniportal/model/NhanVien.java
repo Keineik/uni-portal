@@ -30,13 +30,26 @@ public class NhanVien {
     }
 
     public static NhanVien fromResultSet(ResultSet rs) throws SQLException {
+        var meta = rs.getMetaData();
+        int columnCount = meta.getColumnCount();
+
+        boolean hasLuong = false, hasPhuCap = false;
+
+        for (int i = 1; i <= columnCount; i++) {
+            String columnName = meta.getColumnName(i);
+            if (columnName.equalsIgnoreCase("LUONG")) hasLuong = true;
+            if (columnName.equalsIgnoreCase("PHUCAP")) hasPhuCap = true;
+        }
+
+        double luong = hasLuong ? rs.getDouble("LUONG") : Double.NaN;
+        double phucap = hasPhuCap ? rs.getDouble("PHUCAP") : Double.NaN;
         return new NhanVien(
                 rs.getString("MANV"),
                 rs.getString("HOTEN"),
                 rs.getString("PHAI"),
                 rs.getDate("NGSINH"),
-                rs.getDouble("LUONG"),
-                rs.getDouble("PHUCAP"),
+                luong,
+                phucap,
                 rs.getString("DT"),
                 rs.getString("VAITRO"),
                 rs.getString("MADV")

@@ -46,6 +46,7 @@ public class DashboardController {
 
             case "RL_TRGDV":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Xem Nhân Viên", "#TRGDV_XemNhanVien"));
                 sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 break;
 
@@ -82,7 +83,7 @@ public class DashboardController {
                 break;
 
             case "RL_GV":
-                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinGiangVien"));
+                sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
                 sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 sidebarButtons.add(createButton("Phân công giảng dạy", "#GV_PCGD"));
                 sidebarButtons.add(createButton("Sinh viên", "#GV_SV"));
@@ -149,9 +150,6 @@ public class DashboardController {
             case "#NVCTSV_QLSV":
                 NVCTSV_QLSV(new ActionEvent());
                 break;
-            case "#ThongTinGiangVien":
-                ThongTinGiangVien(new ActionEvent());
-                break;
             case "#GV_PCGD":
                 PhanCongGiangDay(new ActionEvent());
                 break;
@@ -163,6 +161,12 @@ public class DashboardController {
                 break;
             case "#NVPKT_QLD":
                 NVPKT_QLD(new ActionEvent());
+                break;
+            case "#TRGDV_XemNhanVien":
+                TRGDV_XemNhanVien(new ActionEvent());
+                break;
+            case "#TRGDV_XemChiTietNhanVien":
+                TRGDV_XemChiTietNhanVien(new ActionEvent());
                 break;
         }
     }
@@ -259,13 +263,6 @@ public class DashboardController {
     }
 
     @FXML
-    void ThongTinGiangVien(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/thong-tin.fxml"));
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(fxml);
-    }
-
-    @FXML
     void PhanCongGiangDay(ActionEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/phan-cong.fxml"));
         contentArea.getChildren().clear();
@@ -297,6 +294,21 @@ public class DashboardController {
     @FXML
     void NVPKT_QLD(ActionEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPKT/ql-diem.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+    @FXML
+    void TRGDV_XemNhanVien(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/TDV/xem-nhan-vien.fxml"));
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(fxml);
+    }
+
+
+    @FXML
+    void TRGDV_XemChiTietNhanVien(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/TDV/xem-chi-tiet-nv.fxml"));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
