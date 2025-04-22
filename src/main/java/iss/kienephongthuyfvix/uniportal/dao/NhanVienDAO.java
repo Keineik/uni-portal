@@ -80,7 +80,7 @@ public class NhanVienDAO {
         }
     }
 
-    public void updateNhanVien(NhanVien nhanVien) throws SQLException {
+    public boolean updateNhanVien(NhanVien nhanVien) throws SQLException {
         String query = "UPDATE NHANVIEN SET HOTEN = ?, PHAI = ?, NGSINH = ?, LUONG = ?, PHUCAP = ?, DT = ?, VAITRO = ?, MADV = ? WHERE MANV = ?";
 
         try (Connection conn = Database.getConnection();
@@ -96,17 +96,20 @@ public class NhanVienDAO {
             pstmt.setString(8, nhanVien.getMadv());
             pstmt.setString(9, nhanVien.getManv());
             pstmt.executeUpdate();
+
+            return pstmt.executeUpdate() > 0;
         }
     }
 
-    public void deleteNhanVien(String manv) throws SQLException {
+    public boolean deleteNhanVien(String manv) throws SQLException {
         String query = "DELETE FROM NHANVIEN WHERE MANV = ?";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setString(1, manv);
-            pstmt.executeUpdate();
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
         }
     }
 }

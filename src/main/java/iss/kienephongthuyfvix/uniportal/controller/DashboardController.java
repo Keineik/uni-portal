@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DashboardController {
     @FXML
@@ -71,6 +72,7 @@ public class DashboardController {
 
             case "RL_NV_TCHC":
                 sidebarButtons.add(createButton("Thông tin cá nhân", "#ThongTinNhanVien"));
+                sidebarButtons.add(createButton("Quản lý nhân viên", "#NVTCHC_XemNhanVien"));
                 sidebarButtons.add(createButton("Thông báo", "#ThongBao"));
                 break;
 
@@ -165,8 +167,8 @@ public class DashboardController {
             case "#TRGDV_XemNhanVien":
                 TRGDV_XemNhanVien(new ActionEvent());
                 break;
-            case "#TRGDV_XemChiTietNhanVien":
-                TRGDV_XemChiTietNhanVien(new ActionEvent());
+            case "#NVTCHC_XemNhanVien":
+                NVTCHC_XemNhanVien(new ActionEvent());
                 break;
         }
     }
@@ -179,28 +181,28 @@ public class DashboardController {
 
     @FXML
     void QuanLyUser(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/quan-ly-user.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/quan-ly-user.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void QuanLyRole(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/quan-ly-role.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/quan-ly-role.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void CapQuyen(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/cap-quyen.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/cap-quyen.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void PhatThongBao(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/phat-thong-bao.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/DBA/phat-thong-bao.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
@@ -208,63 +210,63 @@ public class DashboardController {
 
     @FXML
     void ThongTinNhanVien(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVCB/thong-tin.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVCB/thong-tin.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void PDT_QLMH(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPDT/ql-monhoc.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPDT/ql-monhoc.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void PDT_QLSV(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPDT/ql-sinhvien.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPDT/ql-sinhvien.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void PDT_QLDK(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPDT/ql-dangky.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPDT/ql-dangky.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void ThongTinSinhVien(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/thong-tin.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/thong-tin.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void DangKyHP(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/dang-ky-hp.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/dang-ky-hp.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void KetQuaHT(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/ket-qua-ht.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/SV/ket-qua-ht.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void NVCTSV_QLSV(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVCTSV/ql-sinhvien.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVCTSV/ql-sinhvien.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void PhanCongGiangDay(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/phan-cong.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/phan-cong.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
@@ -286,29 +288,28 @@ public class DashboardController {
 
     @FXML
     void TrangThongBao(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVCB/thong-bao.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVCB/thong-bao.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void NVPKT_QLD(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPKT/ql-diem.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVPKT/ql-diem.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
     @FXML
     void TRGDV_XemNhanVien(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/TDV/xem-nhan-vien.fxml"));
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/TDV/xem-nhan-vien.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }
 
-
     @FXML
-    void TRGDV_XemChiTietNhanVien(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/iss/kienephongthuyfvix/uniportal/TDV/xem-chi-tiet-nv.fxml"));
+    void NVTCHC_XemNhanVien(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/NVTCHC/xem-nhan-vien.fxml")));
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);
     }

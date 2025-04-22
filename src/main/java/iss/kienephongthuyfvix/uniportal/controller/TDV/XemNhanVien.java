@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 public class XemNhanVien {
 
@@ -51,7 +52,7 @@ public class XemNhanVien {
             final Button btn = new Button();
 
             {
-                ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/iss/kienephongthuyfvix/uniportal/img/view.png")));
+                ImageView imageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/iss/kienephongthuyfvix/uniportal/img/view.png"))));
                 imageView.setFitWidth(16);
                 imageView.setFitHeight(16);
                 btn.setGraphic(imageView);

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVTCHC.XemChiTietNV"
+            stylesheets="@../style.css"
+            prefHeight="500.0" prefWidth="600.0">
+
+    <!-- Tiêu đề -->
+    <top>
+        <StackPane style="-fx-background-color: linear-gradient(to bottom, #71D9B6, black);" prefHeight="70">
+            <Label text="Chi tiết nhân viên"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        </StackPane>
+    </top>
+
+    <!-- Nội dung chính -->
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+            <padding>
+                <Insets top="20" right="30" bottom="20" left="30"/>
+            </padding>
+
+            <VBox spacing="12" styleClass="light-white-box" maxWidth="500">
+                <HBox spacing="10">
+                    <Label text="Mã NV:" styleClass="field-label"/>
+                    <Label fx:id="lblMaNV" styleClass="field-value"/>
+                </HBox>
+                <Region style="-fx-min-height: 1px; -fx-background-color: #dcdcdc;"/>
+
+                <HBox spacing="10">
+                    <Label text="Họ tên:" styleClass="field-label"/>
+                    <Label fx:id="lblHoTen" styleClass="field-value"/>
+                </HBox>
+                <Region style="-fx-min-height: 1px; -fx-background-color: #dcdcdc;"/>
+
+                <HBox spacing="10">
+                    <Label text="Phái:" styleClass="field-label"/>
+                    <Label fx:id="lblPhai" styleClass="field-value"/>
+                </HBox>
+                <Region style="-fx-min-height: 1px; -fx-background-color: #dcdcdc;"/>
+
+                <HBox spacing="10">
+                    <Label text="Ngày sinh:" styleClass="field-label"/>
+                    <Label fx:id="lblNgaySinh" styleClass="field-value"/>
+                </HBox>
+                <Region style="-fx-min-height: 1px; -fx-background-color: #dcdcdc;"/>
+
+                <HBox spacing="10">
+                    <Label text="Lương:" styleClass="field-label"/>
+                    <Label fx:id="lblLuong" styleClass="field-value"/>
+                </HBox>
+                <Region style="-fx-min-height: 1px; -fx-background-color: #dcdcdc;"/>
+
+                <HBox spacing="10">
+                    <Label text="Phụ cấp:" styleClass="field-label"/>
+                    <Label fx:id="lblPhuCap" styleClass="field-value"/>
+                </HBox>
+                <Region style="-fx-min-height: 1px; -fx-background-color: #dcdcdc;"/>
+
+                <HBox spacing="10">
+                    <Label text="Điện thoại:" styleClass="field-label"/>
+                    <Label fx:id="lblSDT" styleClass="field-value"/>
+                </HBox>
+                <Region style="-fx-min-height: 1px; -fx-background-color: #dcdcdc;"/>
+
+                <HBox spacing="10">
+                    <Label text="Vai trò:" styleClass="field-label"/>
+                    <Label fx:id="lblVaiTro" styleClass="field-value"/>
+                </HBox>
+                <Region style="-fx-min-height: 1px; -fx-background-color: #dcdcdc;"/>
+
+                <HBox spacing="10">
+                    <Label text="Mã ĐV:" styleClass="field-label"/>
+                    <Label fx:id="lblMaDV" styleClass="field-value"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

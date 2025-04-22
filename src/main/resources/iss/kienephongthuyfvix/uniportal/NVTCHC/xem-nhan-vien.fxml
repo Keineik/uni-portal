@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVTCHC.XemNhanVien">
+
+    <top>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Quản lý nhân viên"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="5" style="-fx-background-color: white; -fx-padding: 5; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-radius: 5;">
+                <FontIcon iconLiteral="fas-search" iconColor="#888" iconSize="16" />
+                <TextField fx:id="searchField" promptText="Tìm kiếm nhân viên..." style="-fx-background-color: transparent; -fx-border-width: 0;" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <AnchorPane>
+            <TableView fx:id="tableNhanVien"
+                       AnchorPane.topAnchor="10"
+                       AnchorPane.leftAnchor="10"
+                       AnchorPane.rightAnchor="10"
+                       AnchorPane.bottomAnchor="10"
+                       stylesheets="@../style.css"
+                       styleClass="custom-table-view">
+                <columns>
+                    <TableColumn fx:id="colHoTen" text="Họ tên"/>
+                    <TableColumn fx:id="colXem" text="Xem"/>
+                    <TableColumn fx:id="colSua" text="Sửa"/>
+                    <TableColumn fx:id="colXoa" text="Xóa"/>
+                </columns>
+            </TableView>
+        </AnchorPane>
+    </center>
+</BorderPane>
