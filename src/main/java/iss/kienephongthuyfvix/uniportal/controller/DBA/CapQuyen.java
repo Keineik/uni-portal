@@ -78,6 +78,7 @@ public class CapQuyen {
                 bindGrantOptionVisibility(deleteCheckBox, deleteGrantOption);
                 bindGrantOptionVisibility(executeCheckBox, executeGrantOption);
             }
+            hideAllGrantOptions();
         });
 
         roleRadio.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -90,6 +91,11 @@ public class CapQuyen {
 
         objectTypeChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             boolean isProcedureOrFunction = "PROCEDURE".equalsIgnoreCase(newVal) || "FUNCTION".equalsIgnoreCase(newVal);
+            selectCheckBox.setVisible(!isProcedureOrFunction);
+            insertCheckBox.setVisible(!isProcedureOrFunction);
+            updateCheckBox.setVisible(!isProcedureOrFunction);
+            deleteCheckBox.setVisible(!isProcedureOrFunction);
+
             executeCheckBox.setVisible(isProcedureOrFunction);
             executeCheckBox.setManaged(isProcedureOrFunction);
 

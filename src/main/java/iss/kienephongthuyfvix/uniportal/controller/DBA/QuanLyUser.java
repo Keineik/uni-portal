@@ -1,5 +1,7 @@
 package iss.kienephongthuyfvix.uniportal.controller.DBA;
 
+import iss.kienephongthuyfvix.uniportal.dao.Database;
+import iss.kienephongthuyfvix.uniportal.dao.ObjectDao;
 import iss.kienephongthuyfvix.uniportal.dao.UserDao;
 import iss.kienephongthuyfvix.uniportal.model.Privilege;
 import javafx.beans.property.BooleanProperty;
@@ -27,6 +29,7 @@ import javafx.util.Callback;
 import iss.kienephongthuyfvix.uniportal.model.User;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -48,13 +51,22 @@ public class QuanLyUser {
     private ObservableList<User> masterUserList = FXCollections.observableArrayList();
     private FilteredList<User> filteredUsers;
     private UserDao userDao;
+    private ObjectDao objectDao;
+    private Connection connection;
 
     public QuanLyUser() {
         this.userDao = new UserDao();
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
+        try {
+            connection = Database.getConnection();
+            objectDao = new ObjectDao(connection); // Initialize ObjectDao
+        } catch (SQLException e) {
+            showAlert("Lỗi kết nối", "Không thể kết nối tới CSDL: " + e.getMessage(), Alert.AlertType.ERROR);
+            return;
+        }
         initUserTableIfAvailable();
         Tooltip tooltip = new Tooltip("Double click để xem và thu hồi quyền");
         Tooltip.install(userListView, tooltip);
@@ -135,9 +147,11 @@ public class QuanLyUser {
         }
     }
 
-    private void setupCreateUserForm() {
+    private void setupCreateUserForm() throws SQLException {
         if ( multiRoleListView != null && createButton != null && cancelButton != null) {
-            multiRoleListView.setItems(FXCollections.observableArrayList("RL_NVCB","RL_GV" ,"RL_NV_PDT" ,"RL_NV_PKT" ,"RL_NV_TCHC" ,"RL_NV_CTSV" ,"RL_TRGDV" ,"RL_SV"));
+            List<String> allRoles = objectDao.getGrantees(false);
+            ObservableList<String> roleList = FXCollections.observableArrayList(allRoles);
+            multiRoleListView.setItems(roleList);
 
             cancelButton.setOnAction(e -> {
                 Stage stage = (Stage) cancelButton.getScene().getWindow();
@@ -196,8 +210,9 @@ public class QuanLyUser {
             Button createButton = (Button) root.lookup("#createButton");
             Button cancelButton = (Button) root.lookup("#cancelButton");
 
-            ObservableList<String> allRoles = FXCollections.observableArrayList("RL_NVCB","RL_GV" ,"RL_NV_PDT" ,"RL_NV_PKT" ,"RL_NV_TCHC" ,"RL_NV_CTSV" ,"RL_TRGDV" ,"RL_SV");
-            multiRoleListView.setItems(allRoles);
+            List<String> allRoles = objectDao.getGrantees(false);
+            ObservableList<String> roleList = FXCollections.observableArrayList(allRoles);
+            multiRoleListView.setItems(roleList);
 
             Map<String, BooleanProperty> selectedRoleMap = new HashMap<>();
             for (String role : allRoles) {
@@ -228,7 +243,7 @@ public class QuanLyUser {
                     userListView.setItems(userList);
                 }
 
-                User newUser = new User(username, String.join(",", selectedRoles));
+                User newUser = new User(username, selectedRoles.toArray(new String[0]));
                 try {
                     userDao.createUser(newUser);
                 } catch (SQLException ex) {
@@ -258,6 +273,8 @@ public class QuanLyUser {
         } catch (IOException e) {
             System.err.println("Lỗi khi mở hộp thoại tạo user: " + e.getMessage());
             e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -285,8 +302,9 @@ public class QuanLyUser {
 
             usernameField.setText(user.getUsername());
 
-            ObservableList<String> allRoles = FXCollections.observableArrayList("RL_NVCB","RL_GV" ,"RL_NV_PDT" ,"RL_NV_PKT" ,"RL_NV_TCHC" ,"RL_NV_CTSV" ,"RL_TRGDV" ,"RL_SV");
-            roleChoiceBox.setItems(allRoles);
+            List<String> allRoles = objectDao.getGrantees(false);
+            ObservableList<String> roleList = FXCollections.observableArrayList(allRoles);
+            roleChoiceBox.setItems(roleList);
             roleChoiceBox.setValue(null);
 
             ObservableList<String> currentRoles = FXCollections.observableArrayList(user.getRoles());
@@ -393,6 +411,8 @@ public class QuanLyUser {
         } catch (IOException e) {
             System.err.println("Error loading the edit user dialog: " + e.getMessage());
             e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
