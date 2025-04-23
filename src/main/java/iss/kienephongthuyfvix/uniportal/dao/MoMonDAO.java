@@ -42,6 +42,24 @@ public class MoMonDAO {
         return moMonList;
     }
 
+    public MoMon getMoMonById(int mamm) throws SQLException {
+        String query = "SELECT UV_GV_MOMON.*, HOCPHAN.TENHP, HOCPHAN.SOTC, HOCPHAN.STLT, HOCPHAN.STTH" +
+                " FROM UV_GV_MOMON JOIN HOCPHAN ON UV_GV_MOMON.MAHP = HOCPHAN.MAHP WHERE MAMM = ?";
+        MoMon moMon = null;
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, mamm);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                moMon = MoMon.fromResultSet(rs);
+            }
+        }
+        return moMon;
+    }
+
     public void insertMoMon(MoMon moMon) throws SQLException {
         String query = "INSERT INTO UV_NVPDT_MOMON (MAHP, MAGV, HK, NAM) VALUES (?, ?, ?, ?)";
 

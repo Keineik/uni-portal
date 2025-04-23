@@ -23,7 +23,7 @@
             </BorderPane.margin>
         </Label>
     </top>
-    <center>
+   <center>
         <AnchorPane prefHeight="720.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
             <TextField fx:id="hotenField" alignment="CENTER" editable="false" layoutX="434.0" layoutY="184.0" style="-fx-border-color: transparent;">
                 <font>
@@ -31,7 +31,7 @@
                 </font>
             </TextField>
             <VBox alignment="TOP_CENTER" spacing="20" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
-            <GridPane layoutX="348.0" layoutY="306.0" prefHeight="228.0" prefWidth="534.0">
+            <GridPane layoutX="313.0" layoutY="274.0" prefHeight="228.0" prefWidth="534.0">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -74,7 +74,7 @@
                     <Image url="@../img/student.png" />
                 </image>
             </ImageView>
-         <Button layoutX="464.0" layoutY="585.0" mnemonicParsing="false" onAction="#saveChanges" stylesheets="@../style.css" text="Cập nhật thông tin">
+         <Button layoutX="464.0" layoutY="545.0" mnemonicParsing="false" onAction="#saveChanges" stylesheets="@../style.css" text="Cập nhật thông tin">
             <graphic>
                <FontIcon iconColor="WHITE" iconLiteral="fas-pen-square">
                   <font>
@@ -88,5 +88,5 @@
          </Button>
          <Label layoutX="516.0" layoutY="232.0" text="Sinh viên" />
         </AnchorPane>
-    </center>
+   </center>
 </BorderPane>

@@ -22,6 +22,23 @@ public class DonViDAO {
         return donViList;
     }
 
+    public DonVi getDonVi(String maDV) throws SQLException {
+        String query = "SELECT * FROM DONVI WHERE MADV = ?";
+        DonVi donVi = null;
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, maDV);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                donVi = DonVi.fromResultSet(rs);
+            }
+        }
+        return donVi;
+    }
+
     public void insertDonVi(DonVi donVi) throws SQLException {
         String query = "INSERT INTO DONVI (MADV, TENDV, LOAIDV, TRGDV) VALUES (?, ?, ?, ?)";
 

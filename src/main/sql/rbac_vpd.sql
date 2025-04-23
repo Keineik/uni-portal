@@ -39,6 +39,9 @@ GRANT RL_NVCB TO RL_NV_TCHC;
 GRANT RL_NVCB TO RL_NV_CTSV;
 GRANT RL_NVCB TO RL_TRGDV;
 
+-- Tất cả nhân viên và sinh viên dùng đều có quyền xem bảng DONVI
+GRANT SELECT ON QLDAIHOC.DONVI TO RL_SV, RL_NVCB;
+
 ----- Người dùng có VAITRO là "TRGDV" có quyền xem các dòng dữ liệu liên quan đến 
 ----- các nhân viên thuộc đơn vị mình làm trưởng, trừ các thuộc tính LUONG và PHUCAP. 
 CREATE OR REPLACE VIEW UV_TRGDV_NHANVIEN AS

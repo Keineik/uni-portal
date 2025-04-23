@@ -3,6 +3,7 @@ package iss.kienephongthuyfvix.uniportal.controller.SV;
 import iss.kienephongthuyfvix.uniportal.dao.SinhVienDAO;
 import iss.kienephongthuyfvix.uniportal.model.SinhVien;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -52,6 +53,21 @@ public class ThongTinSV {
 
     @FXML
     private void saveChanges() throws SQLException {
-        sinhVienDAO.updateDiaChiSdt(sinhVien.getMaSV(), diachiField.getText(), dtField.getText());
+        try {
+            sinhVienDAO.updateDiaChiSdt(sinhVien.getMaSV(), diachiField.getText(), dtField.getText());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText(null);
+            alert.setContentText("Changes saved successfully!");
+            alert.showAndWait();
+        } catch (SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Không thể cập nhật số điện thoại");
+            alert.setContentText("Số điện thoại đã tồn tại, vui lòng kiểm tra lại!");
+            alert.showAndWait();
+            throw e;
+        }
     }
 }

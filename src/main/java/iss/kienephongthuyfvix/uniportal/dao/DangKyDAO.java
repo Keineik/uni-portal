@@ -83,9 +83,9 @@ public class DangKyDAO {
 
     public List<DangKy> getKetQua(String maSV) throws SQLException {
         List<DangKy> dangKyList = new ArrayList<>();
-        String query = "SELECT DANGKY.*, MOMON.HK, MOMON.NAM, HOCPHAN.* " +
-                "FROM DANGKY JOIN MOMON ON DANGKY.MAMM = MOMON.MAMM " +
-                "JOIN HOCPHAN ON MOMON.MAHP = HOCPHAN.MAHP " +
+        String query = "SELECT DANGKY.*, MM.HK, MM.NAM, HOCPHAN.* " +
+                "FROM DANGKY JOIN UV_SV_MOMON MM ON DANGKY.MAMM = MM.MAMM " +
+                "JOIN HOCPHAN ON MM.MAHP = HOCPHAN.MAHP " +
                 "WHERE DANGKY.DIEMTK IS NOT NULL AND DANGKY.MASV = ?";
 
         try (Connection conn = Database.getConnection()) {
