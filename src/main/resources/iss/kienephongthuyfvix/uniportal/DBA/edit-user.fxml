@@ -5,11 +5,9 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -21,20 +19,14 @@
     <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Chỉnh sửa người dùng" />
 
     <HBox alignment="CENTER">
-    <GridPane hgap="10" vgap="10">
-
-        <Label text="Username: " GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <TextField fx:id="usernameField" promptText="Tên đăng nhập" text="Username" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <columnConstraints>
-         <ColumnConstraints />
-         <ColumnConstraints />
-      </columnConstraints>
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-      </rowConstraints>
-    </GridPane>
+   
+              <Label text="Username:      " />
+     <TextField fx:id="usernameField" disable="true" prefHeight="25.0" prefWidth="153.0" promptText="Tên đăng nhập" text="Username" />
     </HBox>
+  <HBox spacing="10">
+      <Label text="Mật khẩu mới:" />
+      <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="151.0" promptText="Để trống nếu không đổi" />
+  </HBox>
 
     <Label style="-fx-font-weight: bold;" text="Danh sách các role của user" />
     <ListView fx:id="roleListView" prefHeight="120" prefWidth="250" />

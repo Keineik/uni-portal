@@ -35,8 +35,5 @@ public class User {
         }
     }
 
-    public void removeRole(String role) {
-        roles.remove(role);
-    }
 
 }

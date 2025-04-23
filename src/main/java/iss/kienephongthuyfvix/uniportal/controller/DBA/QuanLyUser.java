@@ -279,12 +279,14 @@ public class QuanLyUser {
             Button cancelButton = (Button) root.lookup("#cancelButton");
             ListView<String> roleListView = (ListView<String>) root.lookup("#roleListView");
             ChoiceBox<String> roleChoiceBox = (ChoiceBox<String>) root.lookup("#roleChoiceBox");
+            PasswordField passwordField = (PasswordField) root.lookup("#passwordField");
             Button addRoleButton = (Button) root.lookup("#addRoleButton");
 
             usernameField.setText(user.getUsername());
 
             ObservableList<String> allRoles = FXCollections.observableArrayList("RL_NVCB","RL_GV" ,"RL_NV_PDT" ,"RL_NV_PKT" ,"RL_NV_TCHC" ,"RL_NV_CTSV" ,"RL_TRGDV" ,"RL_SV");
             roleChoiceBox.setItems(allRoles);
+            roleChoiceBox.setValue(null);
 
             ObservableList<String> currentRoles = FXCollections.observableArrayList(user.getRoles());
             roleListView.setItems(currentRoles);
@@ -340,18 +342,30 @@ public class QuanLyUser {
 
             addRoleButton.setOnAction(e -> {
                 String selectedRole = roleChoiceBox.getValue();
-                if (selectedRole != null && !currentRoles.contains(selectedRole)) {
+                if (selectedRole == null) {
+                    showAlert("Cảnh báo", "Vui lòng chọn một role trước khi thêm!", Alert.AlertType.WARNING);
+                    return;
+                }
+                if (!currentRoles.contains(selectedRole)) {
                     currentRoles.add(selectedRole);
+                    System.out.println("Role added: " + selectedRole);
                 }
             });
-
 
             saveButton.setOnAction(e -> {
                 user.setUsername(usernameField.getText());
                 user.getRoles().setAll(currentRoles);
+                System.out.println("Saving user: " + user.getUsername());
+                System.out.println("Roles to save: " + currentRoles);
 
                 try {
                     userDao.updateUser(user);
+
+                    String newPassword = passwordField.getText();
+                    if (newPassword != null && !newPassword.isBlank()) {
+                        userDao.changePassword(user.getUsername(), newPassword);
+                        System.out.println("Password changed for user: " + user.getUsername());
+                    }
                     userListView.refresh();
                     Stage stage = (Stage) root.getScene().getWindow();
                     showAlert("Thành công", "Chỉnh sửa user thành công", Alert.AlertType.INFORMATION);

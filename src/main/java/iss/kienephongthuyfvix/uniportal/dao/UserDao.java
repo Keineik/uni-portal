@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserDao {
     private static final Logger log = LoggerFactory.getLogger(UserDao.class);
@@ -95,9 +96,21 @@ public class UserDao {
         }
     }
 
+    public void changePassword(String username, String newPassword) throws SQLException {
+        String sql = "ALTER USER " + username + " IDENTIFIED BY \"" + newPassword + "\"";
+
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            System.out.println("Executing SQL: " + sql);
+            stmt.executeUpdate(sql);
+        }
+    }
+
+
     public List<String> getRolesOfUser(String username, Connection conn) throws SQLException {
         List<String> roles = new ArrayList<>();
-        String sql = "SELECT GRANTED_ROLE FROM DBA_ROLE_PRIVS WHERE GRANTEE = ?";
+        String sql = "SELECT GRANTED_ROLE FROM DBA_ROLE_PRIVS WHERE GRANTEE = ? AND GRANTED_ROLE NOT IN ('CONNECT', 'RESOURCE')";
 
         System.out.println("Executing SQL: " + sql + " with parameter: " + username);
 
@@ -130,20 +143,26 @@ public class UserDao {
     public List<Privilege> getPrivilegesByUser(String userName) throws SQLException {
         List<Privilege> privileges = new ArrayList<>();
 
-        String tablePrivsQuery = "SELECT TABLE_NAME, PRIVILEGE, GRANTABLE " +
-                "FROM DBA_TAB_PRIVS " +
-                "WHERE GRANTEE = ? AND OWNER = 'QLDAIHOC'";
-
-        String columnPrivsQuery = "SELECT TABLE_NAME, COLUMN_NAME, PRIVILEGE, GRANTABLE " +
-                "FROM DBA_COL_PRIVS " +
-                "WHERE GRANTEE = ? AND OWNER = 'QLDAIHOC'";
-
         try (Connection conn = Database.getConnection()) {
+            List<String> userRoles = getRolesOfUser(userName, conn);
+            userRoles.add(userName);
 
-            // TABLE-LEVEL PRIVILEGES
-            try (PreparedStatement ps1 = conn.prepareStatement(tablePrivsQuery)) {
-                ps1.setString(1, userName);
-                ResultSet rs1 = ps1.executeQuery();
+            String inClause = userRoles.stream()
+                    .map(role -> "'" + role + "'")
+                    .collect(Collectors.joining(","));
+
+            String tablePrivsQuery = "SELECT TABLE_NAME, PRIVILEGE, GRANTABLE " +
+                    "FROM DBA_TAB_PRIVS " +
+                    "WHERE GRANTEE IN (" + inClause + ") AND OWNER = 'QLDAIHOC'";
+
+            String columnPrivsQuery = "SELECT TABLE_NAME, COLUMN_NAME, PRIVILEGE, GRANTABLE " +
+                    "FROM DBA_COL_PRIVS " +
+                    "WHERE GRANTEE IN (" + inClause + ") AND OWNER = 'QLDAIHOC'";
+
+            // --- TABLE-LEVEL PRIVILEGES ---
+            System.out.println("Executing SQL (TABLE): " + tablePrivsQuery);
+            try (Statement stmt1 = conn.createStatement();
+                 ResultSet rs1 = stmt1.executeQuery(tablePrivsQuery)) {
 
                 Map<String, List<String>> privMap = new HashMap<>();
                 Map<String, List<String>> withGrantMap = new HashMap<>();
@@ -170,16 +189,15 @@ public class UserDao {
                 }
             }
 
-            // COLUMN-LEVEL PRIVILEGES
-            try (PreparedStatement ps2 = conn.prepareStatement(columnPrivsQuery)) {
-                ps2.setString(1, userName);
-                ResultSet rs2 = ps2.executeQuery();
+            // --- COLUMN-LEVEL PRIVILEGES ---
+            System.out.println("Executing SQL (COLUMN): " + columnPrivsQuery);
+            try (Statement stmt2 = conn.createStatement();
+                 ResultSet rs2 = stmt2.executeQuery(columnPrivsQuery)) {
 
-                // Map<object, Map<privilege, List<columns>>>
+                Map<String, Set<String>> privilegesMap = new HashMap<>();
                 Map<String, List<String>> updateColumnsMap = new HashMap<>();
                 Map<String, List<String>> selectColumnsMap = new HashMap<>();
                 Map<String, List<String>> withGrantMap = new HashMap<>();
-                Map<String, Set<String>> privilegesMap = new HashMap<>();
 
                 while (rs2.next()) {
                     String object = rs2.getString("TABLE_NAME");
@@ -191,7 +209,7 @@ public class UserDao {
 
                     if (priv.equalsIgnoreCase("UPDATE")) {
                         updateColumnsMap.computeIfAbsent(object, k -> new ArrayList<>()).add(column);
-                    } else {
+                    } else if (priv.equalsIgnoreCase("SELECT")) {
                         selectColumnsMap.computeIfAbsent(object, k -> new ArrayList<>()).add(column);
                     }
 
@@ -214,4 +232,5 @@ public class UserDao {
 
         return privileges;
     }
+
 }
