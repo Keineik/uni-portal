@@ -2,14 +2,15 @@ package iss.kienephongthuyfvix.uniportal.controller;
 
 import com.jfoenix.controls.JFXButton;
 import iss.kienephongthuyfvix.uniportal.controller.GV.ShowSinhVien;
-import iss.kienephongthuyfvix.uniportal.controller.SV.DangKyHP;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +29,24 @@ public class DashboardController {
     @FXML
     void initialize() {
         // Initialization code if needed
+    }
+
+    @FXML
+    void logOut(ActionEvent event) {
+        try {
+            // Load the login screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/login-view.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage and set the new scene
+            Stage stage = (Stage) contentArea.getScene().getWindow();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/iss/kienephongthuyfvix/uniportal/style.css")).toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load login screen: " + e.getMessage(), e);
+        }
     }
 
     public void initializeRole(String role) {
@@ -277,10 +296,8 @@ public class DashboardController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/iss/kienephongthuyfvix/uniportal/GV/show-sinh-vien.fxml"));
         Parent fxml = loader.load();
 
-        String maKhoaGV = "TOAN_CS1"; // -> thay bằng mã khoa của current user
-
         ShowSinhVien controller = loader.getController();
-        controller.setMaKhoa(maKhoaGV);
+        controller.loadSinhVienTheoKhoa();
 
         contentArea.getChildren().clear();
         contentArea.getChildren().add(fxml);

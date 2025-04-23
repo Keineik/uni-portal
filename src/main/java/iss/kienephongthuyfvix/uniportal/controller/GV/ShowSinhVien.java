@@ -1,17 +1,26 @@
 package iss.kienephongthuyfvix.uniportal.controller.GV;
 
+import iss.kienephongthuyfvix.uniportal.dao.DonViDAO;
+import iss.kienephongthuyfvix.uniportal.dao.MoMonDAO;
+import iss.kienephongthuyfvix.uniportal.dao.NhanVienDAO;
 import iss.kienephongthuyfvix.uniportal.dao.SinhVienDAO;
+import iss.kienephongthuyfvix.uniportal.model.DonVi;
+import iss.kienephongthuyfvix.uniportal.model.MoMon;
+import iss.kienephongthuyfvix.uniportal.model.NhanVien;
 import iss.kienephongthuyfvix.uniportal.model.SinhVien;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.util.List;
 
+@Slf4j
 public class ShowSinhVien {
 
     @FXML
@@ -41,24 +50,16 @@ public class ShowSinhVien {
     @FXML
     private TableColumn<iss.kienephongthuyfvix.uniportal.model.SinhVien, String> colTinhTrang;
 
+    @FXML
+    private Label titleLabel;
+
     private final SinhVienDAO sinhVienDAO = new SinhVienDAO();
 
     private String maKhoa;
-
-    public void setMaKhoa(String maKhoa) {
-        this.maKhoa = maKhoa;
-        loadSinhVienTheoKhoa(); // Gọi hàm lọc ngay sau khi set
-    }
-
-    private void loadSinhVienTheoKhoa() {
-        try {
-            List<iss.kienephongthuyfvix.uniportal.model.SinhVien> list = sinhVienDAO.getSinhVienByKhoa(maKhoa);
-            ObservableList<iss.kienephongthuyfvix.uniportal.model.SinhVien> data = FXCollections.observableArrayList(list);
-            tableSinhVien.setItems(data);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    private final DonViDAO donViDAO = new DonViDAO();
+    private final MoMonDAO moMonDAO = new MoMonDAO();
+    private final NhanVienDAO nhanVienDAO = new NhanVienDAO();
+    private NhanVien nhanVien;
 
     @FXML
     public void initialize() {
@@ -71,12 +72,36 @@ public class ShowSinhVien {
         colDienThoai.setCellValueFactory(new PropertyValueFactory<>("dienThoai"));
         colKhoa.setCellValueFactory(new PropertyValueFactory<>("khoa"));
         colTinhTrang.setCellValueFactory(new PropertyValueFactory<>("tinhTrang"));
+
+        try {
+            nhanVien = nhanVienDAO.getCurrentNhanVien();
+            maKhoa = nhanVien.getMadv();
+            loadSinhVienTheoKhoa();
+        } catch (SQLException e) {
+            log.error("Error loading department: {}", e.getMessage());
+        }
     }
+
+    public void loadSinhVienTheoKhoa() {
+        try {
+            List<SinhVien> list = sinhVienDAO.getSinhVienByKhoa(maKhoa);
+            ObservableList<SinhVien> data = FXCollections.observableArrayList(list);
+            DonVi donVi = donViDAO.getDonVi(maKhoa);
+            titleLabel.setText("Danh sách sinh viên khoa " + donVi.getTenDV());
+            tableSinhVien.setItems(data);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void loadSinhVienByMaMM(int maMM) {
         try {
-            List<iss.kienephongthuyfvix.uniportal.model.SinhVien> list = sinhVienDAO.getSinhVienByMaMM(maMM);
-            ObservableList<iss.kienephongthuyfvix.uniportal.model.SinhVien> data = FXCollections.observableArrayList(list);
+            List<SinhVien> list = sinhVienDAO.getSinhVienByMaMM(maMM);
+            ObservableList<SinhVien> data = FXCollections.observableArrayList(list);
             tableSinhVien.setItems(data);
+            MoMon moMon = moMonDAO.getMoMonById(maMM);
+            titleLabel.setText("Danh sách lớp môn " + moMon.getMahp() + "-" + moMon.getTenHP());
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -7,9 +7,9 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVCB.DSThongBao">
 
-            <ScrollPane fitToWidth="true" layoutX="54.0" layoutY="55.0" prefHeight="638.0" prefWidth="971.0" style="-fx-background-color: transparent;">
+            <ScrollPane fitToWidth="true" layoutX="54.0" layoutY="55.0" prefHeight="638.0" prefWidth="971.0" style="-fx-background-color: white;">
           <content>
-              <VBox fx:id="notiListBox" prefHeight="632.0" prefWidth="970.0" spacing="10.0">
+              <VBox fx:id="notiListBox" prefHeight="632.0" prefWidth="970.0" spacing="10.0" style="-fx-background-color: white;">
                     </VBox>
           </content>
       </ScrollPane>

@@ -3,6 +3,7 @@ package iss.kienephongthuyfvix.uniportal.controller.NVCB;
 import iss.kienephongthuyfvix.uniportal.dao.NhanVienDAO;
 import iss.kienephongthuyfvix.uniportal.model.NhanVien;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
@@ -47,6 +48,23 @@ public class ThongTin {
 
     @FXML
     private void saveChanges() throws SQLException {
-        nhanVienDAO.updateSDTforNVCB(dtField.getText());
+        try {
+            nhanVienDAO.updateSDTforNVCB(dtField.getText());
+
+            // Show success alert
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText(null);
+            alert.setContentText("Changes saved successfully!");
+            alert.showAndWait();
+        } catch (SQLException e) {
+            // Show error alert
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to Save Changes");
+            alert.setContentText("An error occurred while saving changes: " + e.getMessage());
+            alert.showAndWait();
+            throw e;
+        }
     }
 }

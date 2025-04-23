@@ -1,8 +1,9 @@
 package iss.kienephongthuyfvix.uniportal.controller.GV;
 
 import iss.kienephongthuyfvix.uniportal.dao.MoMonDAO;
+import iss.kienephongthuyfvix.uniportal.dao.NhanVienDAO;
 import iss.kienephongthuyfvix.uniportal.model.MoMon;
-import iss.kienephongthuyfvix.uniportal.util.Session;
+import iss.kienephongthuyfvix.uniportal.model.NhanVien;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -41,12 +42,14 @@ public class PhanCong {
     private TableColumn<MoMon, Void> colXem;
 
     private final MoMonDAO moMonDAO = new MoMonDAO();
-    private final String maGV = Session.getCurrentUsername(); // Giả lập mã giảng viên
+    private final NhanVienDAO nhanVienDAO = new NhanVienDAO();
+    private NhanVien nhanVien;
 
     @FXML
     public void initialize() {
         tablePhanCong.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         try {
+            nhanVien = nhanVienDAO.getCurrentNhanVien();
             loadPhanCong();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,7 +61,7 @@ public class PhanCong {
         ObservableList<MoMon> data = FXCollections.observableArrayList();
 
         for (MoMon m : moMons) {
-            if (m.getMagv().equals(maGV)) {
+            if (m.getMagv().equals(nhanVien.getManv())) {
                 data.add(m);
             }
         }
