@@ -24,7 +24,7 @@ ALTER SESSION SET "_ORACLE_SCRIPT"=true;
 
 -- 3.a. Hành vi cập nhật quan hệ ĐANGKY tại các trường liên quan đến điểm số 
 -- nhưng người đó không thuộc vai trò "NV PKT".
-CREATE OR REPLACE FUNCTION UDF_FGA_DANGKY_DIEM_UPD
+CREATE OR REPLACE FUNCTION SYS.UDF_FGA_DANGKY_DIEM_UPD
 RETURN PLS_INTEGER AS
     v_user VARCHAR2(30);
     v_cnt NUMBER;
@@ -68,7 +68,7 @@ END;
 
 -- 3.b. Hành vi của người dùng (không thuộc vai trò "NV TCHC") có thể đọc trên
 -- trường LUONG, PHUCAP của người khác hoặc cập nhật ở quan hệ NHANVIEN.
-CREATE OR REPLACE FUNCTION UDF_FGA_NHANVIEN_LUONG_SEL
+CREATE OR REPLACE FUNCTION SYS.UDF_FGA_NHANVIEN_LUONG_SEL
 RETURN PLS_INTEGER AS
     v_user VARCHAR2(30);
     v_cnt NUMBER;
@@ -86,6 +86,7 @@ BEGIN
     END IF;
 END;
 /
+
 BEGIN
     -- Nếu đã có policy thì xóa đi
     DBMS_FGA.DROP_POLICY(
@@ -137,7 +138,7 @@ BEGIN
 END;
 /
 -- Hành vi hiệu chỉnh đăng ký ngoài thời gian quy định
-CREATE OR REPLACE FUNCTION QLDAIHOC.UDF_FGA_DANGKY_TRE (
+CREATE OR REPLACE FUNCTION SYS.UDF_FGA_DANGKY_TRE (
     p_MAMM IN NUMBER
 )
 RETURN PLS_INTEGER AS
@@ -182,7 +183,7 @@ BEGIN
         object_schema => 'QLDAIHOC',
         object_name => 'DANGKY', 
         policy_name => 'AUDIT_DANGKY_TRE', 
-        audit_condition => 'QLDAIHOC.UDF_FGA_DANGKY_TRE(MAMM) = 0',
+        audit_condition => 'UDF_FGA_DANGKY_TRE(MAMM) = 0',
         statement_types => 'INSERT, UPDATE, DELETE'
 );
 END; 
