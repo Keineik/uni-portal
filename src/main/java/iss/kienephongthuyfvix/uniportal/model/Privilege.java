@@ -5,6 +5,8 @@ import java.util.List;
 public class Privilege {
     private String object;
     private String type;
+    private String grantor;
+    private String grantee;
     private List<String> privileges;
     private List<String> withGrantOption;
     private List<String> updateColumns;
@@ -100,4 +102,23 @@ public class Privilege {
     public void setOriginalPrivileges(List<String> originalPrivileges) {
         this.originalPrivileges = originalPrivileges;
     }
+
+    public String getGrantor() {
+        return grantor;
+    }
+
+    public void setGrantor(String grantor) {
+        this.grantor = grantor;
+    }
+
+
+
+    public String getGrantee() {
+        return grantee;
+    }
+
+    public void setGrantee(String grantee) {
+        this.grantee = grantee;
+    }
+
 }

@@ -23,11 +23,9 @@ public class UserDao {
                         "FROM DBA_ROLE_PRIVS rp " +
                         "JOIN DBA_TAB_PRIVS tp ON rp.GRANTED_ROLE = tp.GRANTEE " +
                         "JOIN DBA_USERS u ON rp.GRANTEE = u.USERNAME " +
-                        "WHERE rp.GRANTEE != 'SYSTEM' AND tp.OWNER = 'QLDAIHOC' " +
+                        "WHERE rp.GRANTEE NOT IN ('SYS','SYSTEM', 'QLDAIHOC') AND tp.OWNER = 'QLDAIHOC' " +
                         "AND rp.GRANTED_ROLE NOT IN ('CONNECT', 'RESOURCE') " +
                         "ORDER BY rp.GRANTEE";
-
-
 
         System.out.println("Executing query: " + query);
 
@@ -91,7 +89,7 @@ public class UserDao {
 
         try (Connection conn = Database.getConnection();
              Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(alterSession);
+//            stmt.executeUpdate(alterSession);
             stmt.executeUpdate(dropUserSQL);
         }
     }
@@ -151,11 +149,11 @@ public class UserDao {
                     .map(role -> "'" + role + "'")
                     .collect(Collectors.joining(","));
 
-            String tablePrivsQuery = "SELECT TABLE_NAME, PRIVILEGE, GRANTABLE " +
+            String tablePrivsQuery = "SELECT TABLE_NAME, PRIVILEGE, GRANTABLE, GRANTEE " +
                     "FROM DBA_TAB_PRIVS " +
                     "WHERE GRANTEE IN (" + inClause + ") AND OWNER = 'QLDAIHOC'";
 
-            String columnPrivsQuery = "SELECT TABLE_NAME, COLUMN_NAME, PRIVILEGE, GRANTABLE " +
+            String columnPrivsQuery = "SELECT TABLE_NAME, COLUMN_NAME, PRIVILEGE, GRANTABLE, GRANTEE " +
                     "FROM DBA_COL_PRIVS " +
                     "WHERE GRANTEE IN (" + inClause + ") AND OWNER = 'QLDAIHOC'";
 
@@ -166,26 +164,42 @@ public class UserDao {
 
                 Map<String, List<String>> privMap = new HashMap<>();
                 Map<String, List<String>> withGrantMap = new HashMap<>();
+                Map<String, Set<String>> granteeMap = new HashMap<>();
 
                 while (rs1.next()) {
                     String object = rs1.getString("TABLE_NAME");
                     String priv = rs1.getString("PRIVILEGE");
                     boolean grantable = rs1.getString("GRANTABLE").equalsIgnoreCase("YES");
+                    String grantee = rs1.getString("GRANTEE");
 
                     privMap.computeIfAbsent(object, k -> new ArrayList<>()).add(priv);
+                    granteeMap.computeIfAbsent(object + "_" + priv, k -> new HashSet<>()).add(grantee);
+
                     if (grantable) {
                         withGrantMap.computeIfAbsent(object, k -> new ArrayList<>()).add(priv);
                     }
                 }
 
                 for (String object : privMap.keySet()) {
-                    privileges.add(new Privilege(
+                    List<String> privList = privMap.get(object);
+                    Set<String> grantees = new HashSet<>();
+                    for (String priv : privList) {
+                        grantees.addAll(granteeMap.get(object + "_" + priv));
+                    }
+
+                    Privilege p = new Privilege(
                             object,
                             "TABLE",
-                            privMap.get(object),
+                            privList,
                             withGrantMap.getOrDefault(object, List.of()),
                             List.of()
-                    ));
+                    );
+
+                    // Join the grantees list as a comma-separated string
+                    String granteeDisplay = String.join(", ", grantees);
+                    p.setGrantee(granteeDisplay);
+
+                    privileges.add(p);
                 }
             }
 
@@ -196,41 +210,77 @@ public class UserDao {
 
                 Map<String, Set<String>> privilegesMap = new HashMap<>();
                 Map<String, List<String>> updateColumnsMap = new HashMap<>();
-                Map<String, List<String>> selectColumnsMap = new HashMap<>();
                 Map<String, List<String>> withGrantMap = new HashMap<>();
+                Map<String, Set<String>> granteeMap = new HashMap<>();
 
                 while (rs2.next()) {
                     String object = rs2.getString("TABLE_NAME");
                     String column = rs2.getString("COLUMN_NAME");
                     String priv = rs2.getString("PRIVILEGE");
                     boolean grantable = rs2.getString("GRANTABLE").equalsIgnoreCase("YES");
+                    String grantee = rs2.getString("GRANTEE");
 
                     privilegesMap.computeIfAbsent(object, k -> new HashSet<>()).add(priv);
 
                     if (priv.equalsIgnoreCase("UPDATE")) {
                         updateColumnsMap.computeIfAbsent(object, k -> new ArrayList<>()).add(column);
-                    } else if (priv.equalsIgnoreCase("SELECT")) {
-                        selectColumnsMap.computeIfAbsent(object, k -> new ArrayList<>()).add(column);
                     }
 
                     if (grantable) {
                         withGrantMap.computeIfAbsent(object, k -> new ArrayList<>()).add(priv);
                     }
+
+                    granteeMap.computeIfAbsent(object + "_" + priv, k -> new HashSet<>()).add(grantee);
                 }
 
                 for (String object : privilegesMap.keySet()) {
-                    privileges.add(new Privilege(
+                    List<String> privList = new ArrayList<>(privilegesMap.get(object));
+                    Set<String> grantees = new HashSet<>();
+                    for (String priv : privList) {
+                        grantees.addAll(granteeMap.get(object + "_" + priv));
+                    }
+
+                    Privilege p = new Privilege(
                             object,
                             "COLUMN",
-                            new ArrayList<>(privilegesMap.get(object)),
+                            privList,
                             withGrantMap.getOrDefault(object, List.of()),
                             updateColumnsMap.getOrDefault(object, List.of())
-                    ));
+                    );
+
+                    // Join the grantees list as a comma-separated string
+                    String granteeDisplay = String.join(", ", grantees);
+                    p.setGrantee(granteeDisplay);
+
+                    privileges.add(p);
                 }
             }
         }
 
         return privileges;
     }
+
+
+
+    // Revoke privilege from user
+    public void revokePrivilege(String username, Privilege privilege) throws SQLException {
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            String sql;
+            boolean isPrivilegeFromRole = false;
+
+            if (!isPrivilegeFromRole) {
+                for (String priv : privilege.getPrivileges()) {
+                    sql = String.format("REVOKE %s ON %s FROM %s", priv, privilege.getObject(), username);
+                    System.out.println("Executing SQL: " + sql);
+                    stmt.executeUpdate(sql);
+                }
+            } else {
+                System.out.println("Cannot REVOKE privilege granted via role.");
+            }
+        }
+    }
+
 
 }

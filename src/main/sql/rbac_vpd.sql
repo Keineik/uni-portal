@@ -1,11 +1,11 @@
-ALTER SESSION SET "_ORACLE_SCRIPT"=true;
+--ALTER SESSION SET "_ORACLE_SCRIPT"=true;
 ALTER SESSION SET CURRENT_SCHEMA = "QLDAIHOC";
 
 -- Xóa các cấu trúc dữ liệu nếu tồn tại
 BEGIN 
     -- Xóa các role
     FOR rle IN (SELECT * FROM DBA_ROLES WHERE ROLE LIKE 'RL_%') LOOP
-        EXECUTE IMMEDIATE 'DROP ROLE ''' || rle.ROLE || '''';
+        EXECUTE IMMEDIATE 'DROP ROLE ' || rle.ROLE;
     END LOOP;
 END;
 /

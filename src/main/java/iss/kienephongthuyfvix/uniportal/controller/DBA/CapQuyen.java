@@ -57,12 +57,6 @@ public class CapQuyen {
 
         hideAllGrantOptions();
 
-        bindGrantOptionVisibility(selectCheckBox, selectGrantOption);
-        bindGrantOptionVisibility(insertCheckBox, insertGrantOption);
-        bindGrantOptionVisibility(updateCheckBox, updateGrantOption);
-        bindGrantOptionVisibility(deleteCheckBox, deleteGrantOption);
-        bindGrantOptionVisibility(executeCheckBox, executeGrantOption);
-
         updateCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> updateColumnPermissionVisibility());
 
         objectNameChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -77,11 +71,21 @@ public class CapQuyen {
             if (newValue) {
                 hideAllGrantOptions();
                 loadDataIntoChoiceBoxes();
+
+                bindGrantOptionVisibility(selectCheckBox, selectGrantOption);
+                bindGrantOptionVisibility(insertCheckBox, insertGrantOption);
+                bindGrantOptionVisibility(updateCheckBox, updateGrantOption);
+                bindGrantOptionVisibility(deleteCheckBox, deleteGrantOption);
+                bindGrantOptionVisibility(executeCheckBox, executeGrantOption);
             }
         });
 
         roleRadio.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) loadDataIntoChoiceBoxes();
+            hideAllGrantOptions();
+            if (newValue) {
+                loadDataIntoChoiceBoxes();
+                hideAllGrantOptions();
+            }
         });
 
         objectTypeChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -164,11 +168,10 @@ public class CapQuyen {
             if (updateCheckBox.isSelected()) {
                 List<String> updateColumns = getSelectedColumns(updateColumnPermissionPane);
                 if (!updateColumns.isEmpty()) {
-                    String updateClause = "UPDATE (" + String.join(", ", updateColumns) + ")";
-                    if (updateGrantOption.isSelected()) {
-                        grantOptionPermissions.add("UPDATE");
-                    } else {
-                        normalPermissions.add("UPDATE");
+                    String grantSQL = buildUpdateColumnGrantSQL(updateColumns, objectName, grantee, updateGrantOption.isSelected());
+                    try (PreparedStatement stmt = connection.prepareStatement(grantSQL)) {
+                        stmt.executeUpdate();
+                        System.out.println("Executing SQL: " + grantSQL);
                     }
                 } else {
                     if (updateGrantOption.isSelected()) {
@@ -320,6 +323,18 @@ public class CapQuyen {
             showAlert("Lỗi khi tải danh sách cột", e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
+    private String buildUpdateColumnGrantSQL(List<String> columns, String objectName, String grantee, boolean withGrantOption) {
+        String cols = String.join(", ", columns);
+        StringBuilder sql = new StringBuilder();
+        sql.append("GRANT UPDATE (").append(cols).append(") ON ").append(objectName)
+                .append(" TO ").append(grantee);
+        if (withGrantOption) {
+            sql.append(" WITH GRANT OPTION");
+        }
+        return sql.toString();
+    }
+
 
     @FXML
     public void handleCancel() {

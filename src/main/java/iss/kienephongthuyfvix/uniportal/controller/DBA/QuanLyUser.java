@@ -56,7 +56,7 @@ public class QuanLyUser {
     @FXML
     public void initialize() {
         initUserTableIfAvailable();
-        Tooltip tooltip = new Tooltip("Double click để xem chi tiết");
+        Tooltip tooltip = new Tooltip("Double click để xem và thu hồi quyền");
         Tooltip.install(userListView, tooltip);
 
         tooltip.setShowDelay(Duration.millis(10));
@@ -94,6 +94,7 @@ public class QuanLyUser {
             // Fetch users from database
             try {
                 List<User> users = userDao.getAllUsers();
+                users.sort(Comparator.comparing(User::getUsername));
                 masterUserList.setAll(users);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -396,36 +397,90 @@ public class QuanLyUser {
     }
 
     private void showAllPrivilegesForUser(String username) throws SQLException {
-        // Fetch privileges for the user
         UserDao userDao = new UserDao();
         List<Privilege> privileges = userDao.getPrivilegesByUser(username);
 
-        // Create the popup window
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.WINDOW_MODAL);
         popupStage.initOwner(userListView.getScene().getWindow());
 
-        // TableView for displaying privileges
         TableView<Privilege> table = new TableView<>();
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Define columns
+        // Column: Object
         TableColumn<Privilege, String> objectCol = new TableColumn<>("Object");
         objectCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getObject()));
 
+        // Column: Type
         TableColumn<Privilege, String> typeCol = new TableColumn<>("Type");
         typeCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType()));
 
+        // Column: Privileges
         TableColumn<Privilege, String> privilegesCol = new TableColumn<>("Privileges");
         privilegesCol.setCellValueFactory(data -> new SimpleStringProperty(
-                String.join(", ", Optional.ofNullable(data.getValue().getPrivileges()).orElse(Collections.emptyList()))));
+                String.join(", ", Optional.ofNullable(data.getValue().getPrivileges()).orElse(Collections.emptyList()))
+        ));
 
+        // Column: Update Columns
         TableColumn<Privilege, String> updateColsCol = new TableColumn<>("Update Columns");
         updateColsCol.setCellValueFactory(data -> new SimpleStringProperty(
-                String.join(", ", Optional.ofNullable(data.getValue().getUpdateColumns()).orElse(Collections.emptyList()))));
+                String.join(", ", Optional.ofNullable(data.getValue().getUpdateColumns()).orElse(Collections.emptyList()))
+        ));
+
+        // Column: Grantee (new column)
+        TableColumn<Privilege, String> granteeCol = new TableColumn<>("Grantee");
+        granteeCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getGrantee()));
+
+        // Column: Action (Revoke button)
+        TableColumn<Privilege, Void> actionCol = new TableColumn<>("Action");
+        actionCol.setCellFactory(col -> new TableCell<>() {
+            private final Button deleteButton = new Button("Revoke");
+
+            {
+                deleteButton.setOnAction(event -> {
+                    Privilege privilege = getTableView().getItems().get(getIndex());
+                    try {
+                        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirmAlert.setTitle("Xác nhận thu hồi");
+                        confirmAlert.setHeaderText("Bạn có chắc chắn muốn thu hồi quyền này?");
+                        confirmAlert.setContentText("Quyền: " + privilege.getPrivileges());
+
+                        Optional<ButtonType> result = confirmAlert.showAndWait();
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            userDao.revokePrivilege(username, privilege);
+                            getTableView().getItems().remove(privilege);
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Lỗi khi thu hồi quyền: " + e.getMessage());
+                        alert.showAndWait();
+                    }
+                });
+
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Privilege privilege = getTableView().getItems().get(getIndex());
+
+                    // Enable "Revoke" button if the grantee matches the username
+                    if (privilege.getGrantee().equalsIgnoreCase(username)) {
+                        deleteButton.setDisable(false);
+                        deleteButton.setTooltip(null);
+                        setGraphic(deleteButton);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            }
+        });
 
         // Add columns to the table
-        table.getColumns().addAll(objectCol, typeCol, privilegesCol, updateColsCol);
+        table.getColumns().addAll(objectCol, typeCol, privilegesCol, updateColsCol, granteeCol, actionCol);
 
         // Populate the table with privileges
         table.setItems(FXCollections.observableArrayList(privileges));
@@ -434,9 +489,9 @@ public class QuanLyUser {
         VBox vbox = new VBox(10, table);
         vbox.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(vbox, 700, 400);
+        Scene scene = new Scene(vbox, 750, 450);
         popupStage.setScene(scene);
-        popupStage.setTitle("Chi tiết quyền của user: " + username); // Display user name
+        popupStage.setTitle("Privileges for user: " + username);
         popupStage.show();
     }
 

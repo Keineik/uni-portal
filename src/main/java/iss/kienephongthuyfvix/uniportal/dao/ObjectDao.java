@@ -19,7 +19,7 @@ public class ObjectDao {
                 "SELECT DISTINCT %s FROM DBA_ROLE_PRIVS rp " +
                         "JOIN DBA_TAB_PRIVS tp ON rp.GRANTED_ROLE = tp.GRANTEE " +
                         "JOIN DBA_USERS u ON rp.GRANTEE = u.USERNAME " +
-                        "WHERE tp.OWNER = 'QLDAIHOC' AND rp.GRANTEE != 'SYSTEM' " +
+                        "WHERE tp.OWNER = 'QLDAIHOC' AND rp.GRANTEE NOT IN ('SYSTEM', 'SYS', 'QLDAIHOC') " +
                         "AND rp.GRANTED_ROLE NOT IN ('CONNECT', 'RESOURCE') " +
                         "ORDER BY %s",
                 isUser ? "rp.GRANTEE" : "rp.GRANTED_ROLE",
