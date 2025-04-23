@@ -86,7 +86,7 @@ public class QLSinhVien {
         dTColumn.setCellValueFactory(data -> data.getValue().dienThoaiProperty());
         khoaColumn.setCellValueFactory(data -> data.getValue().khoaProperty());
         tinhTrangColumn.setCellValueFactory(data -> data.getValue().tinhTrangProperty());
-        // coSoColumn.setCellValueFactory(data -> data.getValue().coSoProperty());
+        coSoColumn.setCellValueFactory(data -> data.getValue().coSoProperty());
 
         // Load data into the table
         loadSinhVienData();

@@ -60,7 +60,7 @@ public class PhatThongBao {
         try {
             loadData();
         } catch (SQLException e) {
-            log.error("Error loading data: ", e);
+            ;;log.error("Error loading data: ", e);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Failed to load notifications");

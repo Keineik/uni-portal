@@ -147,9 +147,10 @@ public class QLSinhvien {
 
     private void updateTinhTrangInDatabase(SinhVien sinhVien) {
         try {
-            sinhVienDAO.updateSinhVien(sinhVien);
+            sinhVienDAO.updateTinhTrang(sinhVien.getMaSV(), sinhVien.getTinhTrang());
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Error updating TINHTRANG in the database: " + e.getMessage());
         }
     }
 

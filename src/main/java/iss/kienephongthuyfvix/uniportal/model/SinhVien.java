@@ -16,8 +16,9 @@ public class SinhVien {
     private final StringProperty dienThoai;
     private final StringProperty khoa;
     private final StringProperty tinhTrang;
+    private final StringProperty coSo;
 
-    public SinhVien(String maSV, String hoTen, String phai, Date ngaySinh, String diaChi, String dienThoai, String khoa, String tinhTrang) {
+    public SinhVien(String maSV, String hoTen, String phai, Date ngaySinh, String diaChi, String dienThoai, String khoa, String tinhTrang, String coSo) {
         this.maSV = new SimpleStringProperty(maSV);
         this.hoTen = new SimpleStringProperty(hoTen);
         this.phai = new SimpleStringProperty(phai);
@@ -26,6 +27,7 @@ public class SinhVien {
         this.dienThoai = new SimpleStringProperty(dienThoai);
         this.khoa = new SimpleStringProperty(khoa);
         this.tinhTrang = new SimpleStringProperty(tinhTrang);
+        this.coSo = new SimpleStringProperty(coSo);
     }
 
     public static SinhVien fromResultSet(ResultSet rs) throws SQLException {
@@ -37,7 +39,8 @@ public class SinhVien {
                 rs.getString("DCHI"),
                 rs.getString("DT"),
                 rs.getString("KHOA"),
-                rs.getString("TINHTRANG")
+                rs.getString("TINHTRANG"),
+                rs.getString("COSO")
         );
     }
 
@@ -49,6 +52,7 @@ public class SinhVien {
     public StringProperty dienThoaiProperty() { return dienThoai; }
     public StringProperty khoaProperty() { return khoa; }
     public StringProperty tinhTrangProperty() { return tinhTrang; }
+    public StringProperty coSoProperty() { return coSo; }
 
     public String getMaSV() { return maSV.get(); }
     public String getHoTen() { return hoTen.get(); }

@@ -85,7 +85,7 @@ public class SinhVienDialog {
         // Set combobox values
         khoaCombo.setValue(sinhVien.getKhoa());
         tinhTrangCombo.setValue(sinhVien.getTinhTrang());
-        // coSoCombo.setValue(sinhVien.getCoSo());
+        coSoCombo.setValue(sinhVien.coSoProperty().getValue());
 
         // Disable student ID field in edit mode
         maSVField.setEditable(false);
@@ -160,13 +160,13 @@ public class SinhVienDialog {
                 // Update existing student
                 log.info("Updating student: {}", maSV);
                 sinhVienDAO.updateSinhVien(new SinhVien(
-                        maSV, hoTen, phai, ngaySinh, diaChi, dienThoai, khoa, tinhTrang));
+                        maSV, hoTen, phai, ngaySinh, diaChi, dienThoai, khoa, tinhTrang, coSo));
                 showInfoAlert("Thành công", "Cập nhật thông tin sinh viên thành công!");
             } else {
                 // Add new student
                 log.info("Adding new student: {}", hoTen);
                 sinhVienDAO.insertSinhVien(new SinhVien(
-                        null, hoTen, phai, ngaySinh, diaChi, dienThoai, khoa, tinhTrang));
+                        null, hoTen, phai, ngaySinh, diaChi, dienThoai, khoa, tinhTrang, coSo));
                 showInfoAlert("Thành công", "Thêm sinh viên mới thành công!");
             }
 

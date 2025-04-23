@@ -2,11 +2,13 @@ package iss.kienephongthuyfvix.uniportal.dao;
 
 import iss.kienephongthuyfvix.uniportal.model.DangKy;
 import iss.kienephongthuyfvix.uniportal.model.SinhVien;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class DangKyDAO {
     public List<DangKy> getAllDangKyWithHocPhanDetails() throws SQLException {
         List<DangKy> dangKyList = new ArrayList<>();
@@ -54,17 +56,18 @@ public class DangKyDAO {
         }
     }
 
-    public void updateDiem(DangKy dangKy) throws SQLException {
-        String query = "UPDATE DANGKY SET DIEMTH = ?, DIEMQT = ?, DIEMTHI = ? WHERE MASV = ? AND MAMM = ?";
+    public void updateDiem(String maSV, Integer maMM, Double diemTH, Double diemQT, Double diemThi) throws SQLException {
+        String query = "UPDATE DANGKY SET DIEMTH = ?, DIEMQT = ?, DIEMTHI = ?, DIEMTK = ? WHERE MASV = ? AND MAMM = ?";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setDouble(1, dangKy.getDiemTH());
-            pstmt.setDouble(2, dangKy.getDiemQT());
-            pstmt.setDouble(3, dangKy.getDiemThi());
-            pstmt.setString(4, dangKy.getMaSV());
-            pstmt.setInt(5, dangKy.getMaMM());
+            pstmt.setDouble(1, diemTH);
+            pstmt.setDouble(2, diemQT);
+            pstmt.setDouble(3, diemThi);
+            pstmt.setDouble(4, 0.3 * diemTH + 0.2 * diemQT + 0.5 * diemThi);
+            pstmt.setString(5, maSV);
+            pstmt.setInt(6, maMM);
             pstmt.executeUpdate();
         }
     }
@@ -87,6 +90,9 @@ public class DangKyDAO {
                 "FROM DANGKY JOIN UV_SV_MOMON MM ON DANGKY.MAMM = MM.MAMM " +
                 "JOIN HOCPHAN ON MM.MAHP = HOCPHAN.MAHP " +
                 "WHERE DANGKY.DIEMTK IS NOT NULL AND DANGKY.MASV = ?";
+
+        log.info("query: " + query);
+        log.info("maSV: " + maSV);
 
         try (Connection conn = Database.getConnection()) {
 

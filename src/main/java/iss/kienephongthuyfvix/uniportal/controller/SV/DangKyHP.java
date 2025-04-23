@@ -2,7 +2,9 @@ package iss.kienephongthuyfvix.uniportal.controller.SV;
 
 import iss.kienephongthuyfvix.uniportal.dao.DangKyDAO;
 import iss.kienephongthuyfvix.uniportal.dao.MoMonDAO;
+import iss.kienephongthuyfvix.uniportal.dao.SinhVienDAO;
 import iss.kienephongthuyfvix.uniportal.model.MoMon;
+import iss.kienephongthuyfvix.uniportal.model.SinhVien;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -42,10 +44,18 @@ public class DangKyHP {
     private final ObservableList<MoMon> chuaDangKyData = FXCollections.observableArrayList();
     private final MoMonDAO moMonDAO = new MoMonDAO();
     private final DangKyDAO dangKyDAO = new DangKyDAO();
-    private final String maSV = "SV00000001"; // TODO: Please change this
+    private SinhVien sinhVien;
+    private SinhVienDAO sinhVienDAO = new SinhVienDAO();
 
     @FXML
     public void initialize() {
+        try {
+            sinhVien = sinhVienDAO.getCurrentSinhVien();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Database Error", "Unable to load student data: " + e.getMessage());
+            return;
+        }
         // Initialize columns for DaDangKy
         mammDKColumn.setCellValueFactory(data -> data.getValue().mammProperty().asObject());
         mahpDKColumn.setCellValueFactory(data -> data.getValue().mahpProperty());
@@ -69,8 +79,8 @@ public class DangKyHP {
 
     private void loadData() {
         try {
-            daDangKyData.setAll(moMonDAO.getAllDaDangKy(maSV));
-            chuaDangKyData.setAll(moMonDAO.getAllChuaDangKy(maSV));
+            daDangKyData.setAll(moMonDAO.getAllDaDangKy(sinhVien.getMaSV()));
+            chuaDangKyData.setAll(moMonDAO.getAllChuaDangKy(sinhVien.getMaSV()));
 
             momonDKListView.setItems(daDangKyData);
             momonListView.setItems(chuaDangKyData);
@@ -136,7 +146,7 @@ public class DangKyHP {
 
     private void removeDangKy(MoMon moMon) {
         try {
-            dangKyDAO.deleteDangKy(maSV, moMon.getMamm());
+            dangKyDAO.deleteDangKy(sinhVien.getMaSV(), moMon.getMamm());
             loadData();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -146,7 +156,7 @@ public class DangKyHP {
 
     private void addDangKy(MoMon moMon) {
         try {
-            dangKyDAO.insertDangKy(maSV, moMon.getMamm());
+            dangKyDAO.insertDangKy(sinhVien.getMaSV(), moMon.getMamm());
             loadData();
         } catch (SQLException e) {
             e.printStackTrace();

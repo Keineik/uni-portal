@@ -15,7 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.time.Year;
 import java.util.List;
+import java.time.Year;
 
 public class MoMonDialog {
 
@@ -49,6 +51,9 @@ public class MoMonDialog {
     public void initialize() {
         saveButton.setOnAction(e -> handleSave());
         cancelButton.setOnAction(e -> handleCancel());
+        hkField.setText(String.valueOf(getCurrentSemester())); // Set current semester
+        namField.setText(String.valueOf(Year.now().getValue())); // Set current year
+
 
         try {
             // Load list of HocPhan into the ComboBox
@@ -69,6 +74,17 @@ public class MoMonDialog {
             });
         } catch (SQLException e) {
             showErrorAlert("Error", "Failed to load HocPhan data: " + e.getMessage());
+        }
+    }
+
+    private int getCurrentSemester() {
+        int month = java.time.LocalDate.now().getMonthValue();
+        if (month >= 9 && month <= 12) {
+            return 1; // Semester 1
+        } else if (month >= 1 && month <= 4) {
+            return 2; // Semester 2
+        } else {
+            return 3; // Semester 3
         }
     }
 

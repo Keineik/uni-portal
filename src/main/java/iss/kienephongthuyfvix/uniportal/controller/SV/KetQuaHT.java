@@ -1,7 +1,9 @@
 package iss.kienephongthuyfvix.uniportal.controller.SV;
 
 import iss.kienephongthuyfvix.uniportal.dao.DangKyDAO;
+import iss.kienephongthuyfvix.uniportal.dao.SinhVienDAO;
 import iss.kienephongthuyfvix.uniportal.model.DangKy;
+import iss.kienephongthuyfvix.uniportal.model.SinhVien;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -51,11 +53,18 @@ public class KetQuaHT {
     @FXML
     private final ObservableList<DangKy> ketquaData = FXCollections.observableArrayList();
     private final DangKyDAO dangKyDAO = new DangKyDAO();
-    private final String maSV = "SV00000001"; // TODO: Please change this
+    private final SinhVienDAO sinhVienDAO = new SinhVienDAO();
+    private SinhVien sinhVien;
     private Double diemTBTatCa = 0.0;
 
     @FXML
     private void initialize() {
+        try {
+            sinhVien = sinhVienDAO.getCurrentSinhVien();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
         // Initialize columns
         mahpColumn.setCellValueFactory(data -> data.getValue().maHPProperty());
         tenhpColumn.setCellValueFactory(data -> data.getValue().tenHPProperty());
@@ -96,7 +105,7 @@ public class KetQuaHT {
 
     private void loadData() {
         try {
-            ketquaData.setAll(dangKyDAO.getKetQua(maSV));
+            ketquaData.setAll(dangKyDAO.getKetQua(sinhVien.getMaSV()));
             ketquaListView.setItems(ketquaData);
             diemtbField.setText("ĐTB: " + String.format("%.2f", diemTBTatCa));
         } catch (SQLException e) {

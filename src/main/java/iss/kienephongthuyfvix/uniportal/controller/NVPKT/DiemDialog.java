@@ -8,9 +8,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 
+@Slf4j
 public class DiemDialog {
 
     @FXML
@@ -89,7 +91,7 @@ public class DiemDialog {
             double diemCK = diemCKField.getText() != null ? Double.parseDouble(diemCKField.getText()) : 0;
 
             double diemTK = 0.3 * diemTH + 0.2 * diemQT + 0.5 * diemCK;
-            diemTKField.setText(String.format("%.2f", diemTK));
+            diemTKField.setText(String.valueOf(diemTK));
         } catch (NumberFormatException e) {
             // Clear diemTKField if input is invalid
             diemTKField.clear();
@@ -109,12 +111,18 @@ public class DiemDialog {
                 currentDangKy.setDiemThi(diemCK);
                 currentDangKy.setDiemTK(diemTK);
 
-                dangKyDAO.updateDiem(currentDangKy);
+                dangKyDAO.updateDiem(currentDangKy.getMaSV(),
+                        currentDangKy.getMaMM(),
+                        diemTH,
+                        diemQT,
+                        diemCK
+                );
 
                 showInfoAlert("Success", "Changes have been saved successfully!");
             } catch (NumberFormatException e) {
                 showErrorAlert("Invalid Input", "Please enter valid numeric values for Điểm TH, QT, and CK.");
             } catch (SQLException e) {
+                log.error("Failed to update diem: {}", e.getMessage());
                 throw new RuntimeException(e);
             }
         }
@@ -131,6 +139,7 @@ public class DiemDialog {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+        closeDialog();
     }
 
     private void showInfoAlert(String title, String message) {
