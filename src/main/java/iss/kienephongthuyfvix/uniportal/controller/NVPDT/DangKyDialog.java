@@ -11,12 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.util.List;
 
-@Slf4j
 public class DangKyDialog {
 
     @FXML
@@ -90,11 +88,9 @@ public class DangKyDialog {
 
         try {
             if (currentDangKy == null) {
-                log.info("Insert DangKy, MaSV: {}, MaHP: {}", maSV, selectedHocPhan.getKey());
                 dangKyDAO.insertDangKy(maSV, Integer.parseInt(selectedHocPhan.getKey()));
                 showInfoAlert("Thành công", "Đăng ký học phần thành công!");
             } else {
-                log.info("Update DangKy, MaSV: {}, MaHP: {}", maSV, selectedHocPhan.getKey());
                 dangKyDAO.deleteDangKy(maSV, currentDangKy.getMaMM());
                 dangKyDAO.insertDangKy(maSV, Integer.parseInt(selectedHocPhan.getKey()));
                 currentDangKy.setMaMM(Integer.parseInt(selectedHocPhan.getKey()));

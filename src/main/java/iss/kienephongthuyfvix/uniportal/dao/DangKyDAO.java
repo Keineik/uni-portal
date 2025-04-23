@@ -2,13 +2,11 @@ package iss.kienephongthuyfvix.uniportal.dao;
 
 import iss.kienephongthuyfvix.uniportal.model.DangKy;
 import iss.kienephongthuyfvix.uniportal.model.SinhVien;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 public class DangKyDAO {
     public List<DangKy> getAllDangKyWithHocPhanDetails() throws SQLException {
         List<DangKy> dangKyList = new ArrayList<>();
@@ -90,9 +88,6 @@ public class DangKyDAO {
                 "FROM DANGKY JOIN UV_SV_MOMON MM ON DANGKY.MAMM = MM.MAMM " +
                 "JOIN HOCPHAN ON MM.MAHP = HOCPHAN.MAHP " +
                 "WHERE DANGKY.DIEMTK IS NOT NULL AND DANGKY.MASV = ?";
-
-        log.info("query: " + query);
-        log.info("maSV: " + maSV);
 
         try (Connection conn = Database.getConnection()) {
 

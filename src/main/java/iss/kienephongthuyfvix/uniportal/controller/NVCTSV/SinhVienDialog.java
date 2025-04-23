@@ -13,7 +13,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -23,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 public class SinhVienDialog {
 
     @FXML
@@ -126,7 +124,6 @@ public class SinhVienDialog {
 
             khoaCombo.setItems(khoaItems);
         } catch (SQLException e) {
-            log.error("Error loading faculty data: {}", e.getMessage());
             showErrorAlert("Lỗi", "Không thể tải dữ liệu khoa: " + e.getMessage());
         }
     }
@@ -158,13 +155,11 @@ public class SinhVienDialog {
 
             if (isEditMode) {
                 // Update existing student
-                log.info("Updating student: {}", maSV);
                 sinhVienDAO.updateSinhVien(new SinhVien(
                         maSV, hoTen, phai, ngaySinh, diaChi, dienThoai, khoa, tinhTrang, coSo));
                 showInfoAlert("Thành công", "Cập nhật thông tin sinh viên thành công!");
             } else {
                 // Add new student
-                log.info("Adding new student: {}", hoTen);
                 sinhVienDAO.insertSinhVien(new SinhVien(
                         null, hoTen, phai, ngaySinh, diaChi, dienThoai, khoa, tinhTrang, coSo));
                 showInfoAlert("Thành công", "Thêm sinh viên mới thành công!");
@@ -172,7 +167,6 @@ public class SinhVienDialog {
 
             closeDialog();
         } catch (SQLException e) {
-            log.error("Database error while saving student: {}", e.getMessage());
             showErrorAlert("Lỗi cơ sở dữ liệu", "Không thể lưu thông tin sinh viên: " + e.getMessage());
         }
     }

@@ -14,7 +14,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -22,7 +21,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Slf4j
 public class PhatThongBao {
 
     @FXML
@@ -60,7 +58,6 @@ public class PhatThongBao {
         try {
             loadData();
         } catch (SQLException e) {
-            ;;log.error("Error loading data: ", e);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Failed to load notifications");
@@ -171,14 +168,12 @@ public class PhatThongBao {
             filterNotifications();
             showThongBao(thongBaoData);
         } catch (IOException e) {
-            log.error("Error loading the create notification dialog: ", e);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Failed to load create notification dialog");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         } catch (SQLException e) {
-            log.error("Error loading data: ", e);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Failed to load data");

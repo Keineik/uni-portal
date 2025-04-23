@@ -8,11 +8,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 
-@Slf4j
 public class DiemDialog {
 
     @FXML
@@ -122,7 +120,6 @@ public class DiemDialog {
             } catch (NumberFormatException e) {
                 showErrorAlert("Invalid Input", "Please enter valid numeric values for Điểm TH, QT, and CK.");
             } catch (SQLException e) {
-                log.error("Failed to update diem: {}", e.getMessage());
                 throw new RuntimeException(e);
             }
         }

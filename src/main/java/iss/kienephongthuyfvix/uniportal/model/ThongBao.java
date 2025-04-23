@@ -6,21 +6,15 @@ import lombok.Getter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class ThongBao {
-    @Getter
     private final IntegerProperty maThongBao;
-    @Getter
     private final StringProperty tieuDe;
-    @Getter
     private final StringProperty noiDung;
-    @Getter
     private final StringProperty linhVuc;
-    @Getter
     private final StringProperty maCapBac;
-    @Getter
     private final StringProperty maCoSo;
-    @Getter
     private final ObjectProperty<Timestamp> ngayTao;
 
     public ThongBao(Integer maThongBao, String tieuDe, String noiDung, String linhVuc, String maCapBac, String maCoSo, Timestamp ngayTao) {
@@ -43,5 +37,29 @@ public class ThongBao {
                 rs.getString("COSO"),
                 rs.getTimestamp("NGAYTAO")
         );
+    }
+
+    public StringProperty getTieuDe() {
+        return tieuDe;
+    }
+
+    public StringProperty getNoiDung() {
+        return noiDung;
+    }
+
+    public StringProperty getLinhVuc() {
+        return linhVuc;
+    }
+
+    public StringProperty getMaCapBac() {
+        return maCapBac;
+    }
+
+    public StringProperty getMaCoSo() {
+        return maCoSo;
+    }
+
+    public ObjectProperty<Timestamp> getNgayTao() {
+        return ngayTao;
     }
 }

@@ -9,14 +9,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Slf4j
 public class DSThongBao {
 
     @FXML
@@ -30,7 +28,6 @@ public class DSThongBao {
         try {
             loadData();
         } catch (SQLException e) {
-            log.error("Error loading data: ", e);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Failed to load notifications");

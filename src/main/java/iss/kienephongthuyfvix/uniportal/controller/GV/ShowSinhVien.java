@@ -15,12 +15,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.util.List;
 
-@Slf4j
 public class ShowSinhVien {
 
     @FXML
@@ -78,7 +76,6 @@ public class ShowSinhVien {
             maKhoa = nhanVien.getMadv();
             loadSinhVienTheoKhoa();
         } catch (SQLException e) {
-            log.error("Error loading department: {}", e.getMessage());
         }
     }
 

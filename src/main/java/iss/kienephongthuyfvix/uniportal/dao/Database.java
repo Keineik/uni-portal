@@ -2,12 +2,10 @@ package iss.kienephongthuyfvix.uniportal.dao;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@Slf4j
 public class Database {
     private static HikariDataSource dataSource;
 
@@ -30,9 +28,7 @@ public class Database {
                 dataSource.close();
             }
             dataSource = new HikariDataSource(config);
-            log.info("HikariCP initialized successfully with user: {}", username);
         } catch (Exception e) {
-            log.error("Error initializing HikariCP: {}", e.getMessage());
         }
     }
 
@@ -46,7 +42,6 @@ public class Database {
     public static void closeDataSource() {
         if (dataSource != null) {
             dataSource.close();
-            log.info("HikariCP data source closed.");
         }
     }
 }
