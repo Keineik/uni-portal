@@ -14,7 +14,7 @@ public class Main extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/iss/kienephongthuyfvix/uniportal/img/logo.png")));
         primaryStage.setResizable(false);
-        primaryStage.setTitle("University Management System - Login");
+        primaryStage.setTitle("University Management System");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

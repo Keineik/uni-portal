@@ -17,7 +17,7 @@
 
             <center>
                 <AnchorPane>
-                    <StackPane fx:id="contentArea" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    <StackPane fx:id="contentArea" layoutY="-31.0" prefHeight="720.0" prefWidth="1080.0" AnchorPane.bottomAnchor="-14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-31.0" />
                 </AnchorPane>
             </center>
          <left>
@@ -28,7 +28,7 @@
                 </AnchorPane>
          </left>
          <top>
-            <BorderPane prefHeight="47.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="0.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
                <left>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #71D9B6;" BorderPane.alignment="CENTER">
                      <children>
