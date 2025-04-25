@@ -20,11 +20,8 @@ public class UserDao {
 
         String query =
                 "SELECT DISTINCT rp.GRANTEE, rp.GRANTED_ROLE " +
-                        "FROM DBA_ROLE_PRIVS rp " +
-                        "JOIN DBA_TAB_PRIVS tp ON rp.GRANTED_ROLE = tp.GRANTEE " +
-                        "JOIN DBA_USERS u ON rp.GRANTEE = u.USERNAME " +
-                        "WHERE rp.GRANTEE NOT IN ('SYS','SYSTEM', 'QLDAIHOC') AND tp.OWNER = 'QLDAIHOC' " +
-                        "AND rp.GRANTED_ROLE NOT IN ('CONNECT', 'RESOURCE') " +
+                        "FROM DBA_ROLE_PRIVS rp JOIN DBA_USERS u ON rp.GRANTEE = u.USERNAME " +
+                        "WHERE rp.GRANTEE LIKE 'SV%' OR rp.GRANTEE LIKE 'NV%' OR rp.GRANTED_ROLE LIKE 'RL%' AND GRANTEE NOT IN ('SYS', 'QLDAIHOC')" +
                         "ORDER BY rp.GRANTEE";
 
         System.out.println("Executing query: " + query);
@@ -42,7 +39,9 @@ public class UserDao {
                     user = new User(username);
                     userMap.put(username, user);
                 }
-                user.addRole(role);
+                if (!"CONNECT".equalsIgnoreCase(role) && !"RESOURCE".equalsIgnoreCase(role)) {
+                    user.addRole(role);
+                }
             }
         }
 

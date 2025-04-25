@@ -138,7 +138,7 @@ public class QuanLyRole {
         try {
             List<Privilege> privileges = roleDao.getPrivilegesByRole(role.getRoleName());
             if (privileges.isEmpty()) {
-                showAlert("Thông báo", "Role này không có quyền nào.", Alert.AlertType.INFORMATION);
+                showAlert("Thông báo", "Role này không có quyền nào trên QLDAIHOC.", Alert.AlertType.INFORMATION);
                 return;
             }
 

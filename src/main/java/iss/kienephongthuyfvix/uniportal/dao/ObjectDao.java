@@ -17,14 +17,13 @@ public class ObjectDao {
 
         String query = String.format(
                 "SELECT DISTINCT %s FROM DBA_ROLE_PRIVS rp " +
-                        "JOIN DBA_TAB_PRIVS tp ON rp.GRANTED_ROLE = tp.GRANTEE " +
-                        "JOIN DBA_USERS u ON rp.GRANTEE = u.USERNAME " +
-                        "WHERE tp.OWNER = 'QLDAIHOC' AND rp.GRANTEE NOT IN ('SYSTEM', 'SYS', 'QLDAIHOC') " +
-                        "AND rp.GRANTED_ROLE NOT IN ('CONNECT', 'RESOURCE') " +
+                        "WHERE ((rp.GRANTED_ROLE LIKE 'RL%%') OR " +
+                        "(rp.GRANTEE LIKE 'SV%%' OR rp.GRANTEE LIKE 'NV%%')) AND GRANTED_ROLE NOT IN ('CONNECT', 'RESOURCE') AND GRANTEE NOT IN ('SYS')" +
                         "ORDER BY %s",
                 isUser ? "rp.GRANTEE" : "rp.GRANTED_ROLE",
                 isUser ? "rp.GRANTEE" : "rp.GRANTED_ROLE"
         );
+
 
         try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {

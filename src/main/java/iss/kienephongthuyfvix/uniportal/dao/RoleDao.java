@@ -13,11 +13,7 @@ public class RoleDao {
     public ObservableList<Role> getAllRoles() throws SQLException {
         List<Role> roles = new ArrayList<>();
         String query = "SELECT DISTINCT rp.GRANTED_ROLE " +
-                "FROM DBA_ROLE_PRIVS rp " +
-                "JOIN DBA_TAB_PRIVS tp ON rp.GRANTED_ROLE = tp.GRANTEE " +
-                "JOIN DBA_USERS u ON rp.GRANTEE = u.USERNAME " +
-                "WHERE rp.GRANTEE != 'SYSTEM' AND tp.OWNER = 'QLDAIHOC' " +
-                "AND rp.GRANTED_ROLE NOT IN ('CONNECT', 'RESOURCE') " +
+                "FROM DBA_ROLE_PRIVS rp WHERE GRANTED_ROLE LIKE 'RL%' AND GRANTED_ROLE NOT IN ('CONNECT', 'RESOURCE') AND GRANTED_ROLE != 'RL_ADMIN'" +
                 "ORDER BY rp.GRANTED_ROLE";
 
         System.out.println("Executing query: " + query);

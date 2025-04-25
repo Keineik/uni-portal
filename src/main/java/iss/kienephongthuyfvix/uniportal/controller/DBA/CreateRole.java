@@ -349,7 +349,7 @@ public class CreateRole {
 
         try (Connection conn = Database.getConnection()) {
             //"\"RL_"
-            String escapedRoleName = "\"" + roleName.trim().toUpperCase() + "\"";
+            String escapedRoleName = "\"RL_" + roleName.trim().toUpperCase() + "\"";
 
             // Tạo role
             try (PreparedStatement createRoleStmt = conn.prepareStatement("CREATE ROLE " + escapedRoleName)) {
