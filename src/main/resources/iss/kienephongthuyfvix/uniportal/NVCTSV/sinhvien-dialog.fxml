@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: white;" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVCTSV.SinhVienDialog">
+<AnchorPane prefHeight="455.0" prefWidth="500.0" style="-fx-background-color: white;" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVCTSV.SinhVienDialog">
     <Label layoutX="24.0" layoutY="14.0" text="Thông tin sinh viên">
         <font>
             <Font name="System Bold" size="18.0" />
@@ -20,7 +20,7 @@
     </Label>
     <GridPane hgap="10" layoutX="24.0" layoutY="50.0" prefWidth="454.0" vgap="15">
         <Label text="Mã sinh viên:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="maSVField" promptText="Mã sinh viên" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField fx:id="maSVField" editable="false" promptText="Tự động" style="-fx-border-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
         <Label text="Họ và tên:" GridPane.rowIndex="1" />
         <TextField fx:id="hoTenField" promptText="Họ và tên sinh viên" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -41,10 +41,7 @@
         <ComboBox fx:id="khoaCombo" prefHeight="26.0" prefWidth="320.0" promptText="Chọn khoa" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
         <Label text="Tình trạng:" GridPane.rowIndex="7" />
-        <ComboBox fx:id="tinhTrangCombo" prefHeight="26.0" prefWidth="320.0" promptText="Chọn tình trạng" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-
-        <Label text="Cơ sở:" GridPane.rowIndex="8" />
-        <ComboBox fx:id="coSoCombo" prefHeight="26.0" prefWidth="320.0" promptText="Chọn cơ sở" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      <TextField fx:id="tinhTrangField" editable="false" promptText="NULL" style="-fx-border-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
         <columnConstraints>
             <ColumnConstraints maxWidth="130.0" minWidth="90.0" prefWidth="120.0" />
@@ -64,7 +61,7 @@
     </GridPane>
 
     <!-- Fixed button layout with proper alignment -->
-    <HBox alignment="CENTER_RIGHT" layoutX="24.0" layoutY="456.0" prefWidth="454.0" spacing="15">
+    <HBox alignment="CENTER_RIGHT" layoutX="23.0" layoutY="402.0" prefWidth="454.0" spacing="15">
         <Button fx:id="cancelButton" prefHeight="30.0" prefWidth="80.0" styleClass="cancel-button" text="Hủy" />
         <Button fx:id="saveButton" prefHeight="30.0" prefWidth="80.0" text="Lưu" />
     </HBox>

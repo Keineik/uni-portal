@@ -12,41 +12,42 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #f9fafb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iss.kienephongthuyfvix.uniportal.controller.NVCTSV.QLSinhVien">
     <top>
-        <AnchorPane prefHeight="87.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="72.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
             <children>
                 <Label layoutX="19.0" layoutY="11.0" text="Quản lý sinh viên">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
-                <Button fx:id="addButton" layoutX="976.0" layoutY="14.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="91.0" stylesheets="@../style.css" text="Thêm mới" />
             </children>
         </AnchorPane>
     </top>
     <bottom>
-        <AnchorPane prefHeight="633.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="648.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
             <children>
                 <AnchorPane layoutX="22.0" layoutY="6.0" prefHeight="598.0" prefWidth="1034.0" style="-fx-background-color: WHITE; -fx-background-radius: 10px; -fx-border-color: transparent;" styleClass="custom-table-view" stylesheets="@../style.css">
                     <children>
-                        <TableView fx:id="sinhvienListView" layoutX="10.0" layoutY="74.0" prefHeight="515.0" prefWidth="1014.0">
+                        <TableView fx:id="sinhvienListView" layoutX="10.0" layoutY="74.0" prefHeight="537.0" prefWidth="1014.0">
                             <columns>
                                 <TableColumn fx:id="maSVColumn" editable="false" prefWidth="100.0" text="Mã sinh viên" />
                                 <TableColumn fx:id="hoTenColumn" editable="false" prefWidth="150.0" text="Họ và tên" />
                                 <TableColumn fx:id="phaiColumn" editable="false" minWidth="0.0" prefWidth="70.0" text="Phái" />
                                 <TableColumn fx:id="ngSinhColumn" editable="false" prefWidth="90.0" text="Ngày sinh" />
-                                <TableColumn fx:id="dChiColumn" editable="false" prefWidth="150.0" text="Địa chỉ" />
-                                <TableColumn fx:id="dTColumn" editable="false" prefWidth="100.0" text="Điện thoại" />
-                                <TableColumn fx:id="khoaColumn" prefWidth="100.0" text="Khoa" />
-                                <TableColumn fx:id="tinhTrangColumn" prefWidth="100.0" text="Tình trạng" />
-                                <TableColumn fx:id="coSoColumn" prefWidth="70.0" text="Cơ sở" />
-                                <TableColumn fx:id="actionsColumn" prefWidth="80.0" text="Thao tác" />
+                                <TableColumn fx:id="dChiColumn" editable="false" prefWidth="112.79995727539062" text="Địa chỉ" />
+                                <TableColumn fx:id="dTColumn" editable="false" prefWidth="106.39996337890625" text="Điện thoại" />
+                                <TableColumn fx:id="khoaColumn" prefWidth="95.2000732421875" text="Khoa" />
+                                <TableColumn fx:id="tinhTrangColumn" prefWidth="102.40008544921875" text="Tình trạng" />
+                                <TableColumn fx:id="coSoColumn" prefWidth="49.60003662109375" text="Cơ sở" />
+                                <TableColumn fx:id="actionsColumn" prefWidth="112.800048828125" text="Thao tác" />
                             </columns>
                         </TableView>
                         <GridPane layoutX="14.0" layoutY="23.0" prefHeight="30.0" prefWidth="1010.0">
                             <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="2.0" prefWidth="2.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -57,9 +58,14 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <TextField fx:id="maSVSearch" prefHeight="22.0" prefWidth="237.0" promptText="Mã sinh viên" />
-                                <TextField fx:id="hoTenSearch" prefHeight="30.0" prefWidth="248.0" promptText="Họ và tên" GridPane.columnIndex="2" />
-                                <ComboBox fx:id="khoaCombo" prefHeight="30.0" prefWidth="189.0" promptText="Chọn khoa" GridPane.columnIndex="4" />
+                                <TextField fx:id="maSVSearch" prefHeight="22.0" prefWidth="237.0" promptText="Mã sinh viên" GridPane.columnIndex="1" />
+                                <TextField fx:id="hoTenSearch" prefHeight="30.0" prefWidth="248.0" promptText="Họ và tên" GridPane.columnIndex="3" />
+                                <ComboBox fx:id="khoaCombo" prefHeight="30.0" prefWidth="189.0" promptText="Chọn khoa" GridPane.columnIndex="5" />
+                            <Button fx:id="addButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" stylesheets="@../style.css" text="Thêm">
+                           <graphic>
+                              <FontIcon iconColor="WHITE" iconLiteral="fas-plus" />
+                           </graphic>
+                        </Button>
                             </children>
                         </GridPane>
                     </children>

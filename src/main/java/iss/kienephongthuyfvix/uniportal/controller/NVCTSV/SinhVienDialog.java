@@ -18,17 +18,12 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SinhVienDialog {
 
     @FXML
     private Button cancelButton;
-
-    @FXML
-    private ComboBox<String> coSoCombo;
 
     @FXML
     private TextField dChiField;
@@ -55,16 +50,14 @@ public class SinhVienDialog {
     private Button saveButton;
 
     @FXML
-    private ComboBox<String> tinhTrangCombo;
+    private TextField tinhTrangField;
 
     private final SinhVienDAO sinhVienDAO = new SinhVienDAO();
     private final DonViDAO donViDAO = new DonViDAO();
 
-    private SinhVien currentSinhVien;
     private boolean isEditMode = false;
 
     public void setSinhVien(SinhVien sinhVien) {
-        this.currentSinhVien = sinhVien;
         this.isEditMode = true;
 
         // Populate fields with existing student data
@@ -82,8 +75,7 @@ public class SinhVienDialog {
 
         // Set combobox values
         khoaCombo.setValue(sinhVien.getKhoa());
-        tinhTrangCombo.setValue(sinhVien.getTinhTrang());
-        coSoCombo.setValue(sinhVien.coSoProperty().getValue());
+        tinhTrangField.setText(sinhVien.getTinhTrang());
 
         // Disable student ID field in edit mode
         maSVField.setEditable(false);
@@ -104,14 +96,7 @@ public class SinhVienDialog {
         // Set up gender options
         phaiCombo.setItems(FXCollections.observableArrayList("Nam", "Nữ"));
 
-        // Set up campus options
-        coSoCombo.setItems(FXCollections.observableArrayList("CS1", "CS2"));
-
-        // Set up student status options
-        tinhTrangCombo.setItems(FXCollections.observableArrayList(
-                "Đang học", "Bảo lưu", "Đã tốt nghiệp", "Thôi học"));
-
-        // Load faculty options from database
+        // Load faculty options from a database
         try {
             List<DonVi> donViList = donViDAO.getAllDonVi();
             ObservableList<String> khoaItems = FXCollections.observableArrayList();
@@ -136,7 +121,7 @@ public class SinhVienDialog {
         }
 
         try {
-            // Get values from form
+            // Get values from the form
             String maSV = maSVField.getText().trim();
             String hoTen = hoTenField.getText().trim();
             String phai = phaiCombo.getValue();
@@ -144,10 +129,9 @@ public class SinhVienDialog {
             String diaChi = dChiField.getText().trim();
             String dienThoai = dTField.getText().trim();
             String khoa = khoaCombo.getValue();
-            String tinhTrang = tinhTrangCombo.getValue();
-            String coSo = coSoCombo.getValue();
+            String tinhTrang = tinhTrangField.getText();
 
-            // Convert LocalDate to Date for database
+            // Convert LocalDate to Date for a database
             Date ngaySinh = null;
             if (ngSinh != null) {
                 ngaySinh = Date.from(ngSinh.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -156,13 +140,13 @@ public class SinhVienDialog {
             if (isEditMode) {
                 // Update existing student
                 sinhVienDAO.updateSinhVien(new SinhVien(
-                        maSV, hoTen, phai, ngaySinh, diaChi, dienThoai, khoa, tinhTrang, coSo));
-                showInfoAlert("Thành công", "Cập nhật thông tin sinh viên thành công!");
+                        maSV, hoTen, phai, ngaySinh, diaChi, dienThoai, khoa, tinhTrang, null));
+                showInfoAlert("Cập nhật thông tin sinh viên thành công!");
             } else {
                 // Add new student
                 sinhVienDAO.insertSinhVien(new SinhVien(
-                        null, hoTen, phai, ngaySinh, diaChi, dienThoai, khoa, tinhTrang, coSo));
-                showInfoAlert("Thành công", "Thêm sinh viên mới thành công!");
+                        null, hoTen, phai, ngaySinh, diaChi, dienThoai, khoa, tinhTrang, null));
+                showInfoAlert("Thêm sinh viên mới thành công!");
             }
 
             closeDialog();
@@ -190,21 +174,13 @@ public class SinhVienDialog {
             errorMessages.append("- Vui lòng chọn khoa\n");
         }
 
-        if (tinhTrangCombo.getValue() == null) {
-            errorMessages.append("- Vui lòng chọn tình trạng\n");
-        }
-
-        if (coSoCombo.getValue() == null) {
-            errorMessages.append("- Vui lòng chọn cơ sở\n");
-        }
-
         // Phone number validation - must be numeric
         String phone = dTField.getText().trim();
         if (!phone.isEmpty() && !phone.matches("\\d+")) {
             errorMessages.append("- Số điện thoại chỉ được chứa số\n");
         }
 
-        if (errorMessages.length() > 0) {
+        if (!errorMessages.isEmpty()) {
             showErrorAlert("Lỗi dữ liệu", "Vui lòng kiểm tra các lỗi sau:\n" + errorMessages.toString());
             return false;
         }
@@ -226,9 +202,9 @@ public class SinhVienDialog {
         alert.showAndWait();
     }
 
-    private void showInfoAlert(String title, String message) {
+    private void showInfoAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
+        alert.setTitle("Thành công");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
