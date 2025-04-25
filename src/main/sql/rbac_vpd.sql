@@ -160,7 +160,6 @@ BEFORE INSERT OR UPDATE ON SINHVIEN
 FOR EACH ROW
 DECLARE
     v_role VARCHAR2(20);
-    cnt_old INT;
 BEGIN
     IF SYS_CONTEXT('USERENV', 'SESSION_USER') LIKE 'SV%' THEN
         RETURN; -- Không làm gì nếu là sinh viên
@@ -232,7 +231,6 @@ CREATE OR REPLACE FUNCTION UDF_POLICY_DANGKY_INS_UPD (
     p_schema VARCHAR2, p_obj VARCHAR2)
 RETURN VARCHAR2 AS
     v_user VARCHAR2(20);
-    v_role VARCHAR2(20);
     v_hk NUMBER;
     v_nam NUMBER;
     v_start DATE;
